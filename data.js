@@ -1,0 +1,189 @@
+/* Hanzi & Harf — course content.
+   Words:      'target|pronunciation|English meaning'
+   Sentences:  'tok1 tok2 tok3|pronunciation|English translation'  (tokens separated by spaces)
+   Stories:    'word~pronunciation~gloss|word~pronunciation~gloss|。||Sentence translation'
+   NEW CONTENT MUST ALWAYS BE APPENDED AT THE END of ZH, AR and STORIES lists (progress is stored by position). */
+
+const LETTERS=[
+['ا','alif','ā (long a)','ألف',0],['ب','bāʾ','b','باء',1],['ت','tāʾ','t','تاء',1],['ث','thāʾ','th (as in “think”)','ثاء',1],['ج','jīm','j','جيم',1],['ح','ḥāʾ','ḥ (breathy h from the throat)','حاء',1],['خ','khāʾ','kh (as in “Bach”)','خاء',1],
+['د','dāl','d','دال',0],['ذ','dhāl','dh (as in “this”)','ذال',0],['ر','rāʾ','rolled r','راء',0],['ز','zāy','z','زاي',0],['س','sīn','s','سين',1],['ش','shīn','sh','شين',1],['ص','ṣād','ṣ (emphatic s)','صاد',1],
+['ض','ḍād','ḍ (emphatic d)','ضاد',1],['ط','ṭāʾ','ṭ (emphatic t)','طاء',1],['ظ','ẓāʾ','ẓ (emphatic dh)','ظاء',1],['ع','ʿayn','ʿ (throat sound)','عين',1],['غ','ghayn','gh (French r)','غين',1],['ف','fāʾ','f','فاء',1],['ق','qāf','q (deep k)','قاف',1],
+['ك','kāf','k','كاف',1],['ل','lām','l','لام',1],['م','mīm','m','ميم',1],['ن','nūn','n','نون',1],['ه','hāʾ','h','هاء',1],['و','wāw','w / ū','واو',0],['ي','yāʾ','y / ī','ياء',1]];
+
+/* ===================== CHINESE (from HSK 3) ===================== */
+const ZH=[
+{title:'Daily routine',lessons:[
+ {title:'Mornings',w:['起床|qǐchuáng|to get up','刷牙|shuāyá|to brush one’s teeth','洗澡|xǐzǎo|to take a shower','早饭|zǎofàn|breakfast','一般|yìbān|usually, generally','然后|ránhòu|then, afterwards'],
+  s:['我 一般 六 点 起床|wǒ yìbān liù diǎn qǐchuáng.|I usually get up at six.','我 先 刷牙 然后 洗澡|wǒ xiān shuāyá, ránhòu xǐzǎo.|First I brush my teeth, then I shower.','你 吃 早饭 了 吗|nǐ chī zǎofàn le ma?|Have you had breakfast?']},
+ {title:'Busy days',w:['已经|yǐjīng|already','还|hái|still, yet','刚才|gāngcái|just now','打算|dǎsuàn|to plan to','完成|wánchéng|to complete','作业|zuòyè|homework, assignment'],
+  s:['我 已经 完成 作业 了|wǒ yǐjīng wánchéng zuòyè le.|I have already finished my homework.','你 打算 做 什么|nǐ dǎsuàn zuò shénme?|What do you plan to do?','他 还 没 起床|tā hái méi qǐchuáng.|He still hasn’t got up.']}]},
+{title:'Weather & seasons',lessons:[
+ {title:'Four seasons',w:['季节|jìjié|season','春天|chūntiān|spring','夏天|xiàtiān|summer','秋天|qiūtiān|autumn','冬天|dōngtiān|winter','最|zuì|most'],
+  s:['你 最 喜欢 哪 个 季节|nǐ zuì xǐhuan nǎ ge jìjié?|Which season do you like best?','塞内加尔 的 夏天 很 热|Sàinèijiā’ěr de xiàtiān hěn rè.|Summer in Senegal is very hot.']},
+ {title:'Forecast',w:['刮风|guāfēng|to be windy','阴天|yīntiān|cloudy day','晴天|qíngtiān|sunny day','可能|kěnéng|maybe, possibly','带|dài|to bring, to take','伞|sǎn|umbrella'],
+  s:['明天 可能 下雨|míngtiān kěnéng xià yǔ.|It may rain tomorrow.','别 忘了 带 伞|bié wàngle dài sǎn.|Don’t forget to take an umbrella.','今天 是 晴天|jīntiān shì qíngtiān.|Today is a sunny day.']}]},
+{title:'Shopping',lessons:[
+ {title:'Trying things on',w:['衣服|yīfu|clothes','裤子|kùzi|trousers','试|shì|to try','合适|héshì|suitable, to fit','颜色|yánsè|colour','换|huàn|to change, to exchange'],
+  s:['我 可以 试 一下 吗|wǒ kěyǐ shì yíxià ma?|Can I try it on?','这 条 裤子 不 合适|zhè tiáo kùzi bù héshì.|These trousers don’t fit.','有 别的 颜色 吗|yǒu biéde yánsè ma?|Do you have other colours?']},
+ {title:'Paying',w:['打折|dǎzhé|to give a discount','一共|yígòng|altogether','刷卡|shuākǎ|to pay by card','超市|chāoshì|supermarket','找|zhǎo|to give change; to look for','零钱|língqián|small change'],
+  s:['一共 多少 钱|yígòng duōshao qián?|How much is it altogether?','可以 刷卡 吗|kěyǐ shuākǎ ma?|Can I pay by card?','超市 今天 打折|chāoshì jīntiān dǎzhé.|The supermarket has discounts today.']}]},
+{title:'Health',lessons:[
+ {title:'At the doctor’s',w:['感冒|gǎnmào|to catch a cold','发烧|fāshāo|to have a fever','头疼|tóuténg|headache','药|yào|medicine','休息|xiūxi|to rest','舒服|shūfu|comfortable, well'],
+  s:['我 有点儿 不 舒服|wǒ yǒudiǎnr bù shūfu.|I feel a bit unwell.','你 应该 多 休息|nǐ yīnggāi duō xiūxi.|You should rest more.','他 感冒 了|tā gǎnmào le.|He has caught a cold.']},
+ {title:'Staying fit',w:['锻炼|duànliàn|to exercise','身体|shēntǐ|body, health','健康|jiànkāng|healthy','跑步|pǎobù|to run','每天|měitiān|every day','习惯|xíguàn|habit'],
+  s:['我 每天 跑步|wǒ měitiān pǎobù.|I run every day.','锻炼 对 身体 好|duànliàn duì shēntǐ hǎo.|Exercise is good for your health.']}]},
+{title:'Travel',lessons:[
+ {title:'Getting ready',w:['旅游|lǚyóu|to travel, tourism','护照|hùzhào|passport','机场|jīchǎng|airport','行李箱|xínglixiāng|suitcase','票|piào|ticket','酒店|jiǔdiàn|hotel'],
+  s:['我 打算 去 中国 旅游|wǒ dǎsuàn qù Zhōngguó lǚyóu.|I plan to travel to China.','别 忘了 带 护照|bié wàngle dài hùzhào.|Don’t forget your passport.']},
+ {title:'Directions',w:['离|lí|away from (distance)','远|yuǎn|far','近|jìn|near','往|wǎng|towards','左|zuǒ|left','右|yòu|right'],
+  s:['机场 离 这儿 远 吗|jīchǎng lí zhèr yuǎn ma?|Is the airport far from here?','往 右 走|wǎng yòu zǒu.|Go to the right.','酒店 很 近|jiǔdiàn hěn jìn.|The hotel is very close.']}]},
+{title:'Study & work',lessons:[
+ {title:'Exams',w:['考试|kǎoshì|exam','复习|fùxí|to review, to revise','成绩|chéngjì|results, grades','努力|nǔlì|hard-working; to make an effort','水平|shuǐpíng|level','提高|tígāo|to improve'],
+  s:['他 学习 很 努力|tā xuéxí hěn nǔlì.|He studies very hard.','我 的 汉语 水平 提高 了|wǒ de Hànyǔ shuǐpíng tígāo le.|My Chinese level has improved.','考试 成绩 怎么样|kǎoshì chéngjì zěnmeyàng?|How were the exam results?']},
+ {title:'At the office',w:['会议|huìyì|meeting','经理|jīnglǐ|manager','同事|tóngshì|colleague','办公室|bàngōngshì|office','安排|ānpái|to arrange','结束|jiéshù|to end, to finish'],
+  s:['会议 几 点 结束|huìyì jǐ diǎn jiéshù?|What time does the meeting end?','我 的 同事 在 办公室|wǒ de tóngshì zài bàngōngshì.|My colleague is in the office.','经理 安排 了 会议|jīnglǐ ānpái le huìyì.|The manager arranged a meeting.']}]},
+{title:'Research & farming',lessons:[
+ {title:'In the lab',w:['研究|yánjiū|research; to research','实验|shíyàn|experiment','数据|shùjù|data','结果|jiéguǒ|result','分析|fēnxī|to analyse','论文|lùnwén|thesis, paper'],
+  s:['我 在 写 论文|wǒ zài xiě lùnwén.|I’m writing my thesis.','我们 分析 数据|wǒmen fēnxī shùjù.|We analyse the data.','实验 结果 很 好|shíyàn jiéguǒ hěn hǎo.|The experiment results are good.']},
+ {title:'In the rice field',w:['水稻|shuǐdào|rice (the plant)','产量|chǎnliàng|yield','肥料|féiliào|fertiliser','灌溉|guàngài|irrigation; to irrigate','差距|chājù|gap','因素|yīnsù|factor'],
+  s:['水稻 产量 差距 很 大|shuǐdào chǎnliàng chājù hěn dà.|The rice yield gap is large.','肥料 是 一 个 重要 因素|féiliào shì yí ge zhòngyào yīnsù.|Fertiliser is an important factor.','农民 需要 灌溉|nóngmín xūyào guàngài.|Farmers need irrigation.']}]},
+{title:'Feelings & opinions',lessons:[
+ {title:'How do you feel?',w:['觉得|juéde|to feel, to think','担心|dānxīn|to worry','害怕|hàipà|to be afraid','生气|shēngqì|angry','满意|mǎnyì|satisfied','难过|nánguò|sad'],
+  s:['我 觉得 很 有意思|wǒ juéde hěn yǒu yìsi.|I find it very interesting.','别 担心|bié dānxīn.|Don’t worry.','老师 对 我 很 满意|lǎoshī duì wǒ hěn mǎnyì.|The teacher is very satisfied with me.']},
+ {title:'Linking ideas',w:['因为|yīnwèi|because','所以|suǒyǐ|so, therefore','虽然|suīrán|although','但是|dànshì|but','如果|rúguǒ|if','就|jiù|then (in that case)'],
+  s:['因为 下雨 所以 我 没 去|yīnwèi xià yǔ, suǒyǐ wǒ méi qù.|Because it rained, I didn’t go.','虽然 很 累 但是 很 高兴|suīrán hěn lèi, dànshì hěn gāoxìng.|Although tired, I’m very happy.','如果 你 有 时间 就 来|rúguǒ nǐ yǒu shíjiān jiù lái.|If you have time, come.']}]},
+{title:'Food & cooking',lessons:[
+ {title:'Ordering',w:['菜单|càidān|menu','点菜|diǎncài|to order food','辣|là|spicy','甜|tián|sweet','咸|xián|salty','味道|wèidao|taste, flavour'],
+  s:['这 个 菜 有点儿 辣|zhè ge cài yǒudiǎnr là.|This dish is a bit spicy.','味道 怎么样|wèidao zěnmeyàng?|How does it taste?','我们 点菜 吧|wǒmen diǎncài ba.|Let’s order.']},
+ {title:'In the kitchen',w:['厨房|chúfáng|kitchen','鸡蛋|jīdàn|egg','面条|miàntiáo|noodles','碗|wǎn|bowl','筷子|kuàizi|chopsticks','饱|bǎo|full (after eating)'],
+  s:['我 吃 饱 了|wǒ chī bǎo le.|I’m full.','你 会 用 筷子 吗|nǐ huì yòng kuàizi ma?|Can you use chopsticks?','妈妈 在 厨房 做 面条|māma zài chúfáng zuò miàntiáo.|Mum is making noodles in the kitchen.']}]},
+{title:'Phone & internet',lessons:[
+ {title:'Staying in touch',w:['手机|shǒujī|mobile phone','上网|shàngwǎng|to go online','电子邮件|diànzǐ yóujiàn|email','发|fā|to send','照片|zhàopiàn|photo','密码|mìmǎ|password'],
+  s:['我 给 你 发 照片|wǒ gěi nǐ fā zhàopiàn.|I’ll send you a photo.','我 忘了 密码|wǒ wàngle mìmǎ.|I forgot my password.','你 每天 上网 吗|nǐ měitiān shàngwǎng ma?|Do you go online every day?']}]}
+];
+
+/* ===================== ARABIC (MSA, for readers who want vocabulary & speaking) ===================== */
+const AR=[
+{title:'Daily routine',lessons:[
+ {title:'Mornings',w:['أَسْتَيْقِظُ|astayqiẓu|I wake up','أَغْتَسِلُ|aghtasilu|I wash, I bathe','أَتَنَاوَلُ|atanāwalu|I have (a meal)','الْفَطُورُ|al-faṭūr|breakfast','عَادَةً|ʿādatan|usually','ثُمَّ|thumma|then'],
+  s:['أَسْتَيْقِظُ عَادَةً فِي السَّادِسَةِ|astayqiẓu ʿādatan fī s-sādisa.|I usually wake up at six.','أَتَنَاوَلُ الْفَطُورَ ثُمَّ أَذْهَبُ إِلَى الْعَمَلِ|atanāwalu l-faṭūra thumma adhhabu ilā l-ʿamal.|I have breakfast, then I go to work.']},
+ {title:'Evenings',w:['الْعَمَلُ|al-ʿamal|work','أَرْجِعُ|arjiʿu|I return','مُتَأَخِّرًا|mutaʾakhkhiran|late','مُبَكِّرًا|mubakkiran|early','أَنَامُ|anāmu|I sleep','الْغَدَاءُ|al-ghadāʾ|lunch'],
+  s:['أَرْجِعُ إِلَى الْبَيْتِ مُتَأَخِّرًا|arjiʿu ilā l-bayti mutaʾakhkhiran.|I come home late.','أَنَامُ مُبَكِّرًا|anāmu mubakkiran.|I go to bed early.']}]},
+{title:'Conversation',lessons:[
+ {title:'Meeting people',w:['كَيْفَ حَالُكَ|kayfa ḥāluka|how are you?','بِخَيْرٍ|bi-khayrin|fine, well','تَشَرَّفْنَا|tasharrafnā|pleased to meet you','مِنْ أَيْنَ أَنْتَ|min ayna anta|where are you from?','أَهْلًا وَسَهْلًا|ahlan wa-sahlan|welcome','إِلَى اللِّقَاءِ|ilā l-liqāʾ|goodbye, see you'],
+  s:['أَنَا مِنَ السِّنِغَالِ|anā mina s-Sinighāl.|I am from Senegal.','تَشَرَّفْنَا بِمَعْرِفَتِكَ|tasharrafnā bi-maʿrifatika.|Pleased to meet you.']},
+ {title:'When you don’t understand',w:['أَتَكَلَّمُ|atakallamu|I speak','قَلِيلًا|qalīlan|a little','لَا أَفْهَمُ|lā afhamu|I don’t understand','مِنْ فَضْلِكَ|min faḍlika|please','أَعِدْ|aʿid|repeat! (imperative)','بِبُطْءٍ|bi-buṭʾin|slowly'],
+  s:['أَتَكَلَّمُ الْعَرَبِيَّةَ قَلِيلًا|atakallamu l-ʿarabiyyata qalīlan.|I speak a little Arabic.','أَعِدْ مِنْ فَضْلِكَ|aʿid min faḍlika.|Please repeat.','تَكَلَّمْ بِبُطْءٍ مِنْ فَضْلِكَ|takallam bi-buṭʾin min faḍlika.|Please speak slowly.']}]},
+{title:'Family & home',lessons:[
+ {title:'My family',w:['أُسْرَةٌ|usra|family','زَوْجَةٌ|zawja|wife','أَوْلَادٌ|awlād|children','جَدٌّ|jadd|grandfather','عِنْدِي|ʿindī|I have','يَسْكُنُ|yaskunu|he lives'],
+  s:['عِنْدِي ثَلَاثَةُ أَوْلَادٍ|ʿindī thalāthatu awlādin.|I have three children.','يَسْكُنُ جَدِّي فِي طُوبَى|yaskunu jaddī fī Ṭūbā.|My grandfather lives in Touba.']},
+ {title:'The house',w:['غُرْفَةٌ|ghurfa|room','مَطْبَخٌ|maṭbakh|kitchen','كَبِيرٌ|kabīr|big','صَغِيرٌ|ṣaghīr|small','نَظِيفٌ|naẓīf|clean','جَمِيلٌ|jamīl|beautiful'],
+  s:['الْبَيْتُ كَبِيرٌ وَجَمِيلٌ|al-baytu kabīrun wa-jamīl.|The house is big and beautiful.','الْمَطْبَخُ نَظِيفٌ|al-maṭbakhu naẓīf.|The kitchen is clean.','غُرْفَتِي صَغِيرَةٌ|ghurfatī ṣaghīra.|My room is small.']}]},
+{title:'At the market',lessons:[
+ {title:'Prices',w:['بِكَمْ|bikam|how much? (price)','غَالٍ|ghālin|expensive','رَخِيصٌ|rakhīṣ|cheap','أُرِيدُ|urīdu|I want','كِيلُو|kīlū|kilo','أَشْتَرِي|ashtarī|I buy'],
+  s:['بِكَمْ كِيلُو الْأَرُزِّ|bikam kīlū l-aruzz?|How much is a kilo of rice?','هَذَا غَالٍ جِدًّا|hādhā ghālin jiddan.|This is very expensive.','أُرِيدُ أَنْ أَشْتَرِيَ خُبْزًا|urīdu an ashtariya khubzan.|I want to buy bread.']},
+ {title:'Clothes',w:['الْبَائِعُ|al-bāʾiʿ|the seller','نُقُودٌ|nuqūd|money','خَصْمٌ|khaṣm|discount','مَلَابِسُ|malābis|clothes','لَوْنٌ|lawn|colour','مُنَاسِبٌ|munāsib|suitable'],
+  s:['هَلْ يُوجَدُ خَصْمٌ|hal yūjadu khaṣmun?|Is there a discount?','هَذَا اللَّوْنُ مُنَاسِبٌ|hādhā l-lawnu munāsib.|This colour is suitable.']}]},
+{title:'Travel',lessons:[
+ {title:'At the airport',w:['مَطَارٌ|maṭār|airport','جَوَازُ سَفَرٍ|jawāzu safarin|passport','تَذْكِرَةٌ|tadhkira|ticket','حَقِيبَةٌ|ḥaqība|bag, suitcase','فُنْدُقٌ|funduq|hotel','رِحْلَةٌ|riḥla|trip, flight'],
+  s:['أَيْنَ الْمَطَارُ|ayna l-maṭār?|Where is the airport?','الرِّحْلَةُ طَوِيلَةٌ|ar-riḥlatu ṭawīla.|The trip is long.','نَسِيتُ جَوَازَ السَّفَرِ|nasītu jawāza s-safar.|I forgot the passport.']},
+ {title:'Directions',w:['يَمِينٌ|yamīn|right','يَسَارٌ|yasār|left','قَرِيبٌ|qarīb|near','بَعِيدٌ|baʿīd|far','شَارِعٌ|shāriʿ|street','اِذْهَبْ|idhhab|go! (imperative)'],
+  s:['اِذْهَبْ إِلَى الْيَمِينِ|idhhab ilā l-yamīn.|Go to the right.','الْفُنْدُقُ قَرِيبٌ مِنْ هُنَا|al-funduqu qarībun min hunā.|The hotel is near here.']}]},
+{title:'Health',lessons:[
+ {title:'Feeling ill',w:['مَرِيضٌ|marīḍ|sick','طَبِيبٌ|ṭabīb|doctor','دَوَاءٌ|dawāʾ|medicine','صُدَاعٌ|ṣudāʿ|headache','حُمَّى|ḥummā|fever','أَشْعُرُ|ashʿuru|I feel'],
+  s:['أَشْعُرُ بِصُدَاعٍ|ashʿuru bi-ṣudāʿin.|I have a headache.','يَجِبُ أَنْ تَذْهَبَ إِلَى الطَّبِيبِ|yajibu an tadhhaba ilā ṭ-ṭabīb.|You must go to the doctor.']},
+ {title:'Staying fit',w:['رِيَاضَةٌ|riyāḍa|sport, exercise','صِحَّةٌ|ṣiḥḥa|health','يَوْمِيًّا|yawmiyyan|daily','أَمْشِي|amshī|I walk','مُفِيدٌ|mufīd|beneficial','نَوْمٌ|nawm|sleep'],
+  s:['الرِّيَاضَةُ مُفِيدَةٌ لِلصِّحَّةِ|ar-riyāḍatu mufīdatun liṣ-ṣiḥḥa.|Exercise is good for your health.','أَمْشِي يَوْمِيًّا|amshī yawmiyyan.|I walk every day.']}]},
+{title:'Study & work',lessons:[
+ {title:'University',w:['جَامِعَةٌ|jāmiʿa|university','اِمْتِحَانٌ|imtiḥān|exam','أَدْرُسُ|adrusu|I study','أُسْتَاذٌ|ustādh|professor','نَجَحَ|najaḥa|he succeeded, he passed','مُجْتَهِدٌ|mujtahid|hard-working'],
+  s:['أَدْرُسُ فِي الْجَامِعَةِ|adrusu fī l-jāmiʿa.|I study at the university.','نَجَحَ فِي الِامْتِحَانِ|najaḥa fī l-imtiḥān.|He passed the exam.','هُوَ طَالِبٌ مُجْتَهِدٌ|huwa ṭālibun mujtahid.|He is a hard-working student.']},
+ {title:'At the office',w:['مَكْتَبٌ|maktab|office','اِجْتِمَاعٌ|ijtimāʿ|meeting','زَمِيلٌ|zamīl|colleague','مُدِيرٌ|mudīr|director, manager','يَبْدَأُ|yabdaʾu|it begins','يَنْتَهِي|yantahī|it ends'],
+  s:['يَبْدَأُ الِاجْتِمَاعُ فِي الْعَاشِرَةِ|yabdaʾu l-ijtimāʿu fī l-ʿāshira.|The meeting starts at ten.','زَمِيلِي فِي الْمَكْتَبِ|zamīlī fī l-maktab.|My colleague is in the office.']}]},
+{title:'Research & farming',lessons:[
+ {title:'Research',w:['بَحْثٌ|baḥth|research','تَجْرِبَةٌ|tajriba|experiment','نَتَائِجُ|natāʾij|results','بَيَانَاتٌ|bayānāt|data','أُطْرُوحَةٌ|uṭrūḥa|thesis','تَحْلِيلٌ|taḥlīl|analysis'],
+  s:['أَكْتُبُ أُطْرُوحَتِي|aktubu uṭrūḥatī.|I am writing my thesis.','النَّتَائِجُ جَيِّدَةٌ|an-natāʾiju jayyida.|The results are good.']},
+ {title:'In the rice field',w:['الْأَرُزُّ|al-aruzz|rice','مَحْصُولٌ|maḥṣūl|crop, harvest','سَمَادٌ|samād|fertiliser','رَيٌّ|rayy|irrigation','مُزَارِعٌ|muzāriʿ|farmer','مَوْسِمُ الْأَمْطَارِ|mawsimu l-amṭār|rainy season'],
+  s:['يَزْرَعُ الْمُزَارِعُ الْأَرُزَّ|yazraʿu l-muzāriʿu l-aruzz.|The farmer grows rice.','الرَّيُّ مُهِمٌّ لِلْمَحْصُولِ|ar-rayyu muhimmun lil-maḥṣūl.|Irrigation is important for the crop.']}]},
+{title:'Feelings & opinions',lessons:[
+ {title:'How do you feel?',w:['سَعِيدٌ|saʿīd|happy','حَزِينٌ|ḥazīn|sad','قَلِقٌ|qaliq|worried','غَاضِبٌ|ghāḍib|angry','مُتْعَبٌ|mutʿab|tired','أَظُنُّ|aẓunnu|I think'],
+  s:['أَنَا سَعِيدٌ جِدًّا|anā saʿīdun jiddan.|I am very happy.','لَا تَقْلَقْ|lā taqlaq.|Don’t worry.','أَظُنُّ أَنَّهُ مُتْعَبٌ|aẓunnu annahu mutʿab.|I think he is tired.']},
+ {title:'Linking ideas',w:['لِأَنَّ|li-anna|because','لِذَلِكَ|li-dhālika|therefore','لَكِنَّ|lākinna|but','إِذَا|idhā|if','رُبَّمَا|rubbamā|perhaps','أَيْضًا|ayḍan|also'],
+  s:['لَمْ أَذْهَبْ لِأَنَّ الْجَوَّ حَارٌّ|lam adhhab li-anna l-jawwa ḥārr.|I didn’t go because it was hot.','رُبَّمَا يَأْتِي غَدًا|rubbamā yaʾtī ghadan.|Perhaps he will come tomorrow.','إِذَا كَانَ عِنْدَكَ وَقْتٌ تَعَالَ|idhā kāna ʿindaka waqtun taʿāla.|If you have time, come.']}]},
+{title:'Phone & internet',lessons:[
+ {title:'Staying in touch',w:['هَاتِفٌ|hātif|phone','رِسَالَةٌ|risāla|message','أُرْسِلُ|ursilu|I send','صُورَةٌ|ṣūra|picture, photo','كَلِمَةُ السِّرِّ|kalimatu s-sirr|password','اِتَّصِلْ بِي|ittaṣil bī|call me'],
+  s:['أُرْسِلُ لَكَ صُورَةً|ursilu laka ṣūratan.|I’ll send you a photo.','نَسِيتُ كَلِمَةَ السِّرِّ|nasītu kalimata s-sirr.|I forgot the password.','اِتَّصِلْ بِي مَسَاءً|ittaṣil bī masāʾan.|Call me in the evening.']}]}
+];
+
+/* ===================== STORIES ===================== */
+const STORIES={zh:[
+{id:'zh1',title:'Xiao Wang’s Rice',tt:'小王的水稻',level:'HSK 3',emoji:'🌾',
+ s:['小王~Xiǎo Wáng~Xiao Wang (name)|是~shì~to be|一~yí~one|个~ge~(measure word)|农民~nóngmín~farmer|，|他~tā~he|在~zài~at|河~hé~river|边~biān~side|种~zhòng~to grow|水稻~shuǐdào~rice (plant)|。||Xiao Wang is a farmer who grows rice by the river.',
+ '今年~jīnnián~this year|夏天~xiàtiān~summer|特别~tèbié~especially|热~rè~hot|，|一直~yìzhí~all along|没有~méiyǒu~did not|下雨~xià yǔ~to rain|。||This summer was especially hot, and it didn’t rain at all.',
+ '田~tián~field|里~li~in|的~de~(particle)|水稻~shuǐdào~rice|越来越~yuè lái yuè~more and more|黄~huáng~yellow|。||The rice in the field turned more and more yellow.',
+ '小王~Xiǎo Wáng~Xiao Wang|非常~fēicháng~very|担心~dānxīn~to worry|，|晚上~wǎnshang~at night|也~yě~even|睡不着~shuì bu zháo~can’t fall asleep|。||Xiao Wang was very worried and couldn’t even sleep at night.',
+ '他~tā~his|的~de~(possessive)|女儿~nǚ’ér~daughter|小兰~Xiǎo Lán~Xiao Lan (name)|说~shuō~to say|：|“|爸爸~bàba~dad|，|河~hé~river|里~li~in|不是~bú shì~isn’t (it)|有~yǒu~to have|很多~hěn duō~a lot of|水~shuǐ~water|吗~ma~(question)|？|”||His daughter Xiao Lan said: “Dad, isn’t there plenty of water in the river?”',
+ '第二天~dì-èr tiān~the next day|，|全家~quánjiā~the whole family|一起~yìqǐ~together|挖~wā~to dig|了~le~(completed)|一~yì~one|条~tiáo~(measure word)|小~xiǎo~small|水渠~shuǐqú~canal|。||The next day, the whole family dug a small canal together.',
+ '河~hé~river|水~shuǐ~water|流~liú~to flow|进~jìn~into|了~le~(completed)|田~tián~field|里~li~in|，|水稻~shuǐdào~rice|慢慢~mànmàn~slowly|变~biàn~to become|绿~lǜ~green|了~le~(change)|。||River water flowed into the field, and the rice slowly turned green.',
+ '秋天~qiūtiān~autumn|，|小王~Xiǎo Wáng~Xiao Wang|的~de~(possessive)|产量~chǎnliàng~yield|比~bǐ~than|去年~qùnián~last year|还~hái~even|高~gāo~high|。||In autumn, Xiao Wang’s yield was even higher than last year.',
+ '邻居~línjū~neighbours|都~dōu~all|来~lái~to come|问~wèn~to ask|他~tā~him|有~yǒu~to have|什么~shénme~what|秘密~mìmì~secret|。||The neighbours all came to ask him what his secret was.',
+ '小王~Xiǎo Wáng~Xiao Wang|笑~xiào~to smile|着~zhe~(-ing)|说~shuō~to say|：|“|我~wǒ~my|的~de~(possessive)|秘密~mìmì~secret|是~shì~to be|我~wǒ~my|女儿~nǚ’ér~daughter|！|”||Xiao Wang said with a smile: “My secret is my daughter!”'],
+ q:[{q:'Why was Xiao Wang worried?',o:['It hadn’t rained','There were pests','He had no seeds'],a:0},{q:'What did the family build?',o:['A well','A small canal','A greenhouse'],a:1},{q:'What did he say his secret was?',o:['A new fertiliser','His daughter','A new rice variety'],a:1}]},
+{id:'zh2',title:'The Tone Mistake',tt:'声调的错误',level:'HSK 3',emoji:'🥟',
+ s:['马克~Mǎkè~Mark (name)|是~shì~to be|法国~Fǎguó~France|留学生~liúxuéshēng~international student|，|在~zài~in|武汉~Wǔhàn~Wuhan|学习~xuéxí~to study|汉语~Hànyǔ~Chinese|。||Mark is a French student studying Chinese in Wuhan.',
+ '他~tā~he|觉得~juéde~to think|自己~zìjǐ~oneself|的~de~(possessive)|汉语~Hànyǔ~Chinese|已经~yǐjīng~already|很~hěn~very|好~hǎo~good|了~le~(change)|。||He thinks his Chinese is already very good.',
+ '一~yì~one|天~tiān~day|晚上~wǎnshang~evening|，|他~tā~he|一个人~yí ge rén~alone|去~qù~to go|饭店~fàndiàn~restaurant|吃饭~chīfàn~to eat|。||One evening, he went to a restaurant alone.',
+ '服务员~fúwùyuán~waiter|问~wèn~to ask|：|“|您~nín~you (polite)|想~xiǎng~to want|吃~chī~to eat|什么~shénme~what|？|”||The waiter asked: “What would you like to eat?”',
+ '马克~Mǎkè~Mark|大声~dàshēng~loudly|说~shuō~to say|：|“|我~wǒ~I|要~yào~to want|睡觉~shuìjiào~to sleep|！|”||Mark said loudly: “I want to sleep!”',
+ '服务员~fúwùyuán~waiter|愣~lèng~to be stunned|了~le~(completed)|一下~yíxià~a moment|：|“|先生~xiānsheng~sir|，|我们~wǒmen~our|这儿~zhèr~here|是~shì~to be|饭店~fàndiàn~restaurant|，|不是~bú shì~not|酒店~jiǔdiàn~hotel|。|”||The waiter froze: “Sir, this is a restaurant, not a hotel.”',
+ '旁边~pángbiān~nearby|的~de~(particle)|客人~kèrén~guests|都~dōu~all|笑~xiào~to laugh|了~le~(completed)|。||The guests nearby all laughed.',
+ '马克~Mǎkè~Mark|的~de~(possessive)|脸~liǎn~face|一下子~yíxiàzi~all at once|红~hóng~red|了~le~(change)|。||Mark’s face turned red at once.',
+ '原来~yuánlái~it turns out|他~tā~he|想~xiǎng~to want|说~shuō~to say|的~de~(that which)|是~shì~to be|“|水饺~shuǐjiǎo~boiled dumplings|”|。||It turned out that what he wanted to say was “shuǐjiǎo” (dumplings).',
+ '从~cóng~from|那~nà~that|天~tiān~day|起~qǐ~onwards|，|他~tā~he|每天~měitiān~every day|都~dōu~all|认真~rènzhēn~seriously|练习~liànxí~to practise|声调~shēngdiào~tones|。||From that day on, he practised his tones seriously every day.'],
+ q:[{q:'Where does Mark study?',o:['Beijing','Wuhan','Shanghai'],a:1},{q:'What did he actually want?',o:['To sleep','Dumplings','Tea'],a:1},{q:'What does he do every day now?',o:['Practise tones','Cook dumplings','Work in a hotel'],a:0}]},
+{id:'zh3',title:'The Lost Data',tt:'丢失的数据',level:'HSK 3–4',emoji:'💻',
+ s:['阿达玛~Ādámǎ~Adama (name)|是~shì~to be|一~yí~one|个~ge~(measure word)|研究~yánjiū~to research|水稻~shuǐdào~rice|的~de~(who)|博士生~bóshìshēng~PhD student|。||Adama is a PhD student who researches rice.',
+ '他~tā~he|在~zài~at|圣路易~Shènglùyì~Saint-Louis|附近~fùjìn~nearby|做~zuò~to do|实验~shíyàn~experiments|。||He does experiments near Saint-Louis.',
+ '他~tā~he|每天~měitiān~every day|都~dōu~all|去~qù~to go|田~tián~field|里~li~in|记录~jìlù~to record|数据~shùjù~data|。||Every day he goes to the field to record data.',
+ '有~yǒu~there is|一~yì~one|天~tiān~day|，|他~tā~his|的~de~(possessive)|电脑~diànnǎo~computer|突然~tūrán~suddenly|坏~huài~broken|了~le~(change)|！||One day, his computer suddenly broke down!',
+ '三~sān~three|个~ge~(measure word)|月~yuè~month|的~de~(of)|数据~shùjù~data|都~dōu~all|在~zài~in|里面~lǐmiàn~inside|。||Three months of data were all inside it.',
+ '阿达玛~Ādámǎ~Adama|难过~nánguò~sad|得~de~(so…that)|说不出~shuō bu chū~cannot say|话~huà~words|来~lái~(complement)|。||Adama was so upset he couldn’t say a word.',
+ '这时~zhèshí~at this moment|，|他~tā~his|的~de~(possessive)|导师~dǎoshī~supervisor|问~wèn~to ask|：|“|你~nǐ~your|的~de~(possessive)|笔记本~bǐjìběn~notebook|呢~ne~(what about)|？|”||Just then his supervisor asked: “What about your notebook?”',
+ '阿达玛~Ādámǎ~Adama|想~xiǎng~to think|起来~qǐlai~(recall)|了~le~(change)|：|他~tā~he|每天~měitiān~every day|都~dōu~all|先~xiān~first|把~bǎ~(object marker)|数据~shùjù~data|写~xiě~to write|在~zài~in|本子~běnzi~notebook|上~shang~on|！||Adama remembered: every day he first wrote the data in a notebook!',
+ '他~tā~he|花~huā~to spend|了~le~(completed)|两~liǎng~two|个~ge~(measure word)|星期~xīngqī~week|，|把~bǎ~(object marker)|数据~shùjù~data|重新~chóngxīn~again|输入~shūrù~to enter|电脑~diànnǎo~computer|。||He spent two weeks re-entering the data into the computer.',
+ '导师~dǎoshī~supervisor|说~shuō~to say|：|“|好~hǎo~good|习惯~xíguàn~habit|能~néng~can|救~jiù~to save|你~nǐ~your|的~de~(possessive)|论文~lùnwén~thesis|。|”||The supervisor said: “Good habits can save your thesis.”'],
+ q:[{q:'What does Adama research?',o:['Rice','Maize','Fish'],a:0},{q:'What happened to his computer?',o:['It was stolen','It broke down','It got wet'],a:1},{q:'What saved his data?',o:['A USB stick','His paper notebook','His supervisor’s computer'],a:1}]}
+],
+ar:[
+{id:'ar1',title:'The Farmer and the River',tt:'الْمُزَارِعُ وَالنَّهْرُ',level:'Intermediate',emoji:'🌾',
+ s:['كَانَ~kāna~was|عُمَرُ~ʿUmaru~Omar|مُزَارِعًا~muzāriʿan~a farmer|فِي~fī~in|قَرْيَةٍ~qaryatin~a village|صَغِيرَةٍ~ṣaghīratin~small|.||Omar was a farmer in a small village.',
+ 'كَانَ~kāna~there was|عِنْدَهُ~ʿindahu~he had|حَقْلُ~ḥaqlu~field of|أَرُزٍّ~aruzzin~rice|كَبِيرٌ~kabīrun~big|.||He had a big rice field.',
+ 'فِي~fī~in|ذَلِكَ~dhālika~that|الْعَامِ~al-ʿāmi~the year|لَمْ~lam~did not|يَنْزِلِ~yanzili~fall|الْمَطَرُ~al-maṭaru~the rain|.||That year, the rain didn’t fall.',
+ 'حَزِنَ~ḥazina~became sad|عُمَرُ~ʿUmaru~Omar|كَثِيرًا~kathīran~a lot|.||Omar was very sad.',
+ 'قَالَتِ~qālati~(she) said|ابْنَتُهُ~ibnatuhu~his daughter|:|«|يَا~yā~O (calling)|أَبِي~abī~my father|،|النَّهْرُ~an-nahru~the river|قَرِيبٌ~qarībun~near|!|»||His daughter said: “Father, the river is close by!”',
+ 'حَفَرُوا~ḥafarū~they dug|قَنَاةً~qanātan~a canal|مِنَ~mina~from|النَّهْرِ~an-nahri~the river|إِلَى~ilā~to|الْحَقْلِ~al-ḥaqli~the field|.||They dug a canal from the river to the field.',
+ 'وَصَلَ~waṣala~arrived|الْمَاءُ~al-māʾu~the water|وَنَمَا~wa-namā~and grew|الْأَرُزُّ~al-aruzzu~the rice|.||The water arrived and the rice grew.',
+ 'وَكَانَ~wa-kāna~and was|الْحَصَادُ~al-ḥaṣādu~the harvest|كَبِيرًا~kabīran~big|.||And the harvest was abundant.',
+ 'قَالَ~qāla~said|عُمَرُ~ʿUmaru~Omar|:|«|ابْنَتِي~ibnatī~my daughter|ذَكِيَّةٌ~dhakiyyatun~clever|!|»||Omar said: “My daughter is clever!”'],
+ q:[{q:'What did Omar grow?',o:['Wheat','Rice','Millet'],a:1},{q:'What was the problem?',o:['No rain','Too much sun','Birds'],a:0},{q:'What did they dig?',o:['A well','A canal','A pond'],a:1}]},
+{id:'ar2',title:'At the Market',tt:'فِي السُّوقِ',level:'Intermediate',emoji:'🐟',
+ s:['ذَهَبَتْ~dhahabat~(she) went|فَاطِمَةُ~Fāṭimatu~Fatima|إِلَى~ilā~to|السُّوقِ~as-sūqi~the market|.||Fatima went to the market.',
+ 'أَرَادَتْ~arādat~she wanted|أَنْ~an~to|تَشْتَرِيَ~tashtariya~buy|سَمَكًا~samakan~fish|.||She wanted to buy fish.',
+ 'سَأَلَتِ~saʾalati~she asked|الْبَائِعَ~al-bāʾiʿa~the seller|:|«|بِكَمْ~bikam~how much|هَذَا~hādhā~this|السَّمَكُ~as-samaku~the fish|؟|»||She asked the seller: “How much is this fish?”',
+ 'قَالَ~qāla~said|الْبَائِعُ~al-bāʾiʿu~the seller|:|«|بِأَلْفِ~bi-alfi~for a thousand|فْرَنْك~frank~francs|.|»||The seller said: “A thousand francs.”',
+ 'قَالَتْ~qālat~she said|:|«|هَذَا~hādhā~this|غَالٍ~ghālin~expensive|جِدًّا~jiddan~very|!|»||She said: “That’s very expensive!”',
+ 'ضَحِكَ~ḍaḥika~laughed|الْبَائِعُ~al-bāʾiʿu~the seller|وَقَالَ~wa-qāla~and said|:|«|خُذِيهِ~khudhīhi~take it (to a woman)|بِثَمَانِمِائَةٍ~bi-thamānimiʾatin~for eight hundred|.|»||The seller laughed and said: “Take it for eight hundred.”',
+ 'شَكَرَتْهُ~shakarathu~she thanked him|فَاطِمَةُ~Fāṭimatu~Fatima|وَرَجَعَتْ~wa-rajaʿat~and returned|إِلَى~ilā~to|الْبَيْتِ~al-bayti~the house|سَعِيدَةً~saʿīdatan~happy|.||Fatima thanked him and went home happy.'],
+ q:[{q:'What did Fatima want to buy?',o:['Bread','Fish','Tea'],a:1},{q:'What was the first price?',o:['500 francs','800 francs','1000 francs'],a:2},{q:'What did she finally pay?',o:['800 francs','1000 francs','600 francs'],a:0}]},
+{id:'ar3',title:'The Wrong Bus',tt:'الْحَافِلَةُ الْخَطَأُ',level:'Intermediate',emoji:'🚌',
+ s:['كَانَ~kāna~was|مُوسَى~Mūsā~Moussa|مُسْتَعْجِلًا~mustaʿjilan~in a hurry|ذَلِكَ~dhālika~that|الصَّبَاحَ~aṣ-ṣabāḥa~morning|.||Moussa was in a hurry that morning.',
+ 'كَانَ~kāna~there was|عِنْدَهُ~ʿindahu~he had|اِمْتِحَانٌ~imtiḥānun~an exam|مُهِمٌّ~muhimmun~important|فِي~fī~at|الْجَامِعَةِ~al-jāmiʿati~the university|.||He had an important exam at the university.',
+ 'رَكِبَ~rakiba~he got on|أَوَّلَ~awwala~the first|حَافِلَةٍ~ḥāfilatin~bus|وَصَلَتْ~waṣalat~(that) arrived|إِلَى~ilā~at|الْمَحَطَّةِ~al-maḥaṭṭati~the station|.||He got on the first bus that arrived at the station.',
+ 'جَلَسَ~jalasa~he sat|وَفَتَحَ~wa-fataḥa~and opened|كِتَابَهُ~kitābahu~his book|لِيُرَاجِعَ~li-yurājiʿa~to review|دُرُوسَهُ~durūsahu~his lessons|.||He sat down and opened his book to review his lessons.',
+ 'بَعْدَ~baʿda~after|سَاعَةٍ~sāʿatin~an hour|نَظَرَ~naẓara~he looked|مِنَ~mina~out of|النَّافِذَةِ~an-nāfidhati~the window|.||After an hour, he looked out of the window.',
+ 'لَمْ~lam~did not|يَرَ~yara~see|الْجَامِعَةَ~al-jāmiʿata~the university|،|بَلْ~bal~but rather|رَأَى~raʾā~he saw|حُقُولَ~ḥuqūla~fields of|الْأَرُزِّ~al-aruzzi~rice|!||He didn’t see the university — he saw rice fields!',
+ 'سَأَلَ~saʾala~he asked|السَّائِقَ~as-sāʾiqa~the driver|:|«|أَيْنَ~ayna~where|نَحْنُ~naḥnu~are we|؟|»||He asked the driver: “Where are we?”',
+ 'ضَحِكَ~ḍaḥika~laughed|السَّائِقُ~as-sāʾiqu~the driver|:|«|هَذِهِ~hādhihi~this|الْحَافِلَةُ~al-ḥāfilatu~the bus|ذَاهِبَةٌ~dhāhibatun~going|إِلَى~ilā~to|سَانْت لُوِيس~Sānt Luwīs~Saint-Louis|!|»||The driver laughed: “This bus is going to Saint-Louis!”',
+ 'اِتَّصَلَ~ittaṣala~called|مُوسَى~Mūsā~Moussa|بِأُسْتَاذِهِ~bi-ustādhihi~his professor|وَشَرَحَ~wa-sharaḥa~and explained|لَهُ~lahu~to him|الْمُشْكِلَةَ~al-mushkilata~the problem|.||Moussa called his professor and explained the problem.',
+ 'قَالَ~qāla~said|الْأُسْتَاذُ~al-ustādhu~the professor|:|«|لَا~lā~don’t|تَقْلَقْ~taqlaq~worry|،|الِامْتِحَانُ~al-imtiḥānu~the exam|غَدًا~ghadan~tomorrow|وَلَيْسَ~wa-laysa~and not|الْيَوْمَ~al-yawma~today|!|»||The professor said: “Don’t worry, the exam is tomorrow, not today!”'],
+ q:[{q:'Why was Moussa in a hurry?',o:['He had an exam','He was late for work','He had a flight'],a:0},{q:'What did he see from the window?',o:['The sea','Rice fields','The university'],a:1},{q:'When was the exam really?',o:['Today','Tomorrow','Next week'],a:1}]}
+]};

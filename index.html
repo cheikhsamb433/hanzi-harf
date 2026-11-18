@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b23a2e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Hanzi & Harf — Chinese & Arabic</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1f23;--mute:#6b6f76;--line:#e4e0d6;--acc:#b23a2e;--acc-soft:#f6e3df;--ok:#2e7d4f;--ok-soft:#e3f1e8;--bad:#b23a2e;--bad-soft:#f9e3df;--r:14px}
+body.ar{--acc:#1f6f55;--acc-soft:#dcefe7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:16px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+#app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+.zh{font-family:"Noto Sans SC",sans-serif}
+.arf{font-family:"Noto Naskh Arabic",serif;direction:rtl}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;gap:10px}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand span{color:var(--acc)}
+.seg{display:flex;background:#ebe7de;border-radius:999px;padding:3px}
+.seg button{padding:6px 12px;border-radius:999px;font-size:14px;color:var(--mute);font-weight:600}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+main{flex:1;padding:4px 16px 110px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.goal{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.goal .stat{flex:1}
+.goal small,.muted{color:var(--mute);font-size:13px}
+.prog{height:8px;background:#ece8df;border-radius:99px;overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width .3s}
+.chip{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:15px}
+.unit{margin-bottom:18px}
+.uh{margin:0 2px 8px}
+.uh .un{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);font-weight:700}
+.uh h3{margin:2px 0 0;font-size:18px}
+.lrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.lrow .dot{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--acc);color:#fff;font-weight:700;font-size:14px}
+.lrow.done .dot{background:var(--ok)}
+.lrow.locked{opacity:.55}
+.lrow.locked .dot{background:#cfcac0}
+.lrow b{display:block;font-weight:600}
+.lrow small{color:var(--mute);font-size:13px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+.tabs div{display:flex;max-width:560px;width:100%}
+.tabs button{flex:1;padding:10px 0 12px;font-size:12px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:500}
+.tabs button.on{color:var(--acc);font-weight:700}
+.tabs svg{width:22px;height:22px}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;background:var(--acc);color:#fff;font-weight:700;font-size:16px;text-align:center}
+.btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{background:#d8d3c9;color:#fff}
+.btn.okb{background:var(--ok)}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+h2{font-size:20px;margin:6px 0 12px}
+/* lesson */
+.lhead{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.lhead .bar{flex:1;height:10px;background:#e6e1d7;border-radius:99px;overflow:hidden}
+.lhead .bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.hearts{color:var(--acc);font-weight:700;white-space:nowrap}
+.icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:18px;color:var(--mute)}
+.ex{flex:1;padding:6px 16px 170px}
+.kind{font-size:13px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.07em;margin:6px 0 4px}
+.q{font-size:20px;font-weight:600;margin:0 0 16px}
+.big{text-align:center;padding:20px 10px}
+.big .t{font-size:56px;line-height:1.3}
+.big .t.arf{font-size:46px}
+.big .p{color:var(--mute);font-size:18px;margin-top:4px}
+.big .f{font-size:18px;margin-top:10px;font-weight:600}
+.play{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--acc-soft);color:var(--acc);border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px;margin:4px}
+.play.huge{width:96px;height:96px;padding:0;font-size:34px}
+.opts{display:grid;gap:10px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:14px;text-align:center;font-size:17px;min-height:58px}
+.opt .tg{font-size:26px;display:block}
+.opt .tg.arf{font-size:24px}
+.opt small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.opt.sel{border-color:var(--acc);background:var(--acc-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.gone{opacity:.25;pointer-events:none}
+.ans{min-height:64px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;margin-bottom:18px;align-content:flex-start}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tok{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:10px;padding:8px 12px;font-size:22px}
+.tok.arf{font-size:22px}
+.tok.used{visibility:hidden}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.foot{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:14px 16px calc(14px + env(safe-area-inset-bottom));z-index:6}
+.foot .in{max-width:528px;margin:0 auto}
+.foot.ok{background:var(--ok-soft);border-color:#bfe0cb}
+.foot.bad{background:var(--bad-soft);border-color:#efc4bd}
+.fb{margin-bottom:10px}
+.fb b{font-size:17px}
+.foot.ok .fb b{color:var(--ok)}
+.foot.bad .fb b{color:var(--bad)}
+.fb div{margin-top:3px}
+.trace{display:flex;justify-content:center;margin:6px 0 10px}
+.trace canvas{background:#fff;border-radius:12px;touch-action:none;border:1px solid var(--line)}
+.note{font-size:13px;color:var(--mute);text-align:center;margin-top:8px}
+.result{text-align:center;padding:40px 16px}
+.result .xp{font-size:44px;font-weight:700;color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lt{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center}
+.lt .arf{font-size:30px;line-height:1.4}
+.lt small{display:block;color:var(--mute);font-size:12px}
+.forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;margin:12px 0}
+.forms div{background:var(--bg);border-radius:10px;padding:8px 2px}
+.forms .arf{font-size:30px}
+.forms small{display:block;font-size:11px;color:var(--mute)}
+.dict input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font:inherit;margin-bottom:10px;background:var(--card)}
+.drow{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line)}
+.drow .w{font-size:22px;min-width:84px}
+.drow .w.arf{font-size:21px;text-align:right}
+.drow .m{flex:1}
+.drow .m small{display:block;color:var(--mute)}
+.set{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border:0}
+.sw{width:48px;height:28px;border-radius:99px;background:#d8d3c9;position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.on{background:var(--acc)}
+.sw.on::after{left:23px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stats .card{padding:12px;text-align:center}
+.stats b{font-size:22px;display:block}
+.fc{min-height:260px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(20,20,20,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.modal .sheet{background:var(--card);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:90%}
+.tones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tones .opt{padding:10px 4px}
+.sectitle{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);font-weight:700;margin:22px 0 8px}
+.warn{background:#fff7e0;border:1px solid #efdca5;border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:14px}
+.tabs button{font-size:11px}
+.scard{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.scard .em{font-size:30px;width:52px;height:52px;border-radius:12px;background:var(--acc-soft);display:grid;place-items:center;flex:none}
+.scard b{display:block}.scard small{color:var(--mute);font-size:13px}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.ctrl button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600}
+.ctrl button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.sent{padding:12px;border-radius:12px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);transition:background .2s}
+.sent.now{border-color:var(--acc);background:var(--acc-soft)}
+.stoks{display:flex;flex-wrap:wrap;gap:4px 2px;align-items:flex-start}
+.wd{display:inline-flex;flex-direction:column;align-items:center;padding:3px 3px;border-radius:7px;line-height:1.2}
+.wd:hover,.wd.hl{background:var(--acc-soft)}
+.wd .wt{font-size:25px}.wd .wt.arf{font-size:25px;line-height:1.6}
+.wd .wp{font-size:11px;color:var(--mute);margin-top:1px;white-space:nowrap}
+.pn{font-size:24px;padding:3px 1px;line-height:1.2}
+.srow{display:flex;gap:6px;margin-top:8px;align-items:center}
+.srow button{font-size:13px;color:var(--acc);font-weight:600;padding:4px 8px;border-radius:8px;background:var(--acc-soft)}
+.tr{margin-top:8px;color:var(--mute);font-size:15px}
+.mk{text-decoration:underline;text-decoration-color:var(--acc);text-underline-offset:3px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="data.js"></script>
+<script>
+Object.values(STORIES).forEach(list=>list.forEach(st=>{st.sents=st.s.map(line=>{const[a,tr]=line.split('||');return{tr,toks:a.split('|').map(x=>{const[t,p,g]=x.split('~');return p===undefined?{t,punct:true}:{t,p,g}})}})}));
+function prep(lang,units){
+ units.forEach(u=>u.lessons.forEach(l=>{
+  if(l.letters){l.items=l.letters.map(a=>({id:lang+':'+a[0],t:a[0],p:a[1],f:'sound: '+a[2],say:a[3],letter:a,lang}))}
+  else l.items=l.w.map(x=>{const[t,p,f]=x.split('|');return{id:lang+':'+t,t,p,f,say:t,lang}});
+  l.sents=(l.s||[]).map(x=>{const[t,p,f]=x.split('|');return{tok:t.split(' '),p,f}});
+ }));return units}
+const COURSE={zh:prep('zh',ZH),ar:prep('ar',AR)};
+const ALL={};['zh','ar'].forEach(g=>{const m=new Map();COURSE[g].forEach(u=>u.lessons.forEach(l=>l.items.forEach(it=>m.set(it.id,it))));ALL[g]=[...m.values()]});
+const TONE_EXTRA=[['妈','mā'],['麻','má'],['马','mǎ'],['骂','mà'],['诗','shī'],['十','shí'],['使','shǐ'],['是','shì'],['八','bā'],['拔','bá'],['把','bǎ'],['爸','bà'],['汤','tāng'],['糖','táng'],['躺','tǎng'],['烫','tàng']].map(([t,p])=>({t,p,say:t}));
+
+/* ============ ÉTAT ============ */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const DEF={lang:'zh',xp:0,days:{},streak:0,last:null,done:{zh:{},ar:{}},srs:{},stories:{},custom:{},set:{rom:true,auto:true,slow:false,goal:30}};
+let P=Object.assign(JSON.parse(JSON.stringify(DEF)),store.get('hh_v2',{}));
+P.set=Object.assign({},DEF.set,P.set);P.stories=P.stories||{};P.custom=P.custom||{};P.done=Object.assign({zh:{},ar:{}},P.done);
+const save=()=>store.set('hh_v2',P);
+let S={story:null,tab:'course',lesson:null,modal:null,review:null,tone:null,q:''};
+
+/* ============ OUTILS ============ */
+const $=s=>document.querySelector(s);
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tcls=g=>g==='zh'?'zh':'arf';
+const sep=g=>g==='zh'?'':' ';
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+let voices=[],audioWarned=false;
+function audioMissing(){if(audioWarned){toast('Audio unavailable — see Profile › Fix audio');return}audioWarned=true;S.modal=audioHelp();render()}
+function audioHelp(){return `<h2>Audio is not working</h2>
+ <p class="muted">The app uses your phone’s built-in voices. In the Claude app preview there is no audio — open the installed app or Chrome instead.</p>
+ <ol style="padding-left:18px;line-height:1.6"><li>Open the app in <b>Google Chrome</b> (or the installed app).</li><li>Phone <b>Settings › System › Languages &amp; input › Text-to-speech output</b>: engine = <b>Speech Services by Google</b>.</li><li>Tap the ⚙️ next to it › <b>Install voice data</b> › download <b>Chinese (Mandarin)</b> and <b>Arabic</b>.</li><li>Close and reopen the app, then test in <b>Profile › Audio</b>.</li></ol>
+ <button class="btn" onclick="closeModal()">OK</button>`}
+function loadVoices(){try{voices=speechSynthesis.getVoices()||[]}catch(e){}}
+if('speechSynthesis' in window){loadVoices();try{speechSynthesis.onvoiceschanged=loadVoices}catch(e){}}
+const voiceFor=g=>voices.find(v=>v.lang&&v.lang.toLowerCase().replace('_','-').startsWith(g==='zh'?'zh-cn':'ar'))||voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith(g));
+function speak(text,g,slow,cb){
+ try{if(!('speechSynthesis' in window)){audioMissing();return}if(!voices.length)loadVoices();if(voices.length&&!voiceFor(g)){toast((g==='zh'?'Chinese':'Arabic')+' voice not installed — see Profile › Fix audio')}
+ const u=new SpeechSynthesisUtterance(text);u.lang=g==='zh'?'zh-CN':'ar-SA';const v=voiceFor(g);if(v)u.voice=v;
+ u.rate=(slow||P.set.slow)?0.6:0.9;if(cb)u.onend=cb;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){audioMissing()}}
+function toneOf(p){const m={'ā':1,'ē':1,'ī':1,'ō':1,'ū':1,'ǖ':1,'á':2,'é':2,'í':2,'ó':2,'ú':2,'ǘ':2,'ǎ':3,'ě':3,'ǐ':3,'ǒ':3,'ǔ':3,'ǚ':3,'à':4,'è':4,'ì':4,'ò':4,'ù':4,'ǜ':4};for(const c of p)if(m[c])return m[c];return 0}
+const dayKey=(d=new Date())=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+const yKey=()=>{const y=new Date();y.setDate(y.getDate()-1);return dayKey(y)};
+function addXP(n){const k=dayKey();P.days[k]=(P.days[k]||0)+n;P.xp+=n;if(P.last!==k){P.streak=P.last===yKey()?P.streak+1:1;P.last=k}save()}
+const streak=()=>(P.last===dayKey()||P.last===yKey())?P.streak:0;
+const todayXP=()=>P.days[dayKey()]||0;
+const DAY=864e5,INT=[1,2,4,8,16,32];
+const romOn=()=>P.set.rom;
+function wordHTML(it,size){return `<span class="tg ${tcls(it.lang)}">${it.t}</span>${romOn()?`<small>${it.p}</small>`:''}`}
+
+/* ============ PARCOURS ============ */
+const flat=g=>{const a=[];COURSE[g].forEach((u,ui)=>u.lessons.forEach((l,li)=>a.push(ui+'-'+li)));return a};
+function unlocked(g,ui,li){const f=flat(g),i=f.indexOf(ui+'-'+li);return i===0||!!P.done[g][f[i-1]]||!!P.done[g][f[i]]}
+
+const ICON={
+ course:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+ review:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h12a2 2 0 0 1 2 2v12"/></svg>',
+ tools:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+ stories:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg>',
+ me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>'};
+
+function render(){
+ document.body.className=P.lang==='ar'?'ar':'';
+ const app=$('#app');
+ if(S.lesson){app.innerHTML=renderLesson();after();return}
+ let main='';
+ if(S.tab==='course')main=viewCourse();
+ else if(S.tab==='review')main=viewReview();
+ else if(S.tab==='stories')main=viewStories();
+ else if(S.tab==='tools')main=viewTools();
+ else main=viewMe();
+ app.innerHTML=`<div class="top"><div class="brand">Hanzi <span>&</span> Harf</div>
+ <div class="seg"><button class="${P.lang==='zh'?'on':''}" onclick="setLang('zh')"><span class="zh">中文</span></button><button class="${P.lang==='ar'?'on':''}" onclick="setLang('ar')"><span class="arf">العربية</span></button></div></div>
+ <main>${main}</main>
+ <nav class="tabs"><div>${[['course','Learn'],['stories','Stories'],['review','Review'],['tools',P.lang==='zh'?'Tools':'Alphabet'],['me','Profile']].map(([k,n])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')">${ICON[k]}${n}</button>`).join('')}</div></nav>
+ ${S.modal?`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="sheet">${S.modal}</div></div>`:''}`;
+ after();
+}
+function after(){document.querySelectorAll('[data-trace]').forEach(initTrace)}
+function setLang(g){stopRead();P.lang=g;save();S.review=null;S.tone=null;S.story=null;render()}
+function go(t){stopRead();S.tab=t;S.review=null;S.story=null;window.scrollTo(0,0);render()}
+function closeModal(){S.modal=null;render()}
+
+function goalHTML(){const t=todayXP(),g=P.set.goal;return `<div class="card goal"><div class="stat"><small>Daily goal</small><div class="chip">${Math.min(t,g)} / ${g} XP</div><div class="prog"><i style="width:${Math.min(100,t/g*100)}%"></i></div></div>
+ <div style="text-align:center"><div class="chip" style="color:var(--acc)">🔥 ${streak()}</div><small>day streak</small></div>
+ <div style="text-align:center"><div class="chip">${P.xp}</div><small>total XP</small></div></div>`}
+
+function viewCourse(){
+ const g=P.lang;let h=goalHTML();
+ COURSE[g].forEach((u,ui)=>{h+=`<section class="unit"><div class="uh"><div class="un">Unit ${ui+1}</div><h3>${u.title}</h3></div>`;
+  u.lessons.forEach((l,li)=>{const k=ui+'-'+li,d=P.done[g][k],ok=unlocked(g,ui,li);
+   const prev=l.items.slice(0,4).map(i=>i.t).join(g==='zh'?' · ':' ، ');
+   h+=`<button class="lrow ${d?'done':''} ${ok?'':'locked'}" onclick="openLesson(${ui},${li})"><span class="dot">${d?'✓':ok?(li+1):'—'}</span><span style="flex:1;min-width:0"><b>${l.title}</b><small class="${tcls(g)}" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;${g==='ar'?'text-align:left':''}">${prev}</small></span>${d?'<small class="muted">Redo</small>':''}</button>`});
+  h+='</section>'});
+ return h}
+
+/* ============ LEÇON ============ */
+function openLesson(ui,li){
+ const g=P.lang;if(!unlocked(g,ui,li)){toast('Finish the previous lesson first');return}
+ const les=COURSE[g][ui].lessons[li];
+ S.lesson={g,ui,li,les,q:buildQueue(g,les),i:0,hearts:5,first:0,mist:0,sel:null,state:'ask',built:[]};
+ if('speechSynthesis' in window)loadVoices();
+ render();autoAudio()}
+function buildQueue(g,les){
+ const items=les.items,q=[];
+ items.forEach(it=>{q.push({k:'intro',it});q.push({k:'mcq',it})});
+ const pr=[];
+ items.forEach((it,i)=>{pr.push({k:i%2?'rev':'listen',it});if(g==='zh'&&[...it.t].length===1&&toneOf(it.p))pr.push({k:'tone',it})});
+ q.push(...shuffle(pr));
+ if(items.length>=3)q.push({k:'match',items:shuffle(items.slice()).slice(0,5)});
+ les.sents.forEach(s=>{q.push({k:'build',s});q.push({k:'speak',s})});
+ const wr=items.filter(it=>g==='zh'?[...it.t].length<=2:!!it.letter);
+ shuffle(wr.slice()).slice(0,g==='zh'?2:3).forEach(it=>q.push({k:'write',it}));
+ return q}
+function optsFor(ex,key){
+ if(ex.opts)return ex.opts;const L=S.lesson;
+ const pool=shuffle(L.les.items.filter(x=>x[key]!==ex.it[key]).concat(shuffle(ALL[L.g].filter(x=>x[key]!==ex.it[key])).slice(0,6)));
+ const seen=new Set([ex.it[key]]),o=[ex.it];for(const x of pool){if(o.length>=4)break;if(!seen.has(x[key])){seen.add(x[key]);o.push(x)}}
+ return ex.opts=shuffle(o)}
+const KINDS={intro:'New word',mcq:'Meaning',rev:'Translate',listen:'Listening',tone:'Tones',match:'Match',build:'Build the sentence',speak:'Speaking',write:'Writing'};
+function playBtn(text,g,label){return `<button class="play" onclick="speak(${JSON.stringify(text).replace(/"/g,'&quot;')},'${g}')">🔊 ${label||'Listen'}</button><button class="play" onclick="speak(${JSON.stringify(text).replace(/"/g,'&quot;')},'${g}',true)">🐢 Slow</button>`}
+function renderLesson(){
+ const L=S.lesson,ex=L.q[L.i],g=L.g;
+ if(L.end)return L.end;
+ const pct=Math.round(L.i/L.q.length*100);
+ let h=`<div class="lhead"><button class="icon" onclick="quitLesson()">✕</button><div class="bar"><i style="width:${pct}%"></i></div><div class="hearts">♥ ${L.hearts}</div></div><div class="ex"><div class="kind">${KINDS[ex.k]}${ex.retry?' · retry':''}</div>`;
+ const it=ex.it,dis=L.state!=='ask'?'style="pointer-events:none"':'';
+ const cls=(val,ans)=>L.state==='ask'?(L.sel===val?'sel':''):(val===ans?'right':(L.sel===val?'wrong':''));
+ if(ex.k==='intro'){
+  h+=`<div class="big card"><div class="t ${tcls(g)}">${it.t}</div><div class="p">${it.p}</div><div class="f"><span class="mk">${it.f}</span></div><div style="margin-top:12px">${playBtn(it.say,g)}</div></div>`;
+  if(it.letter){const f=forms(it.letter);h+=`<div class="forms">${f.map(([n,v])=>`<div><div class="arf">${v||'—'}</div><small>${n}</small></div>`).join('')}</div><p class="note">Arabic letters change shape depending on their position in the word.${it.letter[4]?'':' This letter never connects to the next one.'}</p>`}
+ }
+ else if(ex.k==='mcq'){
+  const o=optsFor(ex,'f');h+=`<p class="q">What does this mean?</p><div class="big"><div class="t ${tcls(g)}">${it.t}</div>${romOn()?`<div class="p">${it.p}</div>`:''}<div style="margin-top:8px">${playBtn(it.say,g)}</div></div><div class="opts" ${dis}>${o.map((x,i)=>`<button class="opt ${cls(x.f,it.f)}" onclick="pick('${i}')">${x.f}</button>`).join('')}</div>`;
+ }
+ else if(ex.k==='rev'){
+  const o=optsFor(ex,'t');h+=`<p class="q">How do you say <span class="mk">“${it.f}”</span>?</p><div class="opts two" ${dis}>${o.map((x,i)=>`<button class="opt ${cls(x.t,it.t)}" onclick="pick('${i}')">${wordHTML(x)}</button>`).join('')}</div>`;
+ }
+ else if(ex.k==='listen'){
+  const o=optsFor(ex,'t');h+=`<p class="q">Listen and pick the right word</p><div class="big"><button class="play huge" onclick="speak(${JSON.stringify(it.say).replace(/"/g,'&quot;')},'${g}')">🔊</button><br><button class="play" onclick="speak(${JSON.stringify(it.say).replace(/"/g,'&quot;')},'${g}',true)">🐢 Slow</button></div><div class="opts two" ${dis}>${o.map((x,i)=>`<button class="opt ${cls(x.t,it.t)}" onclick="pick('${i}')"><span class="tg ${tcls(g)}">${x.t}</span>${L.state!=='ask'&&romOn()?`<small>${x.p}</small>`:''}</button>`).join('')}</div>`;
+ }
+ else if(ex.k==='tone'){
+  const ans=toneOf(it.p);h+=`<p class="q">Which tone do you hear?</p><div class="big"><div class="t zh">${it.t}</div><div style="margin-top:8px">${playBtn(it.say,g)}</div></div><div class="tones" ${dis}>${[1,2,3,4].map(n=>`<button class="opt ${cls(n,ans)}" onclick="pickTone(${n})"><b>${['','ā','á','ǎ','à'][n]}</b><small>tone ${n}</small></button>`).join('')}</div>${L.state!=='ask'?`<p class="note">${it.t} = ${it.p} (${it.f})</p>`:''}`;
+ }
+ else if(ex.k==='match'){
+  if(!ex.L){ex.L=shuffle(ex.items.slice());ex.R=shuffle(ex.items.slice());ex.done=[];ex.a=null;ex.bad=null}
+  h+=`<p class="q">Match each word with its meaning</p><div class="match"><div class="opts">${ex.L.map((x,i)=>`<button class="opt ${ex.done.includes(x.id)?'gone':''} ${ex.a===x.id?'sel':''} ${ex.bad&&ex.bad[0]===x.id?'wrong':''}" onclick="mL(${i})">${wordHTML(x)}</button>`).join('')}</div><div class="opts">${ex.R.map((x,i)=>`<button class="opt ${ex.done.includes(x.id)?'gone':''} ${ex.bad&&ex.bad[1]===x.id?'wrong':''}" style="font-size:15px" onclick="mR(${i})">${x.f}</button>`).join('')}</div></div>`;
+ }
+ else if(ex.k==='build'){
+  if(!ex.bank){const extra=shuffle(L.les.items.filter(x=>!x.t.includes(' ')&&!ex.s.tok.includes(x.t)).map(x=>x.t)).slice(0,2);ex.bank=shuffle(ex.s.tok.concat(extra))}
+  h+=`<p class="q">Translate: <span class="mk">“${ex.s.f}”</span></p><div class="ans" dir="${g==='ar'?'rtl':'ltr'}">${L.built.map((bi,j)=>`<button class="tok ${tcls(g)}" onclick="unbuild(${j})">${ex.bank[bi]}</button>`).join('')}</div><div class="bank" dir="${g==='ar'?'rtl':'ltr'}" ${dis}>${ex.bank.map((t,i)=>`<button class="tok ${tcls(g)} ${L.built.includes(i)?'used':''}" onclick="build(${i})">${t}</button>`).join('')}</div>`;
+ }
+ else if(ex.k==='speak'){
+  const txt=ex.s.tok.join(sep(g));h+=`<p class="q">Listen, then repeat the sentence aloud</p><div class="big card"><div class="t ${tcls(g)}" style="font-size:${g==='zh'?40:34}px">${txt}</div><div class="p">${ex.s.p}</div><div class="f">${ex.s.f}</div><div style="margin-top:12px">${playBtn(txt,g)}</div></div><p class="note">Repeat several times, copying the voice as closely as you can, then continue.</p>`;
+ }
+ else if(ex.k==='write'){
+  h+=`<p class="q">Trace the ${it.letter?'letter':'character'} over the model</p><div style="text-align:center"><span class="${tcls(g)}" style="font-size:26px">${it.t}</span> · <span class="muted">${it.p} — ${it.f}</span></div><div class="trace" data-trace="${esc(it.t)}" data-lang="${g}" id="tr"></div><div class="row"><button class="btn sec" onclick="$('#tr')._undo()">Undo stroke</button><button class="btn sec" onclick="$('#tr')._clear()">Clear</button></div>${g==='zh'?'<p class="note">Stroke order: top to bottom, left to right, horizontal before vertical.</p>':'<p class="note">Arabic is written from right to left.</p>'}`;
+ }
+ h+='</div>'+footHTML(ex);return h}
+function footHTML(ex){
+ const L=S.lesson,g=L.g;
+ const direct=['intro','speak','write'].includes(ex.k);
+ if(direct)return `<div class="foot"><div class="in"><button class="btn" onclick="next()">${ex.k==='speak'?'I said it':ex.k==='write'?'Done':'Continue'}</button></div></div>`;
+ if(ex.k==='match')return L.state==='ok'?`<div class="foot ok"><div class="in"><div class="fb"><b>Perfect!</b></div><button class="btn okb" onclick="next()">Continue</button></div></div>`:'';
+ if(L.state==='ask'){const can=ex.k==='build'?L.built.length>0:L.sel!==null;return `<div class="foot"><div class="in"><button class="btn" ${can?'':'disabled'} onclick="check()">Check</button></div></div>`}
+ let ans='';
+ if(ex.k==='mcq')ans=ex.it.f;else if(ex.k==='tone')ans=ex.it.p;else if(ex.k==='build')ans=`<span class="${tcls(g)}" style="font-size:20px">${ex.s.tok.join(sep(g))}</span><br><small>${ex.s.p}</small>`;else ans=`<span class="${tcls(g)}" style="font-size:20px">${ex.it.t}</span> — ${ex.it.p} · ${ex.it.f}`;
+ return `<div class="foot ${L.state}"><div class="in"><div class="fb"><b>${L.state==='ok'?'Nice!':'Not quite.'}</b><div>${L.state==='ok'&&ex.k!=='build'?ans:'Correct answer: '+ans}</div></div><button class="btn ${L.state==='ok'?'okb':''}" onclick="next()">Continue</button></div></div>`}
+function pick(i){const L=S.lesson,ex=L.q[L.i];const x=ex.opts[+i];L.sel=ex.k==='mcq'?x.f:x.t;if(ex.k!=='mcq'&&ex.k!=='listen')speak(x.say,L.g);render()}
+function pickTone(n){S.lesson.sel=n;render()}
+function build(i){const L=S.lesson;if(L.state!=='ask'||L.built.includes(i))return;L.built.push(i);const ex=L.q[L.i];speak(ex.bank[i],L.g);render()}
+function unbuild(j){const L=S.lesson;if(L.state!=='ask')return;L.built.splice(j,1);render()}
+function mL(i){const ex=S.lesson.q[S.lesson.i];ex.a=ex.L[i].id;ex.bad=null;speak(ex.L[i].say,S.lesson.g);render()}
+function mR(i){const L=S.lesson,ex=L.q[L.i];if(!ex.a)return;const r=ex.R[i];
+ if(r.id===ex.a){ex.done.push(r.id);ex.a=null;if(ex.done.length===ex.items.length){L.state='ok';L.first++}}
+ else{ex.bad=[ex.a,r.id];ex.a=null;L.mist++;setTimeout(()=>{ex.bad=null;render()},700)}
+ render()}
+function check(){
+ const L=S.lesson,ex=L.q[L.i];let ok=false;
+ if(ex.k==='mcq')ok=L.sel===ex.it.f;
+ else if(ex.k==='rev'||ex.k==='listen')ok=L.sel===ex.it.t;
+ else if(ex.k==='tone')ok=L.sel===toneOf(ex.it.p);
+ else if(ex.k==='build')ok=L.built.map(i=>ex.bank[i]).join('|')===ex.s.tok.join('|');
+ L.state=ok?'ok':'bad';
+ if(ok){if(!ex.retry)L.first++;if(ex.k==='build')speak(ex.s.tok.join(sep(L.g)),L.g);else speak(ex.it.say,L.g)}
+ else{L.hearts--;L.mist++;const c=Object.assign({},ex,{retry:true,opts:null,bank:null});L.q.push(c)}
+ render()}
+function next(){
+ const L=S.lesson;
+ if(L.hearts<=0){L.end=`<div class="result"><div style="font-size:54px">💔</div><h2>Out of hearts</h2><p class="muted">No problem — restart the lesson, it will go faster the second time.</p><div style="margin-top:24px" class="row"><button class="btn sec" onclick="quitLesson(true)">Quit</button><button class="btn" onclick="openLesson(${L.ui},${L.li})">Restart</button></div></div>`;render();return}
+ L.i++;L.sel=null;L.state='ask';L.built=[];
+ if(L.i>=L.q.length){finish();return}
+ window.scrollTo(0,0);render();autoAudio()}
+function autoAudio(){const L=S.lesson;if(!L||!P.set.auto)return;const ex=L.q[L.i];if(!ex)return;
+ if(['intro','listen','tone'].includes(ex.k))setTimeout(()=>speak(ex.it.say,L.g),250);
+ else if(ex.k==='speak')setTimeout(()=>speak(ex.s.tok.join(sep(L.g)),L.g),250)}
+function finish(){
+ const L=S.lesson,g=L.g,k=L.ui+'-'+L.li,firstTime=!P.done[g][k];
+ const xp=(firstTime?10:5)+Math.max(0,10-L.mist);
+ P.done[g][k]=true;const now=Date.now();
+ L.les.items.forEach(it=>{if(!P.srs[it.id])P.srs[it.id]={box:0,due:now+DAY,lang:g}});
+ addXP(xp);
+ const acc=Math.round(L.first/Math.max(1,L.first+L.mist)*100);
+ L.end=`<div class="result"><div style="font-size:54px">🎉</div><h2>Lesson complete!</h2><div class="xp">+${xp} XP</div>
+ <div class="stats" style="margin-top:20px"><div class="card"><b>${acc}%</b><small class="muted">accuracy</small></div><div class="card"><b>${L.les.items.length}</b><small class="muted">${L.les.letters?'letters':'words'}</small></div><div class="card"><b>🔥 ${streak()}</b><small class="muted">streak</small></div></div>
+ ${todayXP()>=P.set.goal?'<p class="muted">Daily goal reached ✓</p>':`<p class="muted">${P.set.goal-todayXP()} XP to go for today’s goal.</p>`}
+ <div style="margin-top:20px"><button class="btn" onclick="quitLesson(true)">Continue</button></div></div>`;
+ render()}
+function quitLesson(force){
+ if(!force&&!S.lesson.end){S.lesson=null;S.modal=null;render();toast('Lesson stopped');return}
+ S.lesson=null;render()}
+
+/* ============ ÉCRITURE ============ */
+function initTrace(el){
+ const ch=el.dataset.trace,g=el.dataset.lang,size=Math.min((el.clientWidth||300)-4,300),dpr=window.devicePixelRatio||1;
+ const c=document.createElement('canvas');c.width=size*dpr;c.height=size*dpr;c.style.width=c.style.height=size+'px';el.innerHTML='';el.appendChild(c);
+ const x=c.getContext('2d');x.scale(dpr,dpr);let strokes=[],cur=null;
+ function draw(){
+  x.clearRect(0,0,size,size);x.strokeStyle='#ebe5d8';x.lineWidth=1;x.setLineDash([5,5]);x.beginPath();
+  x.moveTo(size/2,0);x.lineTo(size/2,size);x.moveTo(0,size/2);x.lineTo(size,size/2);
+  if(g==='zh'){x.moveTo(0,0);x.lineTo(size,size);x.moveTo(size,0);x.lineTo(0,size)}x.stroke();x.setLineDash([]);
+  const n=[...ch].length,fs=g==='zh'?size*0.8/n:size*0.55;
+  x.fillStyle='#ddd6c8';x.textAlign='center';x.textBaseline='middle';
+  x.font=g==='zh'?`${fs}px "Noto Sans SC",sans-serif`:`${fs}px "Noto Naskh Arabic",serif`;
+  x.fillText(ch,size/2,g==='zh'?size/2+fs*0.03:size*0.42);
+  x.strokeStyle='#1d1f23';x.lineWidth=Math.max(6,size/26/(g==='zh'?Math.max(1,n*0.75):1));x.lineCap='round';x.lineJoin='round';
+  strokes.forEach(s=>{x.beginPath();s.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));if(s.length===1)x.lineTo(s[0][0]+.1,s[0][1]);x.stroke()})}
+ const pos=e=>{const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+ c.addEventListener('pointerdown',e=>{e.preventDefault();try{c.setPointerCapture(e.pointerId)}catch(_){}cur=[pos(e)];strokes.push(cur);draw()});
+ c.addEventListener('pointermove',e=>{if(!cur)return;e.preventDefault();cur.push(pos(e));draw()});
+ ['pointerup','pointercancel','pointerleave'].forEach(t=>c.addEventListener(t,()=>cur=null));
+ el._clear=()=>{strokes=[];draw()};el._undo=()=>{strokes.pop();draw()};
+ draw();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw)}
+function forms(a){const l=a[0],T='ـ';return [['Isolated',l],['Initial',a[4]?l+T:null],['Medial',a[4]?T+l+T:null],['Final',T+l]]}
+
+/* ============ RÉVISION ============ */
+function viewReview(){
+ const g=P.lang,now=Date.now();
+ const mine=Object.entries(P.srs).filter(([id,v])=>v.lang===g);
+ const due=mine.filter(([id,v])=>v.due<=now);
+ const R=S.review;
+ if(R&&R.list.length){
+  if(R.i>=R.list.length){return `<div class="result"><div style="font-size:48px">✅</div><h2>Review complete</h2><p class="muted">${R.known} of ${R.seen} known first time · +${R.xp} XP</p><div style="margin-top:20px"><button class="btn" onclick="S.review=null;render()">Back</button></div></div>`}
+  const it=findItem(R.list[R.i]);
+  return `<div class="muted" style="text-align:center;margin-bottom:8px">Card ${R.i+1} / ${R.list.length}</div>
+  <div class="card fc"><div class="t ${tcls(g)}" style="font-size:${g==='zh'?60:46}px">${it.t}</div><div style="margin:8px 0">${playBtn(it.say,g)}</div>
+  ${R.shown?`<div style="font-size:18px;color:var(--mute)">${it.p}</div><div style="font-size:20px;font-weight:600;margin-top:6px">${it.f}</div>`:''}</div>
+  <div style="margin-top:14px">${R.shown?`<div class="row"><button class="btn sec" onclick="rate(0)">Again</button><button class="btn okb" onclick="rate(1)">I knew it</button></div>`:`<button class="btn" onclick="S.review.shown=true;render()">Show answer</button>`}</div>`}
+ const next=mine.filter(([id,v])=>v.due>now).sort((a,b)=>a[1].due-b[1].due)[0];
+ return `<h2>Spaced review</h2><div class="card"><div class="chip" style="font-size:30px">${due.length}</div><div class="muted">word(s) due now · ${mine.length} learned in total</div>
+ <p class="muted" style="margin-top:10px">Each card comes back after 1, 2, 4, 8, 16 and 32 days if you know it. If you forget it, it starts again.</p>
+ ${due.length?`<button class="btn" onclick="startReview(false)">Start (${Math.min(20,due.length)})</button>`:mine.length?`<p class="muted">Next review: ${new Date(next[1].due).toLocaleDateString('en-GB',{weekday:'long',hour:'2-digit',minute:'2-digit'})}</p><button class="btn sec" onclick="startReview(true)">Review anyway</button>`:'<p class="muted">Finish a lesson to add words here.</p>'}</div>`}
+function startReview(any){const g=P.lang,now=Date.now();let ids=Object.entries(P.srs).filter(([id,v])=>v.lang===g&&(any||v.due<=now)).map(([id])=>id).filter(id=>findItem(id));
+ ids=shuffle(ids).slice(0,any?10:20);S.review={list:ids,i:0,shown:false,known:0,seen:ids.length,xp:0,again:{}};render();if(P.set.auto){const it=findItem(ids[0]);if(it)speak(it.say,g)}}
+function rate(k){const R=S.review,id=R.list[R.i],v=P.srs[id],now=Date.now();
+ if(k){if(!R.again[id])R.known++;v.box=Math.min(v.box+1,5);v.due=now+INT[v.box]*DAY;R.xp+=1}
+ else{v.box=0;v.due=now+10*60e3;if(!R.again[id]){R.again[id]=1;R.list.push(id)}}
+ R.i++;R.shown=false;if(R.i>=R.list.length&&R.xp)addXP(R.xp);save();render();
+ if(R.i<R.list.length&&P.set.auto){const it=findItem(R.list[R.i]);if(it)speak(it.say,P.lang)}}
+
+/* ============ OUTILS ============ */
+function viewTools(){
+ const g=P.lang;let h='';
+ if(g==='zh'){
+  const T=S.tone;
+  h+=`<h2>Tone trainer</h2><div class="card">`;
+  if(!T){h+=`<p class="muted" style="margin-top:0">Hearing tones quickly is the key to understanding speech. Train your ear with random syllables.</p><button class="btn" onclick="toneNew(true)">Start 10 questions</button>`}
+  else if(T.n>=10){h+=`<div style="text-align:center"><div class="chip" style="font-size:30px">${T.score} / 10</div><p class="muted">tones recognised</p></div><button class="btn" onclick="toneNew(true)">Restart</button>`}
+  else{const ans=toneOf(T.it.p);h+=`<div class="muted">Question ${T.n+1} / 10 · score ${T.score}</div><div class="big" style="padding:10px"><button class="play huge" onclick="speak('${T.it.say}','zh')">🔊</button>${T.sel?`<div class="t zh" style="font-size:40px">${T.it.t}</div><div class="p">${T.it.p}</div>`:''}</div>
+   <div class="tones">${[1,2,3,4].map(n=>`<button class="opt ${T.sel?(n===ans?'right':(T.sel===n?'wrong':'')):''}" onclick="toneAns(${n})"><b>${['','ā','á','ǎ','à'][n]}</b><small>tone ${n}</small></button>`).join('')}</div>
+   ${T.sel?`<div style="margin-top:12px"><button class="btn" onclick="toneNew()">Next</button></div>`:''}`}
+  h+=`</div><div class="sectitle">The 4 tones</div><div class="card">${[['妈','mā','Tone 1: high and level','mother'],['麻','má','Tone 2: rising','hemp'],['马','mǎ','Tone 3: dips then rises','horse'],['骂','mà','Tone 4: sharp fall','to scold']].map(r=>`<div class="drow" onclick="speak('${r[0]}','zh')" style="cursor:pointer"><div class="w zh">${r[0]}</div><div class="m"><b>${r[1]}</b> · ${r[3]}<small>${r[2]}</small></div><span class="play">🔊</span></div>`).join('')}</div>`;
+  h+=`<div class="sectitle">Writing practice</div><div class="card"><p class="muted" style="margin-top:0">Tap a character to practise writing it.</p><div class="grid">${ALL.zh.filter(x=>[...x.t].length===1).map(x=>`<button class="lt" onclick="writeModal('${x.id}')"><div class="zh" style="font-size:28px">${x.t}</div><small>${x.p}</small></button>`).join('')}</div></div>`;
+ } else {
+  h+=`<h2>Arabic alphabet</h2><p class="muted" style="margin-top:-6px">A quick refresher: tap a letter to hear it, see its 4 forms and trace it.</p><div class="grid" dir="rtl">${LETTERS.map(a=>`<button class="lt" onclick="letterModal('${a[0]}')"><div class="arf">${a[0]}</div><small>${a[1]}</small></button>`).join('')}</div>
+  <div class="sectitle">Short vowels (harakāt)</div><div class="card">${[['بَ','fatḥa','a'],['بِ','kasra','i'],['بُ','ḍamma','u'],['بْ','sukūn','no vowel'],['بّ','shadda','doubled consonant'],['بٌ','tanwīn','-un / -an / -in']].map(r=>`<div class="drow" onclick="speak('${r[0]}','ar')" style="cursor:pointer"><div class="w arf" style="font-size:30px">${r[0]}</div><div class="m"><b>${r[1]}</b><small>${r[2]}</small></div><span class="play">🔊</span></div>`).join('')}</div>`;
+ }
+ h+=`<div class="sectitle">Course dictionary</div><div class="dict"><input placeholder="Search (English, ${g==='zh'?'pinyin, characters':'transliteration, Arabic'})" value="${esc(S.q)}" oninput="S.q=this.value;dictUpdate()"><div id="dict">${dictRows()}</div></div>`;
+ return h}
+function dictRows(){const g=P.lang,q=S.q.trim().toLowerCase();const strip=s=>s.normalize('NFD').replace(/[̀-ًͯ-ْ]/g,'').toLowerCase();
+ const list=ALL[g].filter(x=>!q||strip(x.f+' '+x.p+' '+x.t).includes(strip(q)));
+ return list.map(x=>`<div class="drow" onclick="speak(${JSON.stringify(x.say).replace(/"/g,'&quot;')},'${g}')" style="cursor:pointer"><div class="w ${tcls(g)}">${x.t}</div><div class="m">${x.f}<small>${x.p}</small></div><span class="play">🔊</span></div>`).join('')||'<p class="muted">No results.</p>'}
+function dictUpdate(){const d=$('#dict');if(d)d.innerHTML=dictRows()}
+function toneNew(reset){const pool=ALL.zh.filter(x=>[...x.t].length===1&&toneOf(x.p)).concat(TONE_EXTRA);const T=reset||!S.tone?{n:0,score:0}:S.tone;if(!reset)T.n++;T.it=pool[Math.floor(Math.random()*pool.length)];T.sel=null;S.tone=T;render();if(T.n<10)setTimeout(()=>speak(T.it.say,'zh'),200)}
+function toneAns(n){const T=S.tone;if(T.sel)return;T.sel=n;if(n===toneOf(T.it.p))T.score++;if(T.n===9)addXP(T.score);render()}
+function letterModal(l){const a=LETTERS.find(x=>x[0]===l);speak(a[3],'ar');
+ S.modal=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${a[1]} <span class="arf">${a[0]}</span></h2><button class="icon" onclick="closeModal()">✕</button></div>
+ <p class="muted">Sound: ${a[2]}</p>${playBtn(a[3],'ar','Letter name')}
+ <div class="forms">${forms(a).map(([n,v])=>`<div><div class="arf">${v||'—'}</div><small>${n}</small></div>`).join('')}</div>
+ ${a[4]?'':'<p class="note" style="margin-top:-4px">Non-connecting letter: it never joins the next letter.</p>'}
+ <div class="trace" data-trace="${a[0]}" data-lang="ar" id="tr"></div><div class="row"><button class="btn sec" onclick="$('#tr')._undo()">Undo stroke</button><button class="btn sec" onclick="$('#tr')._clear()">Clear</button></div>`;render()}
+function writeModal(id){const x=ALL.zh.find(i=>i.id===id);speak(x.say,'zh');
+ S.modal=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0"><span class="zh">${x.t}</span> ${x.p}</h2><button class="icon" onclick="closeModal()">✕</button></div><p class="muted">${x.f}</p>${playBtn(x.say,'zh')}
+ <div class="trace" data-trace="${x.t}" data-lang="zh" id="tr"></div><div class="row"><button class="btn sec" onclick="$('#tr')._undo()">Undo stroke</button><button class="btn sec" onclick="$('#tr')._clear()">Clear</button></div>`;render()}
+
+/* ============ HISTOIRES ============ */
+function findItem(id){const g=id.split(':')[0];return (ALL[g]||[]).find(x=>x.id===id)||(P.custom[id]?Object.assign({id},P.custom[id]):null)}
+const curStory=()=>STORIES[P.lang].find(x=>x.id===S.story.id);
+const sentText=(se,g)=>se.toks.filter(t=>!t.punct).map(t=>t.t).join(sep(g));
+function viewStories(){
+ const g=P.lang;
+ if(S.story)return storyReader();
+ return `<h2>Stories</h2><p class="muted" style="margin-top:-6px">Tap any word to see its meaning, hear it and add it to your reviews.</p>`+
+ STORIES[g].map(st=>`<button class="scard" onclick="openStory('${st.id}')"><span class="em">${st.emoji}</span><span style="flex:1"><b>${st.title}</b><small class="${tcls(g)}" style="display:block;font-size:16px">${st.tt}</small><small>${st.level} · ${st.sents.length} sentences</small></span>${P.stories[st.id]?'<span style="color:var(--ok);font-weight:700">✓</span>':''}</button>`).join('')}
+function openStory(id){S.story={id,tr:{},allTr:false,ans:{},playing:-1};window.scrollTo(0,0);render()}
+function storyReader(){
+ const g=P.lang,st=curStory(),R=S.story;
+ let h=`<div style="display:flex;align-items:center;gap:8px;margin:4px 0 6px"><button class="icon" onclick="stopRead();S.story=null;render()">←</button><div><b>${st.title}</b><div class="${tcls(g)} muted" style="font-size:16px">${st.tt}</div></div></div>
+ <div class="ctrl">${R.playing>=0?`<button class="on" onclick="stopRead()">■ Stop</button>`:`<button class="on" onclick="readAll()">▶ Play all</button>`}
+ <button class="${romOn()?'on':''}" onclick="P.set.rom=!P.set.rom;save();render()">${g==='zh'?'Pinyin':'Transliteration'}</button>
+ <button class="${R.allTr?'on':''}" onclick="S.story.allTr=!S.story.allTr;render()">Translations</button>
+ <button class="${P.set.slow?'on':''}" onclick="P.set.slow=!P.set.slow;save();render()">🐢 Slow</button></div>
+ <div dir="${g==='ar'?'rtl':'ltr'}">`;
+ st.sents.forEach((se,si)=>{
+  h+=`<div class="sent ${R.playing===si?'now':''}" id="sn${si}"><div class="stoks">${se.toks.map((t,ti)=>t.punct?`<span class="pn ${tcls(g)}">${t.t}</span>`:`<button class="wd" onclick="wordPop(${si},${ti})"><span class="wt ${tcls(g)}">${t.t}</span>${romOn()?`<span class="wp" dir="ltr">${t.p}</span>`:''}</button>`).join('')}</div>
+  <div class="srow" dir="ltr"><button onclick="stopRead();speak(${JSON.stringify(sentText(se,g)).replace(/"/g,'&quot;')},'${g}')">🔊</button><button onclick="S.story.tr[${si}]=!S.story.tr[${si}];render()">${(R.tr[si]||R.allTr)?'Hide':'Translate'}</button></div>
+  ${(R.tr[si]||R.allTr)?`<div class="tr" dir="ltr">${se.tr}</div>`:''}</div>`});
+ h+=`</div><div class="sectitle">Did you understand?</div>`;
+ st.q.forEach((q,qi)=>{const a=R.ans[qi];h+=`<div class="card" style="margin-bottom:10px"><b>${qi+1}. ${q.q}</b><div class="opts" style="margin-top:10px">${q.o.map((o,oi)=>`<button class="opt ${a===undefined?'':(oi===q.a?'right':(a===oi?'wrong':''))}" ${a!==undefined?'style="pointer-events:none"':''} onclick="S.story.ans[${qi}]=${oi};render()">${o}</button>`).join('')}</div></div>`});
+ const nAns=Object.keys(R.ans).length;
+ if(nAns===st.q.length){const good=st.q.filter((q,i)=>R.ans[i]===q.a).length;
+  h+=`<div class="card" style="text-align:center;margin-bottom:10px"><div class="chip" style="font-size:26px">${good} / ${st.q.length}</div><p class="muted">${good===st.q.length?'Perfect, you understood everything!':'Read it again and tap the words you don’t know.'}</p>${P.stories[st.id]?'<p class="muted">Story already completed ✓</p>':`<button class="btn" onclick="finishStory()">Finish story (+15 XP)</button>`}</div>`}
+ return h}
+function wordPop(si,ti){
+ stopRead();const g=P.lang,st=curStory(),se=st.sents[si],t=se.toks[ti],id=g+':'+t.t,inSrs=!!P.srs[id];
+ speak(t.t,g);
+ S.modal=`<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="${tcls(g)}" style="font-size:44px;line-height:1.4">${t.t}</div><div class="muted" style="font-size:17px">${t.p}</div></div><button class="icon" onclick="closeModal()">✕</button></div>
+ <div style="font-size:20px;font-weight:600;margin:10px 0"><span class="mk">${t.g}</span></div>
+ ${playBtn(t.t,g)}
+ <div class="card" style="margin:14px 0;background:var(--bg)"><small class="muted">In the sentence</small><div class="${tcls(g)}" style="font-size:20px;margin-top:4px">${sentText(se,g)}</div><div class="muted" style="margin-top:4px">${se.tr}</div></div>
+ <button class="btn ${inSrs?'sec':''}" ${inSrs?'disabled':''} onclick="addWord(${si},${ti})">${inSrs?'Already in your reviews ✓':'+ Add to my reviews'}</button>`;
+ render()}
+function addWord(si,ti){const g=P.lang,t=curStory().sents[si].toks[ti],id=g+':'+t.t;
+ if(!findItem(id))P.custom[id]={t:t.t,p:t.p,f:t.g,say:t.t,lang:g};
+ if(!P.srs[id])P.srs[id]={box:0,due:Date.now(),lang:g};save();toast('Added to your reviews');wordPop(si,ti)}
+let readTok=0;
+function readAll(){const g=P.lang,st=curStory(),tok=++readTok;let i=0;
+ const mark=()=>{document.querySelectorAll('.sent').forEach((el,k)=>el.classList.toggle('now',k===S.story.playing))};
+ const step=()=>{if(tok!==readTok||!S.story)return;if(i>=st.sents.length){S.story.playing=-1;render();return}
+  S.story.playing=i;mark();const el=document.getElementById('sn'+i);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+  speak(sentText(st.sents[i],g),g,false,()=>{if(tok!==readTok)return;i++;setTimeout(step,350)})};
+ S.story.playing=0;render();step()}
+function stopRead(){readTok++;try{speechSynthesis.cancel()}catch(e){}if(S.story&&S.story.playing>=0){S.story.playing=-1;if(!S.modal)render()}}
+function finishStory(){const st=curStory();if(!P.stories[st.id]){P.stories[st.id]=true;addXP(15);toast('+15 XP')}render()}
+
+/* ============ PROFIL ============ */
+function viewMe(){
+ const done=g=>Object.keys(P.done[g]).length,tot=g=>flat(g).length,words=g=>Object.values(P.srs).filter(v=>v.lang===g).length;
+ const vz=voiceFor('zh'),va=voiceFor('ar');
+ const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return[d.toLocaleDateString('en-GB',{weekday:'narrow'}),P.days[dayKey(d)]||0]});
+ const mx=Math.max(P.set.goal,...days.map(d=>d[1]));
+ const sw=(k,l,s)=>`<div class="set"><div>${l}${s?`<br><small class="muted">${s}</small>`:''}</div><button class="sw ${P.set[k]?'on':''}" onclick="P.set.${k}=!P.set.${k};save();render()" aria-label="${l}"></button></div>`;
+ return `<h2>My progress</h2><div class="stats"><div class="card"><b>🔥 ${streak()}</b><small class="muted">day streak</small></div><div class="card"><b>${P.xp}</b><small class="muted">XP total</small></div><div class="card"><b>${words('zh')+words('ar')}</b><small class="muted">words learned</small></div></div>
+ <div class="card" style="margin-bottom:14px"><small class="muted">Last 7 days (XP)</small><div style="display:flex;align-items:flex-end;gap:8px;height:90px;margin-top:10px">${days.map(([n,v])=>`<div style="flex:1;text-align:center"><div style="height:${Math.round(v/mx*70)}px;min-height:3px;background:${v>=P.set.goal?'var(--ok)':'var(--acc)'};border-radius:4px"></div><small class="muted">${n}</small></div>`).join('')}</div></div>
+ <div class="card" style="margin-bottom:14px"><div class="set"><div><span class="zh">中文</span> Chinese</div><div class="muted">${done('zh')} / ${tot('zh')} lessons</div></div><div class="set"><div><span class="arf">العربية</span> Arabic</div><div class="muted">${done('ar')} / ${tot('ar')} lessons</div></div></div>
+ <div class="sectitle">Settings</div><div class="card">
+ ${sw('rom','Show pinyin / transliteration','Turn off to practise reading without help')}
+ ${sw('auto','Autoplay audio')}
+ ${sw('slow','Slow voice by default')}
+ <div class="set"><div>Daily goal</div><div class="seg">${[20,30,50].map(n=>`<button class="${P.set.goal===n?'on':''}" onclick="P.set.goal=${n};save();render()">${n}</button>`).join('')}</div></div></div>
+ <div class="sectitle">Audio</div><div class="card"><div class="set"><div>Chinese voice<br><small class="muted">${vz?vz.name:'No voice found'}</small></div><button class="play" onclick="speak('你好，欢迎！','zh')">Test</button></div><div class="set"><div>Arabic voice<br><small class="muted">${va?va.name:'No voice found'}</small></div><button class="play" onclick="speak('مرحبا بك','ar')">Test</button></div>
+ ${(!vz||!va)?'<p class="note">A voice is missing. See “Fix audio” below.</p>':''}</div>
+ <div class="sectitle">Install & audio<</div><div class="card" style="margin-bottom:14px">${installHTML()}<div class="set"><div>Fix audio<br><small class="muted">If you hear nothing</small></div><button class="play" onclick="S.modal=audioHelp();render()">Help</button></div></div><div class="sectitle">Data</div><div class="card"><p class="muted" style="margin-top:0">Your progress is saved on this phone only.</p><button class="btn sec" onclick="askReset()">Reset my progress</button></div>`}
+function askReset(){S.modal=`<h2>Erase everything?</h2><p class="muted">XP, streak, completed lessons and review cards will be deleted for both languages.</p><div class="row"><button class="btn sec" onclick="closeModal()">Cancel</button><button class="btn" onclick="doReset()">Clear</button></div>`;render()}
+function doReset(){const l=P.lang;P=JSON.parse(JSON.stringify(DEF));P.lang=l;save();S.modal=null;render();toast('Progress reset')}
+
+render();
+setTimeout(()=>{loadVoices();if(S.tab==='me')render()},800);
+
+/* ============ INSTALL (PWA) ============ */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(S.tab==='me')render()});
+const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone}catch(e){return false}};
+function installHTML(){
+ if(standalone())return '<div class="set"><div>App installed ✓</div></div>';
+ if(deferredPrompt)return '<div class="set"><div>Install the app<br><small class="muted">Icon on your home screen, works offline</small></div><button class="play" onclick="doInstall()">Install</button></div>';
+ return '<div class="set"><div>Install the app<br><small class="muted">In Chrome: menu ⋮ › “Install app” or “Add to Home screen”</small></div></div>'}
+function doInstall(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;render()})}
+try{if('serviceWorker' in navigator&&location.protocol==='https:'&&window.top===window.self){navigator.serviceWorker.register('sw.js').catch(()=>{})}}catch(e){}
+</script>
+</body>
+</html>
