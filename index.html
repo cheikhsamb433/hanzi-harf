@@ -159,6 +159,7 @@ h2{font-size:20px;margin:6px 0 12px}
 <body>
 <div id="app" translate="no" class="notranslate"></div>
 <script src="data.js"></script>
+<script src="grammar.js"></script>
 <script>
 Object.values(STORIES).forEach(list=>list.forEach(st=>{st.sents=st.s.map(line=>{const[a,tr]=line.split('||');return{tr,toks:a.split('|').map(x=>{const[t,p,g]=x.split('~');return p===undefined?{t,punct:true}:{t,p,g}})}})}));
 function prep(lang,units){
@@ -173,11 +174,11 @@ const TONE_EXTRA=[['妈','mā'],['麻','má'],['马','mǎ'],['骂','mà'],['诗'
 
 /* ============ ÉTAT ============ */
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const DEF={lang:'zh',xp:0,days:{},streak:0,last:null,done:{zh:{},ar:{}},srs:{},stories:{},custom:{},set:{rom:true,auto:true,slow:false,goal:30}};
+const DEF={lang:'zh',xp:0,days:{},streak:0,last:null,done:{zh:{},ar:{}},srs:{},stories:{},custom:{},gram:{},set:{rom:true,auto:true,slow:false,goal:30}};
 let P=Object.assign(JSON.parse(JSON.stringify(DEF)),store.get('hh_v2',{}));
-P.set=Object.assign({},DEF.set,P.set);P.stories=P.stories||{};P.custom=P.custom||{};P.done=Object.assign({zh:{},ar:{}},P.done);
+P.set=Object.assign({},DEF.set,P.set);P.stories=P.stories||{};P.gram=P.gram||{};P.custom=P.custom||{};P.done=Object.assign({zh:{},ar:{}},P.done);
 const save=()=>store.set('hh_v2',P);
-let S={story:null,tab:'course',lesson:null,modal:null,review:null,tone:null,q:''};
+let S={learn:'lessons',gram:null,gans:{},vb:0,vt:'past',vq:null,story:null,tab:'course',lesson:null,modal:null,review:null,tone:null,q:''};
 
 /* ============ OUTILS ============ */
 const $=s=>document.querySelector(s);
@@ -238,7 +239,7 @@ function render(){
  after();
 }
 function after(){document.querySelectorAll('[data-trace]').forEach(initTrace)}
-function setLang(g){stopRead();P.lang=g;save();S.review=null;S.tone=null;S.story=null;render()}
+function setLang(g){stopRead();S.gram=null;S.vq=null;if(g==='zh'&&S.learn==='verbs')S.learn='grammar';P.lang=g;save();S.review=null;S.tone=null;S.story=null;render()}
 function go(t){stopRead();S.tab=t;S.review=null;S.story=null;window.scrollTo(0,0);render()}
 function closeModal(){S.modal=null;render()}
 
@@ -246,8 +247,11 @@ function goalHTML(){const t=todayXP(),g=P.set.goal;return `<div class="card goal
  <div style="text-align:center"><div class="chip" style="color:var(--acc)">🔥 ${streak()}</div><small>day streak</small></div>
  <div style="text-align:center"><div class="chip">${P.xp}</div><small>total XP</small></div></div>`}
 
+function learnSeg(){const g=P.lang,v=S.learn||'lessons';const items=[['lessons','Lessons'],['grammar','Grammar']].concat(g==='ar'?[['verbs','Verbs']]:[]);
+ return `<div class="seg" style="margin-bottom:14px;width:100%">${items.map(([k,n])=>`<button style="flex:1" class="${v===k?'on':''}" onclick="S.learn='${k}';S.gram=null;S.vq=null;render()">${n}</button>`).join('')}</div>`}
 function viewCourse(){
- const g=P.lang;let h=goalHTML();
+ const v=S.learn||'lessons';if(v==='grammar')return learnSeg()+viewGrammar();if(v==='verbs'&&P.lang==='ar')return learnSeg()+viewVerbs();
+ const g=P.lang;let h=learnSeg()+goalHTML();
  COURSE[g].forEach((u,ui)=>{h+=`<section class="unit"><div class="uh"><div class="un">Unit ${ui+1}</div><h3>${u.title}</h3></div>`;
   u.lessons.forEach((l,li)=>{const k=ui+'-'+li,d=P.done[g][k],ok=unlocked(g,ui,li);
    const prev=l.items.slice(0,4).map(i=>i.t).join(g==='zh'?' · ':' ، ');
@@ -527,6 +531,90 @@ function doReset(){const l=P.lang;P=JSON.parse(JSON.stringify(DEF));P.lang=l;sav
 
 render();
 setTimeout(()=>{loadVoices();if(S.tab==='me')render()},800);
+
+
+/* ============ ARABIC CONJUGATION ============ */
+const RAD={'ب':'b','ت':'t','ث':'th','ج':'j','ح':'ḥ','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh','ص':'ṣ','ض':'ḍ','ط':'ṭ','ظ':'ẓ','ع':'ʿ','غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y'};
+const VM={a:'َ',i:'ِ',u:'ُ'},SK='ْ';
+const PRON=[['هُوَ','huwa','he'],['هُمَا','humā','they two (m)'],['هُمْ','hum','they (m)'],['هِيَ','hiya','she'],['هُمَا','humā','they two (f)'],['هُنَّ','hunna','they (f)'],['أَنْتَ','anta','you (m)'],['أَنْتُمَا','antumā','you two'],['أَنْتُمْ','antum','you (m pl)'],['أَنْتِ','anti','you (f)'],['أَنْتُنَّ','antunna','you (f pl)'],['أَنَا','anā','I'],['نَحْنُ','naḥnu','we']];
+const PAST_SUF=[['َ','a'],['َا','ā'],['ُوا','ū'],['َتْ','at'],['َتَا','atā'],['ْنَ','na'],['ْتَ','ta'],['ْتُمَا','tumā'],['ْتُمْ','tum'],['ْتِ','ti'],['ْتُنَّ','tunna'],['ْتُ','tu'],['ْنَا','nā']];
+const PRE=[['يَ','ya'],['يَ','ya'],['يَ','ya'],['تَ','ta'],['تَ','ta'],['يَ','ya'],['تَ','ta'],['تَ','ta'],['تَ','ta'],['تَ','ta'],['تَ','ta'],['أَ','a'],['نَ','na']];
+const ECL=['u','ani','una','u','ani','na','u','ani','una','ina','na','u','u'];
+const END={ind:{u:['ُ','u'],ani:['َانِ','āni'],una:['ُونَ','ūna'],ina:['ِينَ','īna'],na:['ْنَ','na']},
+ sub:{u:['َ','a'],ani:['َا','ā'],una:['ُوا','ū'],ina:['ِي','ī'],na:['ْنَ','na']},
+ jus:{u:['ْ',''],ani:['َا','ā'],una:['ُوا','ū'],ina:['ِي','ī'],na:['ْنَ','na']}};
+const TENSES=[['past','Past','الْمَاضِي'],['pres','Present','الْمُضَارِعُ'],['fut','Future','الْمُسْتَقْبَلُ'],['neg','Not (now)','لَا'],['lam','Did not','لَمْ'],['lan','Will not','لَنْ'],['imp','Imperative','الْأَمْرُ'],['proh','Don’t!','لَا النَّاهِيَةُ']];
+function conj(v,t){
+ const [root,pv,iv]=v,c=[...root],l=c.map(x=>RAD[x]||x);
+ const pres=(mood,i)=>{const e=END[mood][ECL[i]];return[PRE[i][0]+c[0]+SK+c[1]+VM[iv]+c[2]+e[0],PRE[i][1]+l[0]+l[1]+iv+l[2]+e[1]]};
+ const rows=[];
+ PRON.forEach((p,i)=>{let f=null;
+  if(t==='past'){const s=PAST_SUF[i];f=[c[0]+VM.a+c[1]+VM[pv]+c[2]+s[0],l[0]+'a'+l[1]+pv+l[2]+s[1]]}
+  else if(t==='pres')f=pres('ind',i);
+  else if(t==='fut'){const x=pres('ind',i);f=['سَ'+x[0],'sa-'+x[1]]}
+  else if(t==='neg'){const x=pres('ind',i);f=['لَا '+x[0],'lā '+x[1]]}
+  else if(t==='lam'){const x=pres('jus',i);f=['لَمْ '+x[0],'lam '+x[1]]}
+  else if(t==='lan'){const x=pres('sub',i);f=['لَنْ '+x[0],'lan '+x[1]]}
+  else if(t==='imp'||t==='proh'){if(i<6||i>10)return;const e=END.jus[ECL[i]];
+   if(t==='imp'){const h=iv==='u'?['اُ','u']:['اِ','i'];f=[h[0]+c[0]+SK+c[1]+VM[iv]+c[2]+e[0],h[1]+l[0]+l[1]+iv+l[2]+e[1]]}
+   else{const x=pres('jus',i);f=['لَا '+x[0],'lā '+x[1]]}}
+  rows.push({i,p,ar:f[0],tr:f[1]})});
+ return rows}
+function verbHead(v){const r=conj(v,'past')[0],p=conj(v,'pres')[0];return `${r.ar} / ${p.ar}`}
+function conjTable(v,t){const rows=conj(v,t);
+ return `<div class="card" style="padding:6px 12px">${rows.map(r=>`<div class="drow" style="cursor:pointer" onclick="speak(${JSON.stringify(r.ar).replace(/"/g,'&quot;')},'ar')"><div class="m" style="flex:0 0 38%"><span class="arf" style="font-size:17px">${r.p[0]}</span><small>${r.p[2]}</small></div><div class="m" style="text-align:right"><span class="arf" style="font-size:24px">${r.ar}</span><small>${r.tr}</small></div></div>`).join('')}</div>`}
+
+/* ============ GRAMMAR VIEWS ============ */
+const isAr=s=>/[؀-ۿ]/.test(s),isZh=s=>/[一-鿿]/.test(s);
+const cellCls=s=>isAr(s)?'arf':isZh(s)?'zh':'';
+function sayBtnAttr(t,g){return `onclick="speak(${JSON.stringify(t).replace(/"/g,'&quot;')},'${g}')" style="cursor:pointer"`}
+function viewGrammar(){
+ const g=P.lang,L=GRAMMAR[g];
+ if(S.gram)return grammarLesson(L.find(x=>x.id===S.gram));
+ const n=L.filter(x=>P.gram[x.id]).length;
+ return `<div class="muted" style="margin:-4px 0 12px">${n} / ${L.length} grammar lessons completed. Each lesson: explanation, examples with audio, then exercises.</div>`+
+ L.map((x,i)=>`<button class="lrow ${P.gram[x.id]?'done':''}" onclick="S.gram='${x.id}';S.gans={};window.scrollTo(0,0);render()"><span class="dot">${P.gram[x.id]?'✓':i+1}</span><span style="flex:1;min-width:0"><b>${x.title}</b><small class="${tcls(g)}" style="display:block;font-size:15px">${x.tt}</small></span></button>`).join('')}
+function grammarLesson(x){
+ const g=P.lang;let h=`<div style="display:flex;align-items:center;gap:8px;margin:0 0 8px"><button class="icon" onclick="S.gram=null;render()">←</button><div><b style="font-size:18px">${x.title}</b><div class="${tcls(g)} muted" style="font-size:17px">${x.tt}</div></div></div>`;
+ x.blocks.forEach(b=>{
+  if(b.p)h+=`<p style="line-height:1.55">${b.p}</p>`;
+  if(b.key)h+=`<div class="card" style="border-left:4px solid var(--acc);margin:12px 0"><small class="muted">Must remember</small><div style="margin-top:4px"><span class="mk">${b.key}</span></div></div>`;
+  if(b.ex)h+=`<div class="card" style="padding:4px 12px;margin:12px 0">${b.ex.map(e=>`<div class="drow" ${sayBtnAttr(e[0].replace(/[←→]/g,' '),g)}><div class="m"><div class="${tcls(g)}" style="font-size:${g==='ar'?22:21}px;${g==='ar'?'text-align:right':''}">${e[0]}</div><small>${e[1]}</small><div style="font-size:14px">${e[2]}</div></div><span class="play">🔊</span></div>`).join('')}</div>`;
+  if(b.table)h+=`<div class="card" style="padding:8px;margin:12px 0;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px"><tr>${b.table.head.map(c=>`<th style="text-align:left;color:var(--mute);font-weight:600;padding:6px;border-bottom:1px solid var(--line)">${c}</th>`).join('')}</tr>${b.table.rows.map(r=>`<tr ${isAr(r[1])||isZh(r[1])?sayBtnAttr(r[1],g):''}>${r.map(c=>`<td class="${cellCls(c)}" style="padding:6px;border-bottom:1px solid var(--line);${isAr(c)?'font-size:19px':''}">${c}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  if(b.conj){const v=VERBS.find(z=>z[0]===b.conj[0]);h+=`<div class="sectitle">${verbHead(v)} — ${v[3]}</div>`+conjTable(v,b.conj[1])+`<button class="btn sec" style="margin-top:10px" onclick="S.learn='verbs';S.vt='${b.conj[1]}';S.gram=null;render()">Open the conjugator (20 verbs)</button>`}
+ });
+ h+=`<div class="sectitle">Exercises</div>`;
+ x.q.forEach((q,qi)=>{const a=S.gans[qi];h+=`<div class="card" style="margin-bottom:10px"><b>${qi+1}. ${q.q}</b><div class="opts" style="margin-top:10px">${q.o.map((o,oi)=>`<button class="opt ${a===undefined?'':(oi===q.a?'right':(a===oi?'wrong':''))}" ${a!==undefined?'style="pointer-events:none"':''} onclick="gAns(${qi},${oi})"><span class="${cellCls(o)}" style="${isAr(o)||isZh(o)?'font-size:21px':''}">${o}</span></button>`).join('')}</div>${a!==undefined?`<p class="muted" style="margin:10px 0 0">${a===q.a?'✓ ':'✗ '}${q.ex||''}</p>`:''}</div>`});
+ const done=Object.keys(S.gans).length===x.q.length;
+ if(done){const good=x.q.filter((q,i)=>S.gans[i]===q.a).length;h+=`<div class="card" style="text-align:center"><div class="chip" style="font-size:26px">${good} / ${x.q.length}</div><p class="muted">${good===x.q.length?'Excellent!':'Read the explanation again, then retry.'}</p>${P.gram[x.id]?`<button class="btn sec" onclick="S.gans={};render()">Try again</button>`:`<button class="btn" onclick="finishGram('${x.id}')">Complete lesson (+10 XP)</button>`}</div>`}
+ return h}
+function gAns(qi,oi){const g=P.lang,x=GRAMMAR[g].find(z=>z.id===S.gram);S.gans[qi]=oi;const o=x.q[qi].o[x.q[qi].a];if(isAr(o)||isZh(o))speak(o,g);render()}
+function finishGram(id){if(!P.gram[id]){P.gram[id]=true;addXP(10);toast('+10 XP')}S.gram=null;render()}
+
+/* ============ VERBS (ARABIC CONJUGATOR) ============ */
+function viewVerbs(){
+ const v=VERBS[S.vb];
+ if(S.vq)return verbQuiz();
+ return `<div class="card" style="margin-bottom:12px"><small class="muted">Verb</small>
+ <select onchange="S.vb=+this.value;render()" style="width:100%;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);margin-top:6px;background:var(--card)">${VERBS.map((x,i)=>`<option value="${i}" ${i===S.vb?'selected':''}>${x[3]} — ${verbHead(x)}</option>`).join('')}</select>
+ <div style="text-align:center;margin-top:10px" ${sayBtnAttr(conj(v,'past')[0].ar,'ar')}><span class="arf" style="font-size:30px">${verbHead(v)}</span><div class="muted">${conj(v,'past')[0].tr} / ${conj(v,'pres')[0].tr} · ${v[3]}</div></div></div>
+ <div class="ctrl">${TENSES.map(([k,n])=>`<button class="${S.vt===k?'on':''}" onclick="S.vt='${k}';render()">${n}</button>`).join('')}</div>
+ ${conjTable(v,S.vt)}
+ <button class="btn" style="margin-top:14px" onclick="startVQ()">Quiz me on conjugation</button>
+ <p class="note">Tap any form to hear it. Regular (sound) verbs only — irregular verbs come in later lessons.</p>`}
+function newVQ(){const v=VERBS[Math.floor(Math.random()*VERBS.length)],ts=['past','pres','fut','lam','lan','imp'],t=ts[Math.floor(Math.random()*ts.length)],rows=conj(v,t),r=rows[Math.floor(Math.random()*rows.length)];
+ const others=shuffle(rows.filter(x=>x.ar!==r.ar)).slice(0,3);return{v,t,r,opts:shuffle([r,...others]),sel:null}}
+function startVQ(){S.vq={n:0,score:0,cur:newVQ()};render()}
+function verbQuiz(){const Q=S.vq;
+ if(Q.n>=10)return `<div class="result"><div class="xp">${Q.score} / 10</div><p class="muted">correct forms</p><div class="row" style="margin-top:20px"><button class="btn sec" onclick="S.vq=null;render()">Back</button><button class="btn" onclick="startVQ()">Again</button></div></div>`;
+ const c=Q.cur,tn=TENSES.find(x=>x[0]===c.t);
+ return `<div class="muted">Question ${Q.n+1} / 10 · score ${Q.score}</div>
+ <div class="card big" style="margin:10px 0"><div class="arf" style="font-size:26px">${verbHead(c.v)}</div><div class="muted">${c.v[3]}</div>
+ <div style="margin-top:12px;font-size:18px"><b>${tn[1]}</b> · <span class="arf">${c.r.p[0]}</span> (${c.r.p[2]})</div></div>
+ <div class="opts">${c.opts.map((o,i)=>`<button class="opt ${c.sel===null?'':(o.ar===c.r.ar?'right':(c.sel===i?'wrong':''))}" ${c.sel!==null?'style="pointer-events:none"':''} onclick="vqAns(${i})"><span class="tg arf">${o.ar}</span>${c.sel!==null||romOn()?`<small>${o.tr}</small>`:''}</button>`).join('')}</div>
+ ${c.sel!==null?`<div style="margin-top:12px"><button class="btn" onclick="vqNext()">Next</button></div>`:''}`}
+function vqAns(i){const c=S.vq.cur;c.sel=i;if(c.opts[i].ar===c.r.ar)S.vq.score++;speak(c.r.ar,'ar');render()}
+function vqNext(){const Q=S.vq;Q.n++;if(Q.n>=10&&Q.score)addXP(Q.score);if(Q.n<10)Q.cur=newVQ();render()}
 
 /* ============ INSTALL (PWA) ============ */
 let deferredPrompt=null;
