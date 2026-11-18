@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no" class="notranslate">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#b23a2e">
 <meta name="mobile-web-app-capable" content="yes">
@@ -156,7 +157,7 @@ h2{font-size:20px;margin:6px 0 12px}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app" translate="no" class="notranslate"></div>
 <script src="data.js"></script>
 <script>
 Object.values(STORIES).forEach(list=>list.forEach(st=>{st.sents=st.s.map(line=>{const[a,tr]=line.split('||');return{tr,toks:a.split('|').map(x=>{const[t,p,g]=x.split('~');return p===undefined?{t,punct:true}:{t,p,g}})}})}));
