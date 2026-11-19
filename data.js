@@ -59,7 +59,12 @@ const ZH=[
   s:['我 吃 饱 了|wǒ chī bǎo le.|I’m full.','你 会 用 筷子 吗|nǐ huì yòng kuàizi ma?|Can you use chopsticks?','妈妈 在 厨房 做 面条|māma zài chúfáng zuò miàntiáo.|Mum is making noodles in the kitchen.']}]},
 {title:'Phone & internet',lessons:[
  {title:'Staying in touch',w:['手机|shǒujī|mobile phone','上网|shàngwǎng|to go online','电子邮件|diànzǐ yóujiàn|email','发|fā|to send','照片|zhàopiàn|photo','密码|mìmǎ|password'],
-  s:['我 给 你 发 照片|wǒ gěi nǐ fā zhàopiàn.|I’ll send you a photo.','我 忘了 密码|wǒ wàngle mìmǎ.|I forgot my password.','你 每天 上网 吗|nǐ měitiān shàngwǎng ma?|Do you go online every day?']}]}
+  s:['我 给 你 发 照片|wǒ gěi nǐ fā zhàopiàn.|I’ll send you a photo.','我 忘了 密码|wǒ wàngle mìmǎ.|I forgot my password.','你 每天 上网 吗|nǐ měitiān shàngwǎng ma?|Do you go online every day?']}]},
+{title:'Festivals & celebrations',lessons:[
+ {title:'Holidays',w:['节日|jiérì|festival, holiday','庆祝|qìngzhù|to celebrate','热闹|rènao|lively, bustling','礼物|lǐwù|gift, present','祝贺|zhùhè|to congratulate','传统|chuántǒng|tradition; traditional'],
+  s:['图巴 的 节日 非常 热闹|Túbā de jiérì fēicháng rènao.|Festivals in Touba are very lively.','我们 一起 庆祝 新年 吧|wǒmen yìqǐ qìngzhù xīnnián ba.|Let’s celebrate the New Year together.','这 是 一 个 传统 节日|zhè shì yí ge chuántǒng jiérì.|This is a traditional festival.']},
+ {title:'Guests & invitations',w:['邀请|yāoqǐng|to invite; invitation','客人|kèrén|guest','参加|cānjiā|to take part in, to attend','准备|zhǔnbèi|to prepare; to get ready','热情|rèqíng|warm, welcoming','欢迎|huānyíng|to welcome'],
+  s:['谢谢 你 的 邀请|xièxie nǐ de yāoqǐng.|Thank you for your invitation.','他们 对 客人 很 热情|tāmen duì kèrén hěn rèqíng.|They are very welcoming to guests.','你 准备 好 了 吗|nǐ zhǔnbèi hǎo le ma?|Are you ready?']}]}
 ];
 
 /* ===================== ARABIC (MSA, for readers who want vocabulary & speaking) ===================== */
@@ -111,7 +116,12 @@ const AR=[
   s:['لَمْ أَذْهَبْ لِأَنَّ الْجَوَّ حَارٌّ|lam adhhab li-anna l-jawwa ḥārr.|I didn’t go because it was hot.','رُبَّمَا يَأْتِي غَدًا|rubbamā yaʾtī ghadan.|Perhaps he will come tomorrow.','إِذَا كَانَ عِنْدَكَ وَقْتٌ تَعَالَ|idhā kāna ʿindaka waqtun taʿāla.|If you have time, come.']}]},
 {title:'Phone & internet',lessons:[
  {title:'Staying in touch',w:['هَاتِفٌ|hātif|phone','رِسَالَةٌ|risāla|message','أُرْسِلُ|ursilu|I send','صُورَةٌ|ṣūra|picture, photo','كَلِمَةُ السِّرِّ|kalimatu s-sirr|password','اِتَّصِلْ بِي|ittaṣil bī|call me'],
-  s:['أُرْسِلُ لَكَ صُورَةً|ursilu laka ṣūratan.|I’ll send you a photo.','نَسِيتُ كَلِمَةَ السِّرِّ|nasītu kalimata s-sirr.|I forgot the password.','اِتَّصِلْ بِي مَسَاءً|ittaṣil bī masāʾan.|Call me in the evening.']}]}
+  s:['أُرْسِلُ لَكَ صُورَةً|ursilu laka ṣūratan.|I’ll send you a photo.','نَسِيتُ كَلِمَةَ السِّرِّ|nasītu kalimata s-sirr.|I forgot the password.','اِتَّصِلْ بِي مَسَاءً|ittaṣil bī masāʾan.|Call me in the evening.']}]},
+{title:'Feasts & hospitality',lessons:[
+ {title:'The feast',w:['عِيدٌ|ʿīd|feast, religious holiday','اِحْتِفَالٌ|iḥtifāl|celebration','نَحْتَفِلُ|naḥtafilu|we celebrate','هَدِيَّةٌ|hadiyya|gift, present','تَهْنِئَةٌ|tahniʾa|congratulations, greetings','أَقَارِبُ|aqārib|relatives'],
+  s:['نَحْتَفِلُ بِالْعِيدِ مَعَ الْأَقَارِبِ|naḥtafilu bil-ʿīdi maʿa l-aqārib.|We celebrate the feast with our relatives.','عِيدٌ مُبَارَكٌ|ʿīdun mubārak.|Blessed feast! (Eid greeting)','أَعْطَيْتُ أُخْتِي هَدِيَّةً|aʿṭaytu ukhtī hadiyyatan.|I gave my sister a present.']},
+ {title:'Welcoming guests',w:['ضَيْفٌ|ḍayf|guest (pl. ضُيُوفٌ)','دَعْوَةٌ|daʿwa|invitation','كَرَمٌ|karam|generosity','زِيَارَةٌ|ziyāra|visit','يَسْتَقْبِلُ|yastaqbilu|he receives, he welcomes','مُزْدَحِمٌ|muzdaḥim|crowded'],
+  s:['يَسْتَقْبِلُ أَهْلُ طُوبَى الضُّيُوفَ بِكَرَمٍ|yastaqbilu ahlu Ṭūbā ḍ-ḍuyūfa bi-karamin.|The people of Touba welcome guests generously.','شُكْرًا عَلَى الدَّعْوَةِ|shukran ʿalā d-daʿwa.|Thank you for the invitation.','الطُّرُقُ مُزْدَحِمَةٌ أَيَّامَ الْعِيدِ|aṭ-ṭuruqu muzdaḥimatun ayyāma l-ʿīd.|The roads are crowded during the feast days.']}]}
 ];
 
 /* ===================== STORIES ===================== */
@@ -151,7 +161,21 @@ const STORIES={zh:[
  '阿达玛~Ādámǎ~Adama|想~xiǎng~to think|起来~qǐlai~(recall)|了~le~(change)|：|他~tā~he|每天~měitiān~every day|都~dōu~all|先~xiān~first|把~bǎ~(object marker)|数据~shùjù~data|写~xiě~to write|在~zài~in|本子~běnzi~notebook|上~shang~on|！||Adama remembered: every day he first wrote the data in a notebook!',
  '他~tā~he|花~huā~to spend|了~le~(completed)|两~liǎng~two|个~ge~(measure word)|星期~xīngqī~week|，|把~bǎ~(object marker)|数据~shùjù~data|重新~chóngxīn~again|输入~shūrù~to enter|电脑~diànnǎo~computer|。||He spent two weeks re-entering the data into the computer.',
  '导师~dǎoshī~supervisor|说~shuō~to say|：|“|好~hǎo~good|习惯~xíguàn~habit|能~néng~can|救~jiù~to save|你~nǐ~your|的~de~(possessive)|论文~lùnwén~thesis|。|”||The supervisor said: “Good habits can save your thesis.”'],
- q:[{q:'What does Adama research?',o:['Rice','Maize','Fish'],a:0},{q:'What happened to his computer?',o:['It was stolen','It broke down','It got wet'],a:1},{q:'What saved his data?',o:['A USB stick','His paper notebook','His supervisor’s computer'],a:1}]}
+ q:[{q:'What does Adama research?',o:['Rice','Maize','Fish'],a:0},{q:'What happened to his computer?',o:['It was stolen','It broke down','It got wet'],a:1},{q:'What saved his data?',o:['A USB stick','His paper notebook','His supervisor’s computer'],a:1}]},
+{id:'zh4',title:'The Taxi Driver in Dakar',tt:'达喀尔的出租车司机',level:'HSK 4',emoji:'🚕',
+ s:['李~Lǐ~Li (surname)|先生~xiānsheng~Mr|第一~dì-yī~first|次~cì~time|来~lái~to come|达喀尔~Dákā’ěr~Dakar|旅游~lǚyóu~to travel|。||It was Mr Li’s first trip to Dakar.',
+ '他~tā~he|在~zài~at|机场~jīchǎng~airport|门口~ménkǒu~entrance|叫~jiào~to call (a taxi)|了~le~(completed)|一~yí~one|辆~liàng~(measure word for vehicles)|出租车~chūzūchē~taxi|。||He hailed a taxi at the airport entrance.',
+ '司机~sījī~driver|是~shì~to be|一~yí~one|个~ge~(measure word)|很~hěn~very|安静~ānjìng~quiet|的~de~(particle)|中年~zhōngnián~middle-aged|人~rén~person|。||The driver was a very quiet middle-aged man.',
+ '路上~lùshang~on the way|，|李~Lǐ~Li|先生~xiānsheng~Mr|给~gěi~to (someone)|妻子~qīzi~wife|打~dǎ~to make (a call)|电话~diànhuà~phone call|。||On the way, Mr Li phoned his wife.',
+ '他~tā~he|小声~xiǎoshēng~in a low voice|说~shuō~to say|：|“|这~zhè~this|个~ge~(measure word)|司机~sījī~driver|一定~yídìng~certainly|会~huì~will|多~duō~extra|要~yào~to ask for|钱~qián~money|。||He whispered: “This driver will surely overcharge me.',
+ '反正~fǎnzhèng~anyway|他~tā~he|听不懂~tīng bu dǒng~can’t understand|中文~Zhōngwén~Chinese|。|”||Anyway, he can’t understand Chinese.”',
+ '到~dào~to arrive at|了~le~(completed)|酒店~jiǔdiàn~hotel|，|司机~sījī~driver|回头~huítóu~to turn round|笑~xiào~to smile|了~le~(completed)|笑~xiào~to smile|。||When they reached the hotel, the driver turned round and gave a little smile.',
+ '他~tā~he|用~yòng~to use|很~hěn~very|标准~biāozhǔn~standard|的~de~(particle)|普通话~pǔtōnghuà~Mandarin|说~shuō~to say|：|“|先生~xiānsheng~sir|，|一共~yígòng~altogether|三千~sānqiān~three thousand|西非法郎~Xīfēi fǎláng~CFA francs|，|一~yì~one|分~fēn~cent|也~yě~even|不~bù~not|多~duō~extra|。|”||In perfect Mandarin he said: “Sir, that’s three thousand CFA francs altogether — not a cent more.”',
+ '李~Lǐ~Li|先生~xiānsheng~Mr|愣住~lèngzhù~to be dumbstruck|了~le~(completed)|，|半天~bàntiān~for a long while|说不出~shuō bu chū~couldn’t utter|话~huà~words|来~lái~(complement)|。||Mr Li was dumbstruck and couldn’t say a word for a long while.',
+ '原来~yuánlái~it turns out|，|司机~sījī~driver|以前~yǐqián~before|在~zài~in|武汉~Wǔhàn~Wuhan|读~dú~to study|过~guo~(experience)|四~sì~four|年~nián~year|大学~dàxué~university|。||It turned out the driver had once studied at university in Wuhan for four years.',
+ '下车~xià chē~to get out of the car|的~de~(particle)|时候~shíhou~time, moment|，|李~Lǐ~Li|先生~xiānsheng~Mr|给~gěi~to give|了~le~(completed)|他~tā~him|五千~wǔqiān~five thousand|。||When he got out, Mr Li gave him five thousand.',
+ '他~tā~he|不好意思~bù hǎoyìsi~embarrassed|地~de~(adverb marker)|说~shuō~to say|：|“|多~duō~extra|的~de~(that which)|是~shì~to be|我~wǒ~my|的~de~(possessive)|道歉~dàoqiàn~apology|。|”||He said, embarrassed: “The extra is my apology.”'],
+ q:[{q:'What did Mr Li tell his wife about the driver?',o:['He drives too fast','He will overcharge','He is very friendly'],a:1},{q:'Where had the driver studied?',o:['In Beijing','In Paris','In Wuhan'],a:2},{q:'How much did Mr Li finally give him?',o:['Five thousand','Three thousand','Four thousand'],a:0}]}
 ],
 ar:[
 {id:'ar1',title:'The Farmer and the River',tt:'الْمُزَارِعُ وَالنَّهْرُ',level:'Intermediate',emoji:'🌾',
@@ -185,5 +209,19 @@ ar:[
  'ضَحِكَ~ḍaḥika~laughed|السَّائِقُ~as-sāʾiqu~the driver|:|«|هَذِهِ~hādhihi~this|الْحَافِلَةُ~al-ḥāfilatu~the bus|ذَاهِبَةٌ~dhāhibatun~going|إِلَى~ilā~to|سَانْت لُوِيس~Sānt Luwīs~Saint-Louis|!|»||The driver laughed: “This bus is going to Saint-Louis!”',
  'اِتَّصَلَ~ittaṣala~called|مُوسَى~Mūsā~Moussa|بِأُسْتَاذِهِ~bi-ustādhihi~his professor|وَشَرَحَ~wa-sharaḥa~and explained|لَهُ~lahu~to him|الْمُشْكِلَةَ~al-mushkilata~the problem|.||Moussa called his professor and explained the problem.',
  'قَالَ~qāla~said|الْأُسْتَاذُ~al-ustādhu~the professor|:|«|لَا~lā~don’t|تَقْلَقْ~taqlaq~worry|،|الِامْتِحَانُ~al-imtiḥānu~the exam|غَدًا~ghadan~tomorrow|وَلَيْسَ~wa-laysa~and not|الْيَوْمَ~al-yawma~today|!|»||The professor said: “Don’t worry, the exam is tomorrow, not today!”'],
- q:[{q:'Why was Moussa in a hurry?',o:['He had an exam','He was late for work','He had a flight'],a:0},{q:'What did he see from the window?',o:['The sea','Rice fields','The university'],a:1},{q:'When was the exam really?',o:['Today','Tomorrow','Next week'],a:1}]}
+ q:[{q:'Why was Moussa in a hurry?',o:['He had an exam','He was late for work','He had a flight'],a:0},{q:'What did he see from the window?',o:['The sea','Rice fields','The university'],a:1},{q:'When was the exam really?',o:['Today','Tomorrow','Next week'],a:1}]},
+{id:'ar4',title:'The Night Thief',tt:'لِصُّ اللَّيْلِ',level:'Upper-intermediate',emoji:'🐐',
+ s:['كَانَتْ~kānat~(she) was|عَائِشَةُ~ʿĀʾishatu~Aïcha|بَاحِثَةً~bāḥithatan~a researcher|شَابَّةً~shābbatan~young|فِي~fī~at|مَحَطَّةٍ~maḥaṭṭatin~a station|زِرَاعِيَّةٍ~zirāʿiyyatin~agricultural|.||Aïcha was a young researcher at an agricultural station.',
+ 'كَانَتْ~kānat~she used to|تَقِيسُ~taqīsu~measure|طُولَ~ṭūla~the height of|نَبَاتَاتِ~nabātāti~the plants of|الْأَرُزِّ~al-aruzzi~the rice|كُلَّ~kulla~every|صَبَاحٍ~ṣabāḥin~morning|.||Every morning she measured the height of the rice plants.',
+ 'ذَاتَ~dhāta~one (day)|يَوْمٍ~yawmin~day|وَجَدَتْ~wajadat~she found|أَنَّ~anna~that|بَعْضَ~baʿḍa~some of|النَّبَاتَاتِ~an-nabātāti~the plants|مَقْطُوعَةٌ~maqṭūʿatun~cut|!||One day she found that some of the plants had been cut!',
+ 'فِي~fī~on|الْيَوْمِ~al-yawmi~the day|التَّالِي~at-tālī~following|تَكَرَّرَ~takarrara~happened again|الْأَمْرُ~al-amru~the thing|نَفْسُهُ~nafsuhu~same|.||The next day, the same thing happened again.',
+ 'قَالَتْ~qālat~she said|فِي~fī~to|نَفْسِهَا~nafsihā~herself|:|«|هُنَاكَ~hunāka~there is|لِصٌّ~liṣṣun~a thief|يُرِيدُ~yurīdu~(who) wants|أَنْ~an~to|يُفْسِدَ~yufsida~ruin|تَجْرِبَتِي~tajribatī~my experiment|!|»||She said to herself: “There’s a thief who wants to ruin my experiment!”',
+ 'قَرَّرَتْ~qarrarat~she decided|أَنْ~an~to|تَخْتَبِئَ~takhtabiʾa~hide|قُرْبَ~qurba~near|الْحَقْلِ~al-ḥaqli~the field|طُولَ~ṭūla~throughout|اللَّيْلِ~al-layli~the night|.||She decided to hide near the field all night long.',
+ 'فِي~fī~at|مُنْتَصَفِ~muntaṣafi~the middle of|اللَّيْلِ~al-layli~the night|سَمِعَتْ~samiʿat~she heard|صَوْتًا~ṣawtan~a sound|غَرِيبًا~gharīban~strange|.||At midnight she heard a strange sound.',
+ 'أَشْعَلَتْ~ashʿalat~she switched on|مِصْبَاحَهَا~miṣbāḥahā~her torch|وَرَأَتِ~wa-raʾati~and saw|اللِّصَّ~al-liṣṣa~the thief|:|عَنْزَةً~ʿanzatan~a goat|صَغِيرَةً~ṣaghīratan~small|بَيْضَاءَ~bayḍāʾa~white|تَأْكُلُ~taʾkulu~eating|الْأَرُزَّ~al-aruzza~the rice|!||She switched on her torch and saw the thief: a small white goat eating the rice!',
+ 'فِي~fī~in|الصَّبَاحِ~aṣ-ṣabāḥi~the morning|أَخَذَتِ~akhadhati~she took|الْعَنْزَةَ~al-ʿanzata~the goat|إِلَى~ilā~to|مُدِيرِ~mudīri~the director of|الْمَحَطَّةِ~al-maḥaṭṭati~the station|غَاضِبَةً~ghāḍibatan~angry|.||In the morning she angrily took the goat to the station director.',
+ 'ضَحِكَ~ḍaḥika~laughed|الْمُدِيرُ~al-mudīru~the director|وَقَالَ~wa-qāla~and said|:|«|هَذِهِ~hādhihi~this|عَنْزَتِي~ʿanzatī~my goat|،|أَبْحَثُ~abḥathu~I have been looking|عَنْهَا~ʿanhā~for her|مُنْذُ~mundhu~for (since)|أُسْبُوعٍ~usbūʿin~a week|!|»||The director laughed and said: “That’s my goat — I’ve been looking for her for a week!”',
+ 'ثُمَّ~thumma~then|أَضَافَ~aḍāfa~he added|مُبْتَسِمًا~mubtasiman~smiling|:|«|يَبْدُو~yabdū~it seems|أَنَّ~anna~that|عَنْزَتِي~ʿanzatī~my goat|تُحِبُّ~tuḥibbu~loves|الْأَصْنَافَ~al-aṣnāfa~the varieties|الْجَدِيدَةَ~al-jadīdata~new|مِثْلَكِ~mithlaki~like you (f)|!|»||Then he added with a smile: “It seems my goat loves new varieties just like you!”',
+ 'وَبَنَى~wa-banā~and built|الْمُدِيرُ~al-mudīru~the director|سِيَاجًا~siyājan~a fence|حَوْلَ~ḥawla~around|الْحَقْلِ~al-ḥaqli~the field|فِي~fī~on|الْيَوْمِ~al-yawmi~the day|نَفْسِهِ~nafsihi~same|.||And the director built a fence around the field that very same day.'],
+ q:[{q:'What did Aïcha measure every morning?',o:['The water level','The height of the rice plants','The rainfall'],a:1},{q:'Who was the thief?',o:['A neighbour','A bird','A goat'],a:2},{q:'Who did the thief belong to?',o:['The station director','Aïcha’s father','A farmer'],a:0}]}
 ]};

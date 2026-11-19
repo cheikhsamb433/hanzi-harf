@@ -251,7 +251,8 @@ function learnSeg(){const g=P.lang,v=S.learn||'lessons';const items=[['lessons',
  return `<div class="seg" style="margin-bottom:14px;width:100%">${items.map(([k,n])=>`<button style="flex:1" class="${v===k?'on':''}" onclick="S.learn='${k}';S.gram=null;S.vq=null;render()">${n}</button>`).join('')}</div>`}
 function viewCourse(){
  const v=S.learn||'lessons';if(v==='grammar')return learnSeg()+viewGrammar();if(v==='verbs'&&P.lang==='ar')return learnSeg()+viewVerbs();
- const g=P.lang;let h=learnSeg()+goalHTML();
+ const g=P.lang,st=srsStats(g);let h=learnSeg()+goalHTML();
+ if(st.due||st.weak)h+=`<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;border-left:4px solid var(--acc)"><span style="font-size:28px">🔁</span><div style="flex:1"><b>${st.due?st.due+' word'+(st.due>1?'s':'')+' to review':'Weak words to fix'}</b><small class="muted" style="display:block">${st.weak?st.weak+' weak word'+(st.weak>1?'s':'')+' · ':''}review before new lessons so you don’t forget</small></div><button class="play" onclick="startPractice('${st.due?'due':'weak'}')">Review</button></div>`;
  COURSE[g].forEach((u,ui)=>{h+=`<section class="unit"><div class="uh"><div class="un">Unit ${ui+1}</div><h3>${u.title}</h3></div>`;
   u.lessons.forEach((l,li)=>{const k=ui+'-'+li,d=P.done[g][k],ok=unlocked(g,ui,li);
    const prev=l.items.slice(0,4).map(i=>i.t).join(g==='zh'?' · ':' ، ');
@@ -271,6 +272,8 @@ function buildQueue(g,les){
  items.forEach(it=>{q.push({k:'intro',it});q.push({k:'mcq',it})});
  const pr=[];
  items.forEach((it,i)=>{pr.push({k:i%2?'rev':'listen',it});if(g==='zh'&&[...it.t].length===1&&toneOf(it.p))pr.push({k:'tone',it})});
+ const rec=pickRecall(g,6,new Set(items.map(i=>i.id)));
+ rec.forEach((it,i)=>{const ex={k:['mcq','rev','listen'][i%3],it,recall:true};if(i<3)q.unshift(ex);else pr.push(ex)});
  q.push(...shuffle(pr));
  if(items.length>=3)q.push({k:'match',items:shuffle(items.slice()).slice(0,5)});
  les.sents.forEach(s=>{q.push({k:'build',s});q.push({k:'speak',s})});
@@ -288,7 +291,7 @@ function renderLesson(){
  const L=S.lesson,ex=L.q[L.i],g=L.g;
  if(L.end)return L.end;
  const pct=Math.round(L.i/L.q.length*100);
- let h=`<div class="lhead"><button class="icon" onclick="quitLesson()">✕</button><div class="bar"><i style="width:${pct}%"></i></div><div class="hearts">♥ ${L.hearts}</div></div><div class="ex"><div class="kind">${KINDS[ex.k]}${ex.retry?' · retry':''}</div>`;
+ let h=`<div class="lhead"><button class="icon" onclick="quitLesson()">✕</button><div class="bar"><i style="width:${pct}%"></i></div><div class="hearts">♥ ${L.hearts===Infinity?'∞':L.hearts}</div></div><div class="ex"><div class="kind">${ex.recall?'🔁 Review · ':''}${KINDS[ex.k]}${ex.retry?' · retry':''}</div>`;
  const it=ex.it,dis=L.state!=='ask'?'style="pointer-events:none"':'';
  const cls=(val,ans)=>L.state==='ask'?(L.sel===val?'sel':''):(val===ans?'right':(L.sel===val?'wrong':''));
  if(ex.k==='intro'){
@@ -338,7 +341,7 @@ function unbuild(j){const L=S.lesson;if(L.state!=='ask')return;L.built.splice(j,
 function mL(i){const ex=S.lesson.q[S.lesson.i];ex.a=ex.L[i].id;ex.bad=null;speak(ex.L[i].say,S.lesson.g);render()}
 function mR(i){const L=S.lesson,ex=L.q[L.i];if(!ex.a)return;const r=ex.R[i];
  if(r.id===ex.a){ex.done.push(r.id);ex.a=null;if(ex.done.length===ex.items.length){L.state='ok';L.first++}}
- else{ex.bad=[ex.a,r.id];ex.a=null;L.mist++;setTimeout(()=>{ex.bad=null;render()},700)}
+ else{ex.bad=[ex.a,r.id];markEx(L,ex.a,false,L.practice);save();ex.a=null;L.mist++;setTimeout(()=>{ex.bad=null;render()},700)}
  render()}
 function check(){
  const L=S.lesson,ex=L.q[L.i];let ok=false;
@@ -347,12 +350,13 @@ function check(){
  else if(ex.k==='tone')ok=L.sel===toneOf(ex.it.p);
  else if(ex.k==='build')ok=L.built.map(i=>ex.bank[i]).join('|')===ex.s.tok.join('|');
  L.state=ok?'ok':'bad';
+ if(ex.it&&!ex.retry){markEx(L,ex.it.id,ok,ex.recall);save()}
  if(ok){if(!ex.retry)L.first++;if(ex.k==='build')speak(ex.s.tok.join(sep(L.g)),L.g);else speak(ex.it.say,L.g)}
  else{L.hearts--;L.mist++;const c=Object.assign({},ex,{retry:true,opts:null,bank:null});L.q.push(c)}
  render()}
 function next(){
  const L=S.lesson;
- if(L.hearts<=0){L.end=`<div class="result"><div style="font-size:54px">💔</div><h2>Out of hearts</h2><p class="muted">No problem — restart the lesson, it will go faster the second time.</p><div style="margin-top:24px" class="row"><button class="btn sec" onclick="quitLesson(true)">Quit</button><button class="btn" onclick="openLesson(${L.ui},${L.li})">Restart</button></div></div>`;render();return}
+ if(L.hearts<=0){L.end=`<div class="result"><div style="font-size:54px">💔</div><h2>Out of hearts</h2><p class="muted">No problem — restart the lesson, it will go faster the second time.</p><div style="margin-top:24px" class="row"><button class="btn sec" onclick="quitLesson(true)">Quit</button><button class="btn" onclick="${L.practice?`startPractice('${L.practice}')`:`openLesson(${L.ui},${L.li})`}">Restart</button></div></div>`;render();return}
  L.i++;L.sel=null;L.state='ask';L.built=[];
  if(L.i>=L.q.length){finish();return}
  window.scrollTo(0,0);render();autoAudio()}
@@ -360,14 +364,19 @@ function autoAudio(){const L=S.lesson;if(!L||!P.set.auto)return;const ex=L.q[L.i
  if(['intro','listen','tone'].includes(ex.k))setTimeout(()=>speak(ex.it.say,L.g),250);
  else if(ex.k==='speak')setTimeout(()=>speak(ex.s.tok.join(sep(L.g)),L.g),250)}
 function finish(){
- const L=S.lesson,g=L.g,k=L.ui+'-'+L.li,firstTime=!P.done[g][k];
- const xp=(firstTime?10:5)+Math.max(0,10-L.mist);
- P.done[g][k]=true;const now=Date.now();
- L.les.items.forEach(it=>{if(!P.srs[it.id])P.srs[it.id]={box:0,due:now+DAY,lang:g}});
- addXP(xp);
+ const L=S.lesson,g=L.g,k=L.ui+'-'+L.li,firstTime=!L.practice&&!P.done[g][k];
+ const xp=L.practice?Math.max(3,L.les.items.length-L.mist):(firstTime?10:5)+Math.max(0,10-L.mist);
+ const now=Date.now();
+ if(!L.practice){P.done[g][k]=true;
+  L.les.items.forEach(it=>{const v=P.srs[it.id],bad=L.bad&&L.bad.has(it.id);
+   if(!v)P.srs[it.id]={box:0,due:now+(bad?REDO:DAY),lang:g,weak:!!bad,bad:bad?1:0,streak:0};
+   else if(bad)Object.assign(v,{weak:true,box:0,due:now+REDO,bad:(v.bad||0)+1,streak:0})})}
+ save();addXP(xp);
+ const nw=L.bad?[...L.bad].map(findItem).filter(Boolean):[];
  const acc=Math.round(L.first/Math.max(1,L.first+L.mist)*100);
- L.end=`<div class="result"><div style="font-size:54px">🎉</div><h2>Lesson complete!</h2><div class="xp">+${xp} XP</div>
+ L.end=`<div class="result"><div style="font-size:54px">🎉</div><h2>${L.practice?'Review complete!':'Lesson complete!'}</h2><div class="xp">+${xp} XP</div>
  <div class="stats" style="margin-top:20px"><div class="card"><b>${acc}%</b><small class="muted">accuracy</small></div><div class="card"><b>${L.les.items.length}</b><small class="muted">${L.les.letters?'letters':'words'}</small></div><div class="card"><b>🔥 ${streak()}</b><small class="muted">streak</small></div></div>
+ ${nw.length?`<div class="card" style="margin-top:14px;text-align:left"><small class="muted">To practise again — these words will come back until you master them</small><div style="margin-top:6px">${nw.map(it=>`<div><span class="${tcls(g)}" style="font-size:19px">${it.t}</span> <small class="muted">${it.p} · ${it.f}</small></div>`).join('')}</div></div>`:''}
  ${todayXP()>=P.set.goal?'<p class="muted">Daily goal reached ✓</p>':`<p class="muted">${P.set.goal-todayXP()} XP to go for today’s goal.</p>`}
  <div style="margin-top:20px"><button class="btn" onclick="quitLesson(true)">Continue</button></div></div>`;
  render()}
@@ -411,15 +420,46 @@ function viewReview(){
   <div class="card fc"><div class="t ${tcls(g)}" style="font-size:${g==='zh'?60:46}px">${it.t}</div><div style="margin:8px 0">${playBtn(it.say,g)}</div>
   ${R.shown?`<div style="font-size:18px;color:var(--mute)">${it.p}</div><div style="font-size:20px;font-weight:600;margin-top:6px">${it.f}</div>`:''}</div>
   <div style="margin-top:14px">${R.shown?`<div class="row"><button class="btn sec" onclick="rate(0)">Again</button><button class="btn okb" onclick="rate(1)">I knew it</button></div>`:`<button class="btn" onclick="S.review.shown=true;render()">Show answer</button>`}</div>`}
- const next=mine.filter(([id,v])=>v.due>now).sort((a,b)=>a[1].due-b[1].due)[0];
- return `<h2>Spaced review</h2><div class="card"><div class="chip" style="font-size:30px">${due.length}</div><div class="muted">word(s) due now · ${mine.length} learned in total</div>
- <p class="muted" style="margin-top:10px">Each card comes back after 1, 2, 4, 8, 16 and 32 days if you know it. If you forget it, it starts again.</p>
- ${due.length?`<button class="btn" onclick="startReview(false)">Start (${Math.min(20,due.length)})</button>`:mine.length?`<p class="muted">Next review: ${new Date(next[1].due).toLocaleDateString('en-GB',{weekday:'long',hour:'2-digit',minute:'2-digit'})}</p><button class="btn sec" onclick="startReview(true)">Review anyway</button>`:'<p class="muted">Finish a lesson to add words here.</p>'}</div>`}
+ const st=srsStats(g),next=mine.filter(([id,v])=>v.due>now).sort((a,b)=>a[1].due-b[1].due)[0];
+ const weakL=mine.filter(([id,v])=>v.weak).map(([id,v])=>[findItem(id),v]).filter(x=>x[0]).sort((a,b)=>(b[1].bad||0)-(a[1].bad||0));
+ if(!mine.length)return `<h2>Spaced review</h2><div class="card"><p class="muted">Finish a lesson to add words here.</p></div>`;
+ return `<h2>Spaced review</h2><div class="card">
+ <div class="stats" style="margin:0"><div><b class="chip" style="font-size:26px">${st.due}</b><small class="muted" style="display:block">due now</small></div><div><b class="chip" style="font-size:26px;color:var(--bad,#c0392b)">${st.weak}</b><small class="muted" style="display:block">weak</small></div><div><b class="chip" style="font-size:26px;color:var(--ok)">${st.mastered}</b><small class="muted" style="display:block">mastered</small></div></div>
+ <div class="prog" style="margin-top:12px"><i style="width:${Math.round(st.mastered/st.total*100)}%"></i></div><small class="muted">${st.mastered} / ${st.total} words mastered · ${st.learning} still learning</small>
+ <div style="margin-top:14px;display:grid;gap:8px">
+ ${st.due?`<button class="btn" onclick="startPractice('due')">Practise due words (${Math.min(15,st.due)})</button>`:''}
+ ${st.weak?`<button class="btn ${st.due?'sec':''}" onclick="startPractice('weak')">Work on weak words (${Math.min(12,st.weak)})</button>`:''}
+ ${st.due?`<button class="btn sec" onclick="startReview(false)">Flashcards (${Math.min(20,st.due)})</button>`:`<p class="muted" style="margin:0">Nothing due. Next review: ${next?new Date(next[1].due).toLocaleDateString('en-GB',{weekday:'long',hour:'2-digit',minute:'2-digit'}):'—'}</p><button class="btn ${st.weak?'sec':''}" onclick="startPractice('mix')">Mixed review anyway</button>`}</div>
+ <p class="muted" style="margin-top:12px;font-size:13px">A word you know comes back after 1, 2, 4, 8, 16 and 32 days. A word you get wrong becomes <b>weak</b>: it comes back after 10 minutes, at the start of every new lesson and here, until you get it right 3 times in a row. A word is <b>mastered</b> once it reaches the 16-day step.</p></div>
+ ${weakL.length?`<div class="sectitle">Weak words</div><div class="card" style="padding:4px 12px">${weakL.slice(0,40).map(([it,v])=>`<div class="drow" ${sayBtnAttr(it.say,g)}><div class="m"><span class="${tcls(g)}" style="font-size:20px">${it.t}</span><small>${it.p} · ${it.f}</small></div><small class="muted">✗ ${v.bad||1}</small></div>`).join('')}</div>`:''}`}
+const REDO=10*60e3,MASTER=4;
+function srsResult(id,g,ok){const now=Date.now(),v=P.srs[id]||(P.srs[id]={box:0,due:now+DAY,lang:g});
+ if(ok){v.streak=(v.streak||0)+1;if(v.due<=now){v.box=Math.min(v.box+1,5);v.due=now+INT[v.box]*DAY}if(v.weak&&v.streak>=3)v.weak=false}
+ else Object.assign(v,{weak:true,box:0,due:now+REDO,bad:(v.bad||0)+1,streak:0})}
+function markEx(L,id,ok,recall){if(recall||L.practice)srsResult(id,L.g,ok);else if(!ok)(L.bad||(L.bad=new Set())).add(id)}
+function srsStats(g){const now=Date.now(),m=Object.values(P.srs).filter(v=>v.lang===g);
+ const mastered=m.filter(v=>v.box>=MASTER&&!v.weak).length;
+ return{total:m.length,due:m.filter(v=>v.due<=now).length,weak:m.filter(v=>v.weak).length,mastered,learning:m.length-mastered}}
+function pickRecall(g,n,excl){const now=Date.now(),mine=Object.entries(P.srs).filter(([id,v])=>v.lang===g&&!excl.has(id)&&findItem(id));
+ const due=shuffle(mine.filter(([i,v])=>v.due<=now)).sort((a,b)=>(b[1].weak?1:0)-(a[1].weak?1:0));
+ const weak=shuffle(mine.filter(([i,v])=>v.weak&&v.due>now));
+ const rest=shuffle(mine.filter(([i,v])=>!v.weak&&v.due>now)).sort((a,b)=>a[1].box-b[1].box);
+ const out=[];for(const[id]of[...due,...weak,...rest]){if(out.length>=n)break;if(!out.includes(id))out.push(id)}
+ return out.map(findItem)}
+function startPractice(mode){const g=P.lang,now=Date.now(),mine=Object.entries(P.srs).filter(([id,v])=>v.lang===g&&findItem(id));
+ let ids=mode==='weak'?shuffle(mine.filter(([i,v])=>v.weak)).slice(0,12):mode==='due'?shuffle(mine.filter(([i,v])=>v.due<=now)).sort((a,b)=>(b[1].weak?1:0)-(a[1].weak?1:0)).slice(0,15):[];
+ let items=ids.length?ids.map(([id])=>findItem(id)):pickRecall(g,12,new Set());
+ if(!items.length){toast('No words to review yet');return}
+ const q=[];items.forEach(it=>q.push({k:'mcq',it,recall:true}));
+ const pr=items.map((it,i)=>({k:i%2?'rev':'listen',it,recall:true}));q.push(...shuffle(pr));
+ if(items.length>=3)q.push({k:'match',items:shuffle(items.slice()).slice(0,5)});
+ S.lesson={g,practice:mode,les:{items,sents:[]},q,i:0,hearts:Infinity,first:0,mist:0,sel:null,state:'ask',built:[]};
+ window.scrollTo(0,0);render();autoAudio()}
 function startReview(any){const g=P.lang,now=Date.now();let ids=Object.entries(P.srs).filter(([id,v])=>v.lang===g&&(any||v.due<=now)).map(([id])=>id).filter(id=>findItem(id));
  ids=shuffle(ids).slice(0,any?10:20);S.review={list:ids,i:0,shown:false,known:0,seen:ids.length,xp:0,again:{}};render();if(P.set.auto){const it=findItem(ids[0]);if(it)speak(it.say,g)}}
 function rate(k){const R=S.review,id=R.list[R.i],v=P.srs[id],now=Date.now();
- if(k){if(!R.again[id])R.known++;v.box=Math.min(v.box+1,5);v.due=now+INT[v.box]*DAY;R.xp+=1}
- else{v.box=0;v.due=now+10*60e3;if(!R.again[id]){R.again[id]=1;R.list.push(id)}}
+ if(k){if(!R.again[id])R.known++;v.box=Math.min(v.box+1,5);v.due=now+INT[v.box]*DAY;R.xp+=1;v.streak=(v.streak||0)+1;if(v.weak&&v.streak>=3)v.weak=false}
+ else{v.box=0;v.due=now+REDO;v.weak=true;v.bad=(v.bad||0)+1;v.streak=0;if(!R.again[id]){R.again[id]=1;R.list.push(id)}}
  R.i++;R.shown=false;if(R.i>=R.list.length&&R.xp)addXP(R.xp);save();render();
  if(R.i<R.list.length&&P.set.auto){const it=findItem(R.list[R.i]);if(it)speak(it.say,P.lang)}}
 

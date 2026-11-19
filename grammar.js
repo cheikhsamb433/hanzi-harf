@@ -130,7 +130,21 @@ const GRAMMAR={ar:[
  {key:'Definite noun → الَّذِي / الَّتِي / الَّذِينَ. Indefinite noun → no relative pronoun.'}],
  q:[{q:'“the car that I bought” =',o:['السَّيَّارَةُ الَّتِي اشْتَرَيْتُهَا','السَّيَّارَةُ الَّذِي اشْتَرَيْتُهُ','سَيَّارَةٌ الَّتِي اشْتَرَيْتُهَا'],a:0,ex:'Feminine definite noun → الَّتِي.'},
  {q:'“the researchers who came” =',o:['الْبَاحِثُونَ الَّذِينَ جَاؤُوا','الْبَاحِثُونَ الَّذِي جَاؤُوا','بَاحِثُونَ الَّذِينَ جَاؤُوا'],a:0,ex:'Plural people → الَّذِينَ.'},
- {q:'“a book that I read” =',o:['كِتَابٌ قَرَأْتُهُ','كِتَابٌ الَّذِي قَرَأْتُهُ','الْكِتَابُ قَرَأْتُهُ'],a:0,ex:'Indefinite noun → no relative pronoun.'}]}
+ {q:'“a book that I read” =',o:['كِتَابٌ قَرَأْتُهُ','كِتَابٌ الَّذِي قَرَأْتُهُ','الْكِتَابُ قَرَأْتُهُ'],a:0,ex:'Indefinite noun → no relative pronoun.'}]},
+
+{id:'ar-g15',title:'Hollow verbs',tt:'الْفِعْلُ الْأَجْوَفُ',blocks:[
+ {p:'A <b>hollow verb</b> has و or ي as its <b>middle radical</b>. That letter turns into a long vowel: قَالَ (root ق و ل, to say), بَاعَ (ب ي ع, to sell), نَامَ (ن و م, to sleep). The long vowel <b>becomes short</b> whenever the stem syllable is closed by a consonant.'},
+ {p:'Which short vowel appears in the past? <b>u</b> for verbs like قَالَ/يَقُولُ (قُلْتُ), <b>i</b> for verbs like بَاعَ/يَبِيعُ (بِعْتُ) and also for نَامَ/يَنَامُ (نِمْتُ), خَافَ/يَخَافُ (خِفْتُ).'},
+ {key:'Long vowel before a vowel ending: قَالَ، قَالُوا، يَقُولُ. Short vowel before a consonant ending or with sukūn: قُلْتُ، قُلْنَا، لَمْ يَقُلْ، قُلْ!'},
+ {table:{head:['Person','قَالَ to say','بَاعَ to sell','نَامَ to sleep'],rows:[['هُوَ','قَالَ','بَاعَ','نَامَ'],['هِيَ','قَالَتْ','بَاعَتْ','نَامَتْ'],['أَنَا','قُلْتُ','بِعْتُ','نِمْتُ'],['أَنْتَ','قُلْتَ','بِعْتَ','نِمْتَ'],['نَحْنُ','قُلْنَا','بِعْنَا','نِمْنَا'],['هُمْ','قَالُوا','بَاعُوا','نَامُوا'],['هُنَّ','قُلْنَ','بِعْنَ','نِمْنَ']]}},
+ {table:{head:['Form','قَالَ','بَاعَ','نَامَ'],rows:[['Present (he)','يَقُولُ','يَبِيعُ','يَنَامُ'],['Present (they m)','يَقُولُونَ','يَبِيعُونَ','يَنَامُونَ'],['لَمْ (he)','لَمْ يَقُلْ','لَمْ يَبِعْ','لَمْ يَنَمْ'],['Imperative (m)','قُلْ','بِعْ','نَمْ'],['Imperative (f)','قُولِي','بِيعِي','نَامِي'],['Imperative (pl)','قُولُوا','بِيعُوا','نَامُوا']]}},
+ {ex:[['قُلْتُ لَهُ الْحَقِيقَةَ','qultu lahu l-ḥaqīqata','I told him the truth.'],['نِمْتُ مُبَكِّرًا أَمْسِ','nimtu mubakkiran amsi','I went to bed early yesterday.'],['يَبِيعُ الْمُزَارِعُ أَرُزَّهُ فِي السُّوقِ','yabīʿu l-muzāriʿu aruzzahu fī s-sūqi','The farmer sells his rice at the market.'],['لَمْ يَقُلْ شَيْئًا','lam yaqul shayʾan','He didn’t say anything.'],['زُرْ جَدَّكَ يَوْمَ الْعِيدِ','zur jaddaka yawma l-ʿīdi','Visit your grandfather on the feast day.']]},
+ {p:'Other common hollow verbs: كَانَ/يَكُونُ (to be), زَارَ/يَزُورُ (to visit), عَادَ/يَعُودُ (to return), صَامَ/يَصُومُ (to fast), طَارَ/يَطِيرُ (to fly), سَارَ/يَسِيرُ (to walk, to go).'}],
+ q:[{q:'“I said” =',o:['قَالْتُ','قُلْتُ','قِلْتُ'],a:1,ex:'‑tu starts with a consonant → the ā shortens to u (قَالَ/يَقُولُ type).'},
+ {q:'“I sold” =',o:['بُعْتُ','بِعْتُ','بَاعْتُ'],a:1,ex:'Verbs with ي (بَاعَ/يَبِيعُ) take i: بِعْتُ.'},
+ {q:'“He didn’t sleep” =',o:['لَمْ يَنَامْ','لَمْ يَنَمْ','لَمْ يَنَامُ'],a:1,ex:'The jussive closes the syllable → long ā becomes short a: لَمْ يَنَمْ.'},
+ {q:'“Say!” (to a man) =',o:['قُلْ','قُولْ','اُقْوُلْ'],a:0,ex:'Imperative ends in sukūn → short u: قُلْ. (To a woman: قُولِي.)'},
+ {q:'قَالُوا means:',o:['we said','they (m) said','I said'],a:1,ex:'‑ū is a vowel ending, so the long ā stays. “We said” = قُلْنَا.'}]}
 ],
 zh:[
 {id:'zh-g1',title:'了: completed action & change',tt:'了',blocks:[
