@@ -144,7 +144,21 @@ const GRAMMAR={ar:[
  {q:'“I sold” =',o:['بُعْتُ','بِعْتُ','بَاعْتُ'],a:1,ex:'Verbs with ي (بَاعَ/يَبِيعُ) take i: بِعْتُ.'},
  {q:'“He didn’t sleep” =',o:['لَمْ يَنَامْ','لَمْ يَنَمْ','لَمْ يَنَامُ'],a:1,ex:'The jussive closes the syllable → long ā becomes short a: لَمْ يَنَمْ.'},
  {q:'“Say!” (to a man) =',o:['قُلْ','قُولْ','اُقْوُلْ'],a:0,ex:'Imperative ends in sukūn → short u: قُلْ. (To a woman: قُولِي.)'},
- {q:'قَالُوا means:',o:['we said','they (m) said','I said'],a:1,ex:'‑ū is a vowel ending, so the long ā stays. “We said” = قُلْنَا.'}]}
+ {q:'قَالُوا means:',o:['we said','they (m) said','I said'],a:1,ex:'‑ū is a vowel ending, so the long ā stays. “We said” = قُلْنَا.'}]},
+
+{id:'ar-g16',title:'Defective verbs',tt:'الْفِعْلُ النَّاقِصُ',blocks:[
+ {p:'A <b>defective verb</b> has و or ي as its <b>last radical</b>. In the dictionary form it ends in a vowel: مَشَى (root م ش ي, to walk), دَعَا (د ع و, to invite, to call), نَسِيَ (ن س ي, to forget). There are three types: <b>a–i</b> مَشَى/يَمْشِي, <b>a–u</b> دَعَا/يَدْعُو and <b>i–a</b> نَسِيَ/يَنْسَى.'},
+ {p:'In the <b>past</b>, the weak letter comes back before a consonant suffix: مَشَيْتُ (I walked), دَعَوْتُ (I invited). In the <b>jussive</b> (after لَمْ) and the <b>imperative</b>, the final long vowel is simply <b>cut short</b>: لَمْ يَمْشِ، لَمْ يَدْعُ، لَمْ يَنْسَ.'},
+ {key:'لَمْ / imperative → drop the final long vowel: يَمْشِي → لَمْ يَمْشِ · يَدْعُو → اُدْعُ · يَنْسَى → لَا تَنْسَ!'},
+ {table:{head:['Person','مَشَى to walk','دَعَا to invite','نَسِيَ to forget'],rows:[['هُوَ','مَشَى','دَعَا','نَسِيَ'],['هِيَ','مَشَتْ','دَعَتْ','نَسِيَتْ'],['أَنَا','مَشَيْتُ','دَعَوْتُ','نَسِيتُ'],['أَنْتَ','مَشَيْتَ','دَعَوْتَ','نَسِيتَ'],['نَحْنُ','مَشَيْنَا','دَعَوْنَا','نَسِينَا'],['هُمْ','مَشَوْا','دَعَوْا','نَسُوا']]}},
+ {table:{head:['Form','مَشَى','دَعَا','نَسِيَ'],rows:[['Present (he)','يَمْشِي','يَدْعُو','يَنْسَى'],['Present (you f)','تَمْشِينَ','تَدْعِينَ','تَنْسَيْنَ'],['Present (they m)','يَمْشُونَ','يَدْعُونَ','يَنْسَوْنَ'],['لَنْ (he)','لَنْ يَمْشِيَ','لَنْ يَدْعُوَ','لَنْ يَنْسَى'],['لَمْ (he)','لَمْ يَمْشِ','لَمْ يَدْعُ','لَمْ يَنْسَ'],['Imperative (m)','اِمْشِ','اُدْعُ','اِنْسَ'],['Imperative (f)','اِمْشِي','اُدْعِي','اِنْسَيْ'],['Imperative (pl)','اِمْشُوا','اُدْعُوا','اِنْسَوْا']]}},
+ {ex:[['أَمْشِي إِلَى الْجَامِعَةِ يَوْمِيًّا','amshī ilā l-jāmiʿati yawmiyyan','I walk to the university every day.'],['دَعَوْنَا الْأَقَارِبَ إِلَى الْعِيدِ','daʿawnā l-aqāriba ilā l-ʿīdi','We invited our relatives for the feast.'],['نَسِيتُ جَوَازَ السَّفَرِ فِي الْفُنْدُقِ','nasītu jawāza s-safari fī l-funduqi','I forgot the passport at the hotel.'],['لَمْ يَنْسَ الْمُزَارِعُ السَّمَادَ','lam yansa l-muzāriʿu s-samāda','The farmer didn’t forget the fertiliser.'],['لَا تَنْسَ كَلِمَةَ السِّرِّ','lā tansa kalimata s-sirri','Don’t forget the password!'],['لَمْ أَشْتَرِ شَيْئًا مِنَ السُّوقِ','lam ashtari shayʾan mina s-sūqi','I didn’t buy anything at the market.']]},
+ {p:'The same rules apply to derived forms you already know: أَشْتَرِي (I buy, from اِشْتَرَى) and يَنْتَهِي (it ends, from اِنْتَهَى) behave like يَمْشِي. Other common defective verbs: بَنَى/يَبْنِي (to build), بَكَى/يَبْكِي (to cry), جَرَى/يَجْرِي (to run), شَكَا/يَشْكُو (to complain), رَجَا/يَرْجُو (to hope), بَقِيَ/يَبْقَى (to stay), لَقِيَ/يَلْقَى (to meet).'}],
+ q:[{q:'“I walked” =',o:['مَشَيْتُ','مَشَوْتُ','مَشْتُ'],a:0,ex:'Root م ش ي: the ي comes back before the consonant suffix ‑tu.'},
+ {q:'“We invited” =',o:['دَعَيْنَا','دَعَوْنَا','دَعَانَا'],a:1,ex:'Root د ع و: the و comes back. (دَعَانَا = he invited us.)'},
+ {q:'“He didn’t forget” =',o:['لَمْ يَنْسَى','لَمْ يَنْسَ','لَمْ يَنْسُ'],a:1,ex:'After لَمْ the final long vowel is cut short: يَنْسَى → لَمْ يَنْسَ.'},
+ {q:'“Walk!” (to a man) =',o:['اِمْشِي','اِمْشِ','اُمْشُ'],a:1,ex:'اِمْشِ for a man; اِمْشِي (with long ī) is for a woman.'},
+ {q:'“They (m) forgot” =',o:['نَسِيُوا','نَسُوا','نَسِيَا'],a:1,ex:'نَسِيَ + ‑ū → نَسُوا. (نَسِيَا = the two of them forgot.)'}]}
 ],
 zh:[
 {id:'zh-g1',title:'了: completed action & change',tt:'了',blocks:[
