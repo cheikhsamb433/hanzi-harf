@@ -158,7 +158,20 @@ const GRAMMAR={ar:[
  {q:'“We invited” =',o:['دَعَيْنَا','دَعَوْنَا','دَعَانَا'],a:1,ex:'Root د ع و: the و comes back. (دَعَانَا = he invited us.)'},
  {q:'“He didn’t forget” =',o:['لَمْ يَنْسَى','لَمْ يَنْسَ','لَمْ يَنْسُ'],a:1,ex:'After لَمْ the final long vowel is cut short: يَنْسَى → لَمْ يَنْسَ.'},
  {q:'“Walk!” (to a man) =',o:['اِمْشِي','اِمْشِ','اُمْشُ'],a:1,ex:'اِمْشِ for a man; اِمْشِي (with long ī) is for a woman.'},
- {q:'“They (m) forgot” =',o:['نَسِيُوا','نَسُوا','نَسِيَا'],a:1,ex:'نَسِيَ + ‑ū → نَسُوا. (نَسِيَا = the two of them forgot.)'}]}
+ {q:'“They (m) forgot” =',o:['نَسِيُوا','نَسُوا','نَسِيَا'],a:1,ex:'نَسِيَ + ‑ū → نَسُوا. (نَسِيَا = the two of them forgot.)'}]},
+
+{id:'ar-g17',title:'Assimilated verbs',tt:'الْفِعْلُ الْمِثَالُ',blocks:[
+ {p:'An <b>assimilated verb</b> has و as its <b>first radical</b>: وَصَلَ (root و ص ل, to arrive), وَجَدَ (و ج د, to find), وَضَعَ (و ض ع, to put). The <b>past tense is completely regular</b>: وَصَلْتُ، وَجَدْنَا، وَضَعُوا.'},
+ {p:'In the <b>present</b>, the و <b>disappears</b> for most of these verbs: يَصِلُ (not يَوْصِلُ), يَجِدُ، يَضَعُ. Because the present stem now starts with a vowelled consonant, the <b>imperative needs no helping alif</b>: صِلْ، جِدْ، ضَعْ.'},
+ {key:'Past: regular (وَصَلْتُ). Present, لَمْ and imperative: the و drops — يَصِلُ، لَمْ يَصِلْ، صِلْ! — and the imperative has no اِ at the start.'},
+ {table:{head:['Form','وَصَلَ to arrive','وَجَدَ to find','وَضَعَ to put'],rows:[['Past (he)','وَصَلَ','وَجَدَ','وَضَعَ'],['Past (I)','وَصَلْتُ','وَجَدْتُ','وَضَعْتُ'],['Present (he)','يَصِلُ','يَجِدُ','يَضَعُ'],['Present (I)','أَصِلُ','أَجِدُ','أَضَعُ'],['Present (you f)','تَصِلِينَ','تَجِدِينَ','تَضَعِينَ'],['Present (they m)','يَصِلُونَ','يَجِدُونَ','يَضَعُونَ'],['لَمْ (he)','لَمْ يَصِلْ','لَمْ يَجِدْ','لَمْ يَضَعْ'],['Imperative (m)','صِلْ','جِدْ','ضَعْ'],['Imperative (f)','صِلِي','جِدِي','ضَعِي'],['Imperative (pl)','صِلُوا','جِدُوا','ضَعُوا']]}},
+ {ex:[['وَصَلَتِ الرِّحْلَةُ إِلَى الْمَطَارِ مُتَأَخِّرَةً','waṣalati r-riḥlatu ilā l-maṭāri mutaʾakhkhiratan','The flight arrived at the airport late.'],['لَمْ أَجِدْ جَوَازَ السَّفَرِ فِي حَقِيبَتِي','lam ajid jawāza s-safari fī ḥaqībatī','I didn’t find the passport in my bag.'],['يَضَعُ الْمُزَارِعُ السَّمَادَ فِي الْحَقْلِ','yaḍaʿu l-muzāriʿu s-samāda fī l-ḥaqli','The farmer puts fertiliser in the field.'],['ضَعِ الْقِدْرَ فِي الْمَطْبَخِ','ḍaʿi l-qidra fī l-maṭbakhi','Put the pot in the kitchen.'],['مَتَى تَصِلُ إِلَى الْجَامِعَةِ؟','matā taṣilu ilā l-jāmiʿati?','When do you get to the university?'],['وَعَدْتُ أُسْتَاذِي أَنْ أُنْهِيَ أُطْرُوحَتِي هَذَا الْعَامَ','waʿadtu ustādhī an unhiya uṭrūḥatī hādhā l-ʿāma','I promised my professor to finish my thesis this year.']]},
+ {p:'Other common assimilated verbs: وَقَفَ/يَقِفُ (to stand, to stop), وَعَدَ/يَعِدُ (to promise), وَصَفَ/يَصِفُ (to describe), وَقَعَ/يَقَعُ (to fall; to be located), وَلَدَ/يَلِدُ (to give birth). Note: in <b>derived forms</b> the و stays (أَوْصَلَ/يُوصِلُ “to give someone a lift”) — except in <b>Form VIII</b>, where it merges into the ت: from و ص ل comes اِتَّصَلَ “to contact, to call”, which you know from اِتَّصِلْ بِي. Nouns keep the و too: وُصُولٌ (arrival), مَوْعِدٌ (appointment), وَصْفَةٌ (recipe, lit. “description”).'}],
+ q:[{q:'“I arrived” =',o:['وَصَلْتُ','صِلْتُ','أَصِلُ'],a:0,ex:'The past tense of assimilated verbs is regular: وَصَلْتُ. (أَصِلُ = I arrive.)'},
+ {q:'“He arrives” =',o:['يَوْصِلُ','يَصِلُ','يُوصِلُ'],a:1,ex:'The و drops in the present: يَصِلُ. (يُوصِلُ is Form IV: “he gives someone a lift”.)'},
+ {q:'“I didn’t find” =',o:['لَمْ أَجِدْ','لَمْ أَوْجِدْ','لَمْ أَجِدُ'],a:0,ex:'لَمْ + jussive, without the و: لَمْ أَجِدْ.'},
+ {q:'“Put!” (to a man) =',o:['اِوْضَعْ','ضَعْ','تَضَعْ'],a:1,ex:'The present stem يَضَعُ has no و, so the imperative needs no helping alif: ضَعْ.'},
+ {q:'اِتَّصَلَ (to call, to contact) comes from the root:',o:['ت ص ل','و ص ل','ء ت ص'],a:1,ex:'Form VIII of و ص ل: the و merges into the ت → اِتَّصَلَ.'}]}
 ],
 zh:[
 {id:'zh-g1',title:'了: completed action & change',tt:'了',blocks:[
@@ -229,8 +242,19 @@ zh:[
  {p:'越来越 + adjective = more and more. 一边 V1 一边 V2 = doing two things at the same time.'},
  {ex:[['天气越来越热。','tiānqì yuè lái yuè rè.','The weather is getting hotter and hotter.'],['他的汉语越来越好。','tā de Hànyǔ yuè lái yuè hǎo.','His Chinese keeps getting better.'],['我一边吃饭一边看手机。','wǒ yìbiān chīfàn yìbiān kàn shǒujī.','I eat while looking at my phone.']]}],
  q:[{q:'“More and more people learn Chinese” =',o:['学汉语的人越来越多','学汉语的人越多越来','越来越学汉语的人多'],a:0,ex:'越来越 + adjective.'},
- {q:'“He listens to music while running” =',o:['他一边跑步一边听音乐','他跑步一边听音乐一边','他一边跑步听音乐'],a:0,ex:'一边 V1 一边 V2.'}]}
+ {q:'“He listens to music while running” =',o:['他一边跑步一边听音乐','他跑步一边听音乐一边','他一边跑步听音乐'],a:0,ex:'一边 V1 一边 V2.'}]},
+{id:'zh-g11',title:'Directional complements',tt:'趋向补语',blocks:[
+ {p:'After a verb, <b>来</b> shows movement <b>towards the speaker</b> and <b>去</b> movement <b>away from the speaker</b>: 进来 (come in), 进去 (go in). For more detail, add a direction word between the verb and 来/去: 上 up, 下 down, 进 in, 出 out, 回 back, 过 over, 起 up (rising).'},
+ {table:{head:['','上','下','进','出','回','过','起'],rows:[['+ 来','上来','下来','进来','出来','回来','过来','起来'],['+ 去','上去','下去','进去','出去','回去','过去','—']]}},
+ {key:'A PLACE object goes before 来/去: 走进办公室来, 回中国去 — never 回去中国.'},
+ {ex:[['经理走进办公室来了。','jīnglǐ zǒujìn bàngōngshì lái le.','The manager walked into the office.'],['他从行李箱里拿出护照来。','tā cóng xínglixiāng li náchū hùzhào lái.','He took his passport out of the suitcase.'],['请把垃圾带下去。','qǐng bǎ lājī dài xiàqu.','Please take the rubbish downstairs.'],['你什么时候回中国去？','nǐ shénme shíhou huí Zhōngguó qù?','When are you going back to China?'],['我想起来了，密码在我的手机里！','wǒ xiǎng qǐlai le, mìmǎ zài wǒ de shǒujī li!','I remember now — the password is in my phone!']]},
+ {p:'Some complements also have <b>figurative meanings</b>: 起来 = to recall (想起来) or to start (下起雨来, it started to rain); 下去 = to keep going (说下去, keep talking); 出来 = to identify (看出来, to tell by looking).'}],
+ q:[{q:'You are upstairs and call a friend downstairs to come up:',o:['上来！','上去！','下来！'],a:0,ex:'Upward movement towards you (the speaker) → 上来.'},
+ {q:'You are inside the classroom. “He walked in.” = 他走___教室___了。',o:['进 … 来','进 … 去','出 … 来'],a:0,ex:'Movement into the place where the speaker is → 进…来, with the place word in the middle.'},
+ {q:'我想___了！(Now I remember!)',o:['起来','下去','出去'],a:0,ex:'想起来 = to recall.'},
+ {q:'“Please keep talking” =',o:['请说下去','请说上来','请说出去'],a:0,ex:'下去 after a verb can mean “continue”.'},
+ {q:'Which sentence is correct?',o:['我明天回家去','我明天回去家'],a:0,ex:'A place object goes between 回 and 去: 回家去.'}]}
 ]};
 
 /* Sound (regular) Form I verbs for the conjugator: [root, past middle vowel, present middle vowel, English] */
-const VERBS=[['كتب','a','u','to write'],['درس','a','u','to study'],['ذهب','a','a','to go'],['فتح','a','a','to open'],['شرب','i','a','to drink'],['عمل','i','a','to work, to do'],['جلس','a','i','to sit'],['رجع','a','i','to return'],['فهم','i','a','to understand'],['زرع','a','a','to plant, to grow'],['حصد','a','u','to harvest'],['سمع','i','a','to hear'],['لعب','i','a','to play'],['خرج','a','u','to go out'],['دخل','a','u','to enter'],['شكر','a','u','to thank'],['نجح','a','a','to succeed'],['عرف','a','i','to know'],['طبخ','a','u','to cook'],['ركب','i','a','to ride, to board']];
+const VERBS=[['كتب','a','u','to write'],['درس','a','u','to study'],['ذهب','a','a','to go'],['فتح','a','a','to open'],['شرب','i','a','to drink'],['عمل','i','a','to work, to do'],['جلس','a','i','to sit'],['رجع','a','i','to return'],['فهم','i','a','to understand'],['زرع','a','a','to plant, to grow'],['حصد','a','u','to harvest'],['سمع','i','a','to hear'],['لعب','i','a','to play'],['خرج','a','u','to go out'],['دخل','a','u','to enter'],['شكر','a','u','to thank'],['نجح','a','a','to succeed'],['عرف','a','i','to know'],['طبخ','a','u','to cook'],['ركب','i','a','to ride, to board'],['حمل','a','i','to carry'],['غسل','a','i','to wash']];
