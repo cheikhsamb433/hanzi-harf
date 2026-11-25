@@ -1,0 +1,16 @@
+{
+  "name": "Hifz — mémoriser le Coran",
+  "short_name": "Hifz",
+  "description": "Mémoriser et comprendre le Coran : leçons du jour, rappels audio, sens, vocabulaire et grammaire.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f3ea",
+  "theme_color": "#1f4d47",
+  "lang": "fr",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

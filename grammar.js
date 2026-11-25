@@ -211,7 +211,29 @@ const GRAMMAR={ar:[
  {q:'The maṣdar of اِسْتَقْبَلَ (to welcome) is:',o:['اِسْتِقْبَالٌ','تَقْبِيلٌ','مُقَابَلَةٌ'],a:0,ex:'Form X اِسْتَفْعَلَ → اِسْتِفْعَالٌ: اِسْتِقْبَالٌ.'},
  {q:'“Thank you for your help” =',o:['شُكْرًا عَلَى تُسَاعِدُ','شُكْرًا عَلَى مُسَاعَدَتِكَ','شُكْرًا عَلَى سَاعَدْتَ'],a:1,ex:'After a preposition you need a noun: the maṣdar مُسَاعَدَةٌ (Form III) + the pronoun ‑ka.'},
  {q:'أُرِيدُ زِيَارَةَ جَدِّي has the same meaning as:',o:['أُرِيدُ أَنْ أَزُورَ جَدِّي','زُرْتُ جَدِّي','لَا أُرِيدُ أَنْ أَزُورَ جَدِّي'],a:0,ex:'Maṣdar after a verb = أَنْ + subjunctive: “I want to visit my grandfather”.'},
- {q:'اِجْتِمَاعٌ (meeting) is the maṣdar of which form?',o:['VIII','X','II'],a:0,ex:'اِجْتَمَعَ follows اِفْتَعَلَ (Form VIII) → maṣdar اِفْتِعَالٌ: اِجْتِمَاعٌ.'}]}
+ {q:'اِجْتِمَاعٌ (meeting) is the maṣdar of which form?',o:['VIII','X','II'],a:0,ex:'اِجْتَمَعَ follows اِفْتَعَلَ (Form VIII) → maṣdar اِفْتِعَالٌ: اِجْتِمَاعٌ.'}]},
+{id:'ar-q1',title:'Quranic Arabic: the dual',tt:'الْمُثَنَّى فِي الْقُرْآنِ',blocks:[
+ {p:'Arabic has a special number for <b>two</b>: the dual. Nouns end in <b>‑āni</b> (nominative) or <b>‑ayni</b> (accusative/genitive); present-tense verbs end in <b>‑āni</b>; “you two” is <b>‑kumā</b>.'},
+ {key:'Surat Ar-Rahman speaks to two kinds of beings — humans and jinn — so its refrain is in the dual: رَبِّكُمَا تُكَذِّبَانِ.'},
+ {ex:[['فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ','fa-bi-ayyi ālāʾi rabbikumā tukadhdhibān','So which of the favours of your (two) Lord would you two deny? (55:13)'],['جَنَّتَانِ','jannatāni','two gardens (55:46)'],['عَيْنَانِ','ʿaynāni','two springs (55:50)'],['رَبُّ الْمَشْرِقَيْنِ','rabbu l-mashriqayni','Lord of the two easts (55:17)']]}],
+ q:[{q:'جَنَّتَانِ means…',o:['two gardens','gardens','a garden'],a:0,ex:'‑āni marks the dual.'},
+ {q:'In رَبِّكُمَا, ‑كُمَا means…',o:['your (two)','your (plural)','their (two)'],a:0,ex:'Second-person dual pronoun.'},
+ {q:'Why is the refrain of Ar-Rahman in the dual?',o:['It addresses humans and jinn','It addresses two prophets','It is only poetic style'],a:0,ex:'See 55:33: “O company of jinn and mankind”.'}]},
+{id:'ar-q2',title:'Verb forms in the Qur’an (II, IV, X)',tt:'أَوْزَانُ الْفِعْلِ فِي الْقُرْآنِ',blocks:[
+ {p:'Derived verb forms add meaning to a root. <b>Form II</b> (faʿʿala) is often causative/intensive, <b>Form IV</b> (afʿala) causative, <b>Form X</b> (istafʿala) often “to ask for”.'},
+ {table:{head:['Form','Example','Meaning'],rows:[['I','نَزَلَ','to come down'],['II','نَزَّلَ / عَلَّمَ','to send down (gradually) / to teach'],['IV','أَنْزَلَ','to send down, reveal'],['X','اسْتَغْفَرَ','to ask forgiveness (from غَفَرَ to forgive)']]}},
+ {key:'است‑ at the start of a verb = Form X, often “to seek / ask for”: غَفَرَ forgive → اسْتَغْفَرَ ask forgiveness.'},
+ {ex:[['عَلَّمَ الْقُرْآنَ','ʿallama l-qurʾān','He taught the Qur’an. (55:2, Form II)'],['هُوَ الَّذِي أَنْزَلَ السَّكِينَةَ','huwa lladhī anzala s-sakīna','It is He who sent down tranquillity. (48:4, Form IV)'],['فَاسْتَغْفِرْ لَنَا','fa-staghfir lanā','So ask forgiveness for us. (48:11, Form X)']]}],
+ q:[{q:'اسْتَغْفَرَ is Form…',o:['X','IV','II'],a:0,ex:'Pattern istafʿala.'},
+ {q:'أَنْزَلَ is Form…',o:['IV','I','X'],a:0,ex:'Pattern afʿala: “to make come down”.'},
+ {q:'عَلَّمَ (to teach) comes from عَلِمَ (to know). Its form is…',o:['II','III','V'],a:0,ex:'Doubled middle letter = Form II.'}]},
+{id:'ar-q3',title:'Reading Quranic script',tt:'الرَّسْمُ الْعُثْمَانِيُّ',blocks:[
+ {p:'The Mushaf uses signs that everyday Arabic does not. Knowing them prevents recitation mistakes.'},
+ {table:{head:['Sign','Name','How to read'],rows:[['ٱ','waṣla','silent alif when words are joined'],['ـٰ','dagger alif','long ā: ٱلرَّحْمَٰن = ar-Raḥmān'],['ـۥ ـۦ','small wāw / yāʾ','lengthen: رَحْمَتِهِۦ = raḥmatihī'],['ـۢ','small mīm (iqlāb)','n is pronounced m before ب'],['ـٓ','madda','lengthen 4–6 counts']]}},
+ {key:'A dagger alif (ـٰ) is always read as a long ā, even though no full alif is written.'},
+ {ex:[['ٱلرَّحْمَٰنُ','ar-raḥmānu','the Most Merciful (55:1)'],['تَبَٰرَكَ','tabāraka','blessed is (67:1)'],['بِسْمِ ٱللَّهِ','bismi llāhi','in the name of Allah — the alif of ٱللَّه is silent']]}],
+ q:[{q:'How is ٱلرَّحْمَٰنُ read?',o:['ar-raḥmānu','al-raḥmanu','ar-raḥmanu'],a:0,ex:'ر is a sun letter; the dagger alif gives ā.'},
+ {q:'The sign ٱ means…',o:['silent alif in connected speech','a long ā','a hamza you must pronounce'],a:0,ex:'Hamzat al-waṣl.'}]}
 ],
 zh:[
 {id:'zh-g1',title:'了: completed action & change',tt:'了',blocks:[

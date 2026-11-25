@@ -233,7 +233,7 @@ function render(){
  else main=viewMe();
  app.innerHTML=`<div class="top"><div class="brand">Hanzi <span>&</span> Harf</div>
  <div class="seg"><button class="${P.lang==='zh'?'on':''}" onclick="setLang('zh')"><span class="zh">中文</span></button><button class="${P.lang==='ar'?'on':''}" onclick="setLang('ar')"><span class="arf">العربية</span></button></div></div>
- <main>${main}</main>
+ <main>${P.lang==='ar'&&S.tab==='course'?'<a href="quran/" style="display:block;margin:0 0 12px;padding:12px 14px;border-radius:12px;background:#1f4d47;color:#fff;text-decoration:none;font-weight:600">Hifz — Quran memorisation app (French) →</a>':''}${main}</main>
  <nav class="tabs"><div>${[['course','Learn'],['stories','Stories'],['review','Review'],['tools',P.lang==='zh'?'Tools':'Alphabet'],['me','Profile']].map(([k,n])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')">${ICON[k]}${n}</button>`).join('')}</div></nav>
  ${S.modal?`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="sheet">${S.modal}</div></div>`:''}`;
  after();

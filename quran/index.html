@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f4d47">
+<title>Hifz — Coran</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Amiri Quran';src:url(fonts/amiri-quran.woff2) format('woff2');font-display:block}
+:root{--bg:#f6f3ea;--card:#fffdf8;--ink:#1d2018;--mute:#6b6a60;--line:#e3ddcc;--pri:#1f4d47;--pri2:#e4efe9;--gold:#8a6a1f;--gold2:#f3ead3;--bad:#a23b2a;--ok:#2f6b3a;--ar:30px}
+@media(prefers-color-scheme:dark){:root{--bg:#121411;--card:#1b1e1a;--ink:#ecebe4;--mute:#a3a296;--line:#30342d;--pri:#7fc1b3;--pri2:#203530;--gold:#d8b45f;--gold2:#2e2818;--bad:#e2806e;--ok:#8fcf98}}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 'Source Sans 3',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+body.playing main{padding-bottom:170px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 16px 8px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+header h1{font-size:19px;margin:0;flex:1}header .ar{font-family:'Amiri Quran',serif;font-size:22px;color:var(--gold)}
+.streak{font-size:14px;color:var(--mute)}
+main{max-width:760px;margin:0 auto;padding:14px 14px 90px}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav a{flex:1;text-align:center;padding:8px 2px 9px;font-size:12.5px;color:var(--mute);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav a svg{width:22px;height:22px}nav a.on{color:var(--pri);font-weight:700}
+h2{font-size:22px;margin:18px 0 8px;line-height:1.2}h3{font-size:18px;margin:16px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card.hi{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri2)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+.mute{color:var(--mute)}.small{font-size:14px}
+button,.btn{font:inherit;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:10px 14px;min-height:44px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.pri,button.pri{background:var(--pri);border-color:var(--pri);color:#fff}
+@media(prefers-color-scheme:dark){.btn.pri,button.pri{color:#0d1a17}}
+button.big{width:100%;font-size:18px;padding:14px;font-weight:700}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.chip{display:inline-block;font-size:13px;padding:3px 9px;border-radius:99px;background:var(--pri2);color:var(--pri);font-weight:600}
+.chip.g{background:var(--gold2);color:var(--gold)}.chip.m{background:transparent;border:1px solid var(--line);color:var(--mute)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri)}
+.ayah{padding:14px 2px;border-bottom:1px solid var(--line)}
+.ayah.cur{background:var(--gold2);border-radius:10px}
+.artext{font-family:'Amiri Quran','Scheherazade New',serif;font-size:var(--ar);line-height:2.15;direction:rtl;text-align:right;word-spacing:4px}
+.artext .w{cursor:pointer;border-radius:6px;padding:0 1px}.artext .w:active,.artext .w.sel{background:var(--pri2)}
+.artext .w.hid{color:transparent;background:repeating-linear-gradient(90deg,var(--line) 0 100%);border-radius:6px}
+.artext .w.hint{color:var(--line)}
+.num{font-family:'Amiri Quran',serif;color:var(--gold);font-size:.8em;margin:0 4px}
+.tr{font-style:italic;color:var(--mute);font-size:15px;margin-top:4px}
+.fr{margin-top:6px}
+.key{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:4px;text-decoration-thickness:2px}
+.keybox{border-left:4px solid var(--gold);background:var(--gold2);padding:10px 12px;border-radius:0 10px 10px 0;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:8px 0}td,th{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+td.a,th.a{font-family:'Amiri Quran',serif;font-size:22px;direction:rtl;text-align:right;white-space:nowrap}
+.tabs{display:flex;gap:6px;margin:10px 0;overflow-x:auto}.tabs button{flex:1;white-space:nowrap}.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+@media(prefers-color-scheme:dark){.tabs button.on{color:#0d1a17}}
+#player{position:fixed;left:8px;right:8px;bottom:calc(66px + env(safe-area-inset-bottom));z-index:7;background:var(--pri);color:#fff;border-radius:14px;padding:10px 12px;display:none;align-items:center;gap:10px;box-shadow:0 6px 24px #0004}
+@media(prefers-color-scheme:dark){#player{color:#0d1a17}}
+#player.on{display:flex}#player .t{flex:1;font-size:14px;line-height:1.3}#player button{background:transparent;color:inherit;border-color:currentColor;min-height:40px;padding:6px 12px}
+#sheet{position:fixed;inset:0;z-index:9;background:#0006;display:none;align-items:flex-end}
+#sheet.on{display:flex}#sheet .in{background:var(--card);width:100%;max-height:82vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));max-width:760px;margin:0 auto}
+.bigar{font-family:'Amiri Quran',serif;font-size:44px;direction:rtl;text-align:center;line-height:1.8}
+.seg{border-top:1px dashed var(--line);padding:8px 0}.seg b.a{font-family:'Amiri Quran',serif;font-size:24px;font-weight:400}
+.banner{background:var(--gold);color:#fff;border-radius:14px;padding:14px;margin:8px 0}
+@media(prefers-color-scheme:dark){.banner{color:#1b1607}}
+.banner button{background:#fff;color:#1d2018;border:0;font-weight:700}
+.slots{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.slot{font-size:14px;padding:4px 10px;border-radius:9px;border:1px solid var(--line)}.slot.done{background:var(--pri2);color:var(--pri);border-color:transparent;font-weight:700}
+label.f{display:block;margin:12px 0 4px;font-weight:600}
+input,select,textarea{font:inherit;font-size:16px;padding:9px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+input[type=range]{padding:0}
+.flash{text-align:center;padding:26px 12px}
+.list a{display:flex;gap:10px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.list .arn{font-family:'Amiri Quran',serif;font-size:24px;color:var(--gold)}
+.st{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none;border:2px solid var(--line)}
+.st.ok{background:var(--pri);border-color:var(--pri);color:#fff}.st.td{border-color:var(--gold);color:var(--gold)}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}.opt.r{background:var(--pri2);border-color:var(--pri)}.opt.x{background:#a23b2a22;border-color:var(--bad)}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.rate button{font-weight:700}
+.rate .r0{color:var(--bad)}.rate .r2{color:var(--ok)}
+@media(prefers-reduced-motion:no-preference){.ayah.cur{transition:background .3s}}
+</style>
+</head>
+<body>
+<header><h1>Hifz <span class="mute small">· mémoriser le Coran</span></h1><span class="streak" id="streak"></span><span class="ar">حِفْظ</span></header>
+<main id="view"><p class="mute">Chargement…</p></main>
+<div id="player"><div class="t" id="ptext"></div><button id="ppause">Pause</button><button id="pstop">Arrêter</button></div>
+<div id="sheet"><div class="in" id="sheetin"></div></div>
+<nav id="nav">
+<a href="#today" data-v="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Aujourd’hui</a>
+<a href="#surahs" data-v="surahs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"/></svg>Sourates</a>
+<a href="#vocab" data-v="vocab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg>Vocabulaire</a>
+<a href="#grammar" data-v="grammar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19l5-14 5 14M7 14h6M17 9v10"/></svg>Grammaire</a>
+<a href="#settings" data-v="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M5.6 18.4l2-2M16.4 7.6l2-2"/></svg>Réglages</a>
+</nav>
+<script src="grammar-fr.js"></script>
+<script>
+{
+/* ---------- état ---------- */
+const DEF={reps:5,ayahRep:1,reciter:'murattal',times:['07:00','13:00','18:00','22:00'],perDay:1,size:30,showTr:true,showFr:true,autoplay:true,gap:700};
+let S;try{S=JSON.parse(localStorage.getItem('hifz-state')||'null')}catch(e){S=null}
+S=S||{};S.set=Object.assign({},DEF,S.set||{});S.learned=S.learned||{};S.vocab=S.vocab||{};S.days=S.days||{};S.gram=S.gram||{};
+const save=()=>{try{localStorage.setItem('hifz-state',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(3,'0');
+const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const addDays=(n)=>{const d=new Date();d.setDate(d.getDate()+n);return dkey(d)};
+const AR_DIG=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+document.documentElement.style.setProperty('--ar',S.set.size+'px');
+
+/* ---------- données ---------- */
+let IDX,GL={};const SUR={};
+const getS=async n=>SUR[n]||(SUR[n]=await (await fetch('data/s'+pad(n)+'.json')).json());
+const sInfo=n=>IDX.surahs[n-1];
+const lessonKey=(s,j)=>s+':'+j;
+const isWord=t=>/[ء-يٱ]/.test(t);
+function globalAyah(s,a){let g=0;for(let i=1;i<s;i++)g+=IDX.surahs[i-1].count;return g+a}
+
+/* ---------- grammaire automatique (morphologie) ---------- */
+const PART={P:'préposition',CONJ:'conjonction de coordination',REM:'particule de reprise',CIRC:'wâw circonstanciel (ḥâl)',RSLT:'fâ’ de conséquence',CAUS:'particule de cause',SUP:'particule explétive (insistance)',ACC:'particule « inna et ses sœurs » (nom suivant à l’accusatif)',NEG:'particule de négation',PRO:'particule de prohibition',INTG:'particule interrogative',VOC:'particule vocative',EMPH:'particule d’insistance',CERT:'particule de certitude (qad)',COND:'particule conditionnelle',FUT:'particule du futur',SUB:'particule subordonnante',RES:'particule de restriction',EXP:'particule d’exception',RET:'particule de rétractation',ANS:'particule de réponse',AMD:'particule de correction',INC:'particule inchoative',SUR:'particule de surprise',AVR:'particule de dissuasion',EXH:'particule d’exhortation',INL:'lettres isolées (muqaṭṭaʿât)',EQ:'particule d’équivalence',EXL:'particule explicative',ATT:'particule d’attention',PREV:'particule « kâffa »',PRP:'lâm de but',IMPV:'lâm de l’impératif',INT:'particule d’interprétation',COM:'wâw d’accompagnement',DET:'article défini',T:'adverbe de temps',LOC:'adverbe de lieu',DIST:'lâm d’éloignement',ADDR:'kâf d’adresse'};
+const ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+const CASE={NOM:'nominatif (marfûʿ)',ACC:'accusatif (manṣûb)',GEN:'génitif (majrûr)'};
+const MOOD={IND:'indicatif',SUBJ:'subjonctif (manṣûb)',JUS:'apocopé (majzûm)'};
+const PRONG={'1S':'moi / mon','1P':'nous / notre','2MS':'toi / ton','2FS':'toi (f.) / ton','2MP':'vous / votre','2FP':'vous (f.)','2D':'vous deux','2MD':'vous deux','3MS':'lui / son','3FS':'elle / sa','3MP':'eux / leur','3FP':'elles / leur','3D':'eux deux','3MD':'eux deux','3FD':'elles deux'};
+function pgn(t){const m=/^([123])?([MF])?([SDP])?$/.exec(t);if(!m||!t)return '';const p={1:'1re pers.',2:'2e pers.',3:'3e pers.'}[m[1]]||'';const g={M:'masc.',F:'fém.'}[m[2]]||'';const n={S:'sing.',D:'duel',P:'plur.'}[m[3]]||'';return [p,g,n].filter(Boolean).join(' ')}
+function parseSeg(s){const p=s.split('|');const form=p[0],pos=p[1],tags=p.slice(2),f={};const flags=[];for(const t of tags){const i=t.indexOf(':');if(i>0)f[t.slice(0,i)]=t.slice(i+1);else flags.push(t)}return {form,pos,f,flags}}
+function segDesc(sg){const {pos,f,flags}=sg;const has=x=>flags.includes(x);const pg=flags.map(pgn).find(Boolean)||'';
+ if(pos==='P'){const k=flags.find(x=>PART[x]);let d=k?PART[k]:'particule';return d}
+ if(pos==='V'){let d='Verbe';if(f.VF)d+=' (forme '+ROM[+f.VF]+')';d+=has('PERF')?', accompli':has('IMPF')?', inaccompli':has('IMPV')?', impératif':'';if(has('PASS'))d+=', passif';if(pg)d+=', '+pg;if(f.MOOD&&f.MOOD!=='IND')d+=', '+MOOD[f.MOOD];return d}
+ let d;if(has('PRON'))d=has('SUFF')?'Pronom suffixe ('+(PRONG[flags.find(x=>PRONG[x])]||pg)+')':'Pronom personnel'+(pg?' ('+pg+')':'');
+ else if(has('DEM'))d='Démonstratif';else if(has('REL'))d='Pronom relatif';else if(has('PN'))d='Nom propre';else if(has('ACT_PCPL'))d='Participe actif'+(f.VF?' (forme '+ROM[+f.VF]+')':'');else if(has('PASS_PCPL'))d='Participe passif'+(f.VF?' (forme '+ROM[+f.VF]+')':'');else if(has('VN'))d='Nom verbal (maṣdar)'+(f.VF?' (forme '+ROM[+f.VF]+')':'');else if(has('ADJ'))d='Adjectif';else if(has('T'))d='Adverbe de temps';else if(has('LOC'))d='Adverbe de lieu';else if(has('INTG'))d='Nom interrogatif';else if(has('COND'))d='Nom conditionnel';else d='Nom';
+ if(!has('PRON')&&pg)d+=', '+pg;if(has('INDEF'))d+=', indéfini';const c=flags.find(x=>CASE[x]);if(c)d+=', '+CASE[c];return d}
+function wordInfo(segs){const S2=segs.map(parseSeg);const hasDet=S2.some(s=>s.flags.includes('DET'));const parts=[];let root='',lem='',lemKey='',main=null;
+ for(const s of S2){if(s.flags.includes('DET'))continue;if(s.f.LEM){const k=s.f.LEM+'/'+s.pos;const g=GL[k];if(!main&&(s.pos!=='P'))main=s;if(g)parts.push(g.split(' ; ')[0]);else if(s.pos!=='P')parts.push('« '+s.f.LEM+' »')}
+  else if(s.flags.includes('PRON')){const k=s.flags.find(x=>PRONG[x]);if(k)parts.push('+ '+PRONG[k].split(' / ')[0])}}
+ if(main){root=main.f.ROOT||'';lem=main.f.LEM||'';lemKey=lem+'/'+main.pos}
+ return {segs:S2,gloss:parts.join(' · '),root,lem,lemKey,main,def:hasDet}}
+
+/* ---------- planning ---------- */
+function* allLessons(){for(const s of IDX.order){const n=sInfo(s).lessons;for(let j=0;j<n;j++)yield [s,j]}}
+function ensureToday(){const d=dkey();if(!S.today||S.today.date!==d){const keys=[];for(const [s,j] of allLessons()){const k=lessonKey(s,j);if(!S.learned[k]){keys.push(k);if(keys.length>=S.set.perDay)break}}S.today={date:d,keys,slots:{}};save()}
+ /* si la leçon d'aujourd'hui est apprise et l'utilisateur veut avancer, rien ne change : 1 nouvelle leçon/jour */}
+function dueLessons(){const t=dkey();return Object.entries(S.learned).filter(([k,v])=>v.due<=t&&!S.today.keys.includes(k)).sort((a,b)=>a[1].due<b[1].due?-1:1).map(x=>x[0])}
+function dueVocab(){const t=dkey();return Object.entries(S.vocab).filter(([k,v])=>v.due<=t).map(x=>x[0])}
+function sched(it,r){it.reps=(it.reps||0)+1;it.ease=it.ease||2.3;if(r===0){it.int=1;it.ease=Math.max(1.3,it.ease-0.2);it.lapses=(it.lapses||0)+1}else if(r===1){it.int=Math.max(1,Math.round((it.int||1)*1.2));it.ease=Math.max(1.3,it.ease-0.05)}else{it.int=it.int?Math.max(it.int+1,Math.round(it.int*it.ease)):2;it.ease+=0.05}it.due=addDays(it.int);return it}
+function touchDay(){const d=dkey();S.days[d]=S.days[d]||{a:0};S.days[d].a++;save();streak()}
+function streak(){let n=0;const d=new Date();if(!S.days[dkey(d)])d.setDate(d.getDate()-1);while(S.days[dkey(d)]){n++;d.setDate(d.getDate()-1)}$('#streak').textContent=n?n+' j de suite':''}
+async function lessonRange(k){const [s,j]=k.split(':').map(Number);const d=await getS(s);return {s,j,a1:d.lessons[j][0],a2:d.lessons[j][1],d}}
+function sectionFor(d,a){return (d.sections||[]).find(x=>a>=x[0]&&a<=x[1])}
+
+/* ---------- lecteur audio ---------- */
+const P={q:[],i:0,on:false,label:'',onEnd:null,el:new Audio(),pre:new Audio(),tried:false};
+P.el.preload='auto';
+function url(s,a,fb){if(fb)return 'https://cdn.islamic.network/quran/audio/128/ar.husary/'+globalAyah(s,a)+'.mp3';const dir=S.set.reciter==='muallim'?'Husary_Muallim_128kbps':'Husary_128kbps';return 'https://everyayah.com/data/'+dir+'/'+pad(s)+pad(a)+'.mp3'}
+async function buildQueue(keys,reps){const q=[];const one=[];for(const k of keys){const r=await lessonRange(k);if(r.a1===1&&r.s!==1&&r.s!==9)one.push({s:1,a:1,bas:true,src:r.s});for(let a=r.a1;a<=r.a2;a++)for(let x=0;x<S.set.ayahRep;x++)one.push({s:r.s,a})}
+ for(let r=1;r<=reps;r++)for(const it of one)q.push(Object.assign({rep:r,of:reps},it));return q}
+function play(q,label,onEnd){P.q=q;P.i=0;P.on=true;P.label=label;P.onEnd=onEnd||null;$('#player').classList.add('on');document.body.classList.add('playing');step()}
+function step(){if(!P.on)return;if(P.i>=P.q.length){const cb=P.onEnd;stopP();if(cb)cb();return}const it=P.q[P.i];P.tried=false;P.el.src=url(it.s,it.a);
+ const p=P.el.play();if(p&&p.catch)p.catch(e=>{if(e.name==='NotAllowedError'){P.on=false;$('#ptext').textContent='Touchez « Reprendre » pour lancer l’audio';$('#ppause').textContent='Reprendre';P.blocked=true}});
+ const nx=P.q[P.i+1];if(nx){P.pre.src=url(nx.s,nx.a);P.pre.preload='auto'}
+ const name=it.bas?'Basmala':sInfo(it.s).name+' '+it.s+':'+it.a;$('#ptext').innerHTML=esc(P.label)+'<br><b>'+esc(name)+'</b> · répétition '+it.rep+'/'+it.of;$('#ppause').textContent='Pause';
+ document.querySelectorAll('.ayah.cur').forEach(e=>e.classList.remove('cur'));const el=document.getElementById('ay-'+it.s+'-'+it.a);if(el){el.classList.add('cur');el.scrollIntoView({block:'center',behavior:'smooth'})}
+ if('mediaSession' in navigator){try{navigator.mediaSession.metadata=new MediaMetadata({title:name+' ('+it.rep+'/'+it.of+')',artist:'Mahmoud Khalil Al-Husary',album:P.label})}catch(e){}}}
+P.el.addEventListener('ended',()=>{P.i++;setTimeout(step,S.set.gap)});
+P.el.addEventListener('error',()=>{if(!P.on)return;const it=P.q[P.i];if(!P.tried&&!it.bas){P.tried=true;P.el.src=url(it.s,it.a,true);P.el.play().catch(()=>{})}else{P.i++;step()}});
+function stopP(){P.on=false;P.el.pause();P.q=[];$('#player').classList.remove('on');document.body.classList.remove('playing');document.querySelectorAll('.ayah.cur').forEach(e=>e.classList.remove('cur'))}
+$('#pstop').onclick=stopP;
+$('#ppause').onclick=()=>{if(P.blocked){P.blocked=false;P.on=true;step();return}if(P.el.paused){P.el.play();$('#ppause').textContent='Pause'}else{P.el.pause();$('#ppause').textContent='Lecture'}};
+if('mediaSession' in navigator){try{navigator.mediaSession.setActionHandler('pause',()=>P.el.pause());navigator.mediaSession.setActionHandler('play',()=>P.el.play());navigator.mediaSession.setActionHandler('stop',stopP);navigator.mediaSession.setActionHandler('nexttrack',()=>{P.i++;step()})}catch(e){}}
+async function playLessons(keys,reps,label,onEnd){play(await buildQueue(keys,reps),label,onEnd)}
+async function playAyah(s,a,times){const q=[];for(let r=1;r<=times;r++)q.push({s,a,rep:r,of:times});play(q,'Écoute du verset')}
+
+/* ---------- rappels ---------- */
+function slotsState(){const now=new Date();const hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');const t=S.set.times.filter(Boolean).slice().sort();const passed=t.filter(x=>x<=hm);const pending=passed.filter(x=>!S.today.slots[x]);const next=t.find(x=>x>hm);return {t,pending:pending[pending.length-1],next}}
+async function startReminder(slot){if(!S.today.keys.length)return;await playLessons(S.today.keys,S.set.reps,'Rappel de '+slot+' — leçon du jour',()=>{S.today.slots[slot]=1;touchDay();save();if(location.hash===''||location.hash==='#today')render()})}
+let autoTried={};
+function checkReminder(){if(!IDX)return;ensureToday();const st=slotsState();if(st.pending&&!P.on&&S.set.autoplay&&!autoTried[S.today.date+st.pending]){autoTried[S.today.date+st.pending]=1;startReminder(st.pending)}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){checkReminder();if(location.hash===''||location.hash==='#today')render()}});
+setInterval(checkReminder,30000);
+
+/* ---------- vues ---------- */
+const V=$('#view');
+function setNav(v){document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v))}
+async function render(){const h=(location.hash||'#today').slice(1);window.scrollTo(0,0);
+ let m;
+ if(h==='today'){setNav('today');return vToday()}
+ if(h==='surahs'){setNav('surahs');return vSurahs()}
+ if(m=/^surah-(\d+)$/.exec(h)){setNav('surahs');return vSurah(+m[1])}
+ if(m=/^lesson-(\d+)-(\d+)(?:-(\w+))?$/.exec(h)){setNav('surahs');return vLesson(+m[1],+m[2],m[3]||'comprendre')}
+ if(h==='review'){setNav('today');return vReview()}
+ if(h==='vocab'){setNav('vocab');return vVocab()}
+ if(h==='flash'){setNav('vocab');return vFlash()}
+ if(h==='grammar'){setNav('grammar');return vGrammar()}
+ if(m=/^g-(\w+)$/.exec(h)){setNav('grammar');return vGLesson(m[1])}
+ if(h==='settings'){setNav('settings');return vSettings()}
+ location.hash='#today'}
+
+async function lessonCard(k,today){const r=await lessonRange(k);const info=sInfo(r.s);const sec=sectionFor(r.d,r.a1);const done=!!S.learned[k];
+ return `<div class="card ${today&&!done?'hi':''}"><div class="row"><span class="chip">${today?'Leçon du jour':'Leçon'}</span>${done?'<span class="chip g">apprise ✓</span>':''}<span class="sp"></span><span class="arn" style="font-family:'Amiri Quran';font-size:24px;color:var(--gold)">${esc(info.ar)}</span></div>
+ <h3 style="margin:8px 0 2px">${esc(info.name)} · versets ${r.a1}${r.a2>r.a1?'–'+r.a2:''}</h3><div class="mute small">Leçon ${r.j+1}/${info.lessons}${sec?' · '+esc(sec[2]):''}</div>
+ <div class="row" style="margin-top:10px"><a class="btn pri" href="#lesson-${r.s}-${r.j}">Ouvrir la leçon</a><button data-play="${k}">Écouter ×${S.set.reps}</button></div></div>`}
+function bindPlay(){V.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>playLessons(b.dataset.play.split(','),S.set.reps,'Leçon du jour'))}
+
+async function vToday(){ensureToday();const st=slotsState();const due=dueLessons(),dv=dueVocab();
+ const pr=IDX.priority.map(s=>{const n=sInfo(s).lessons;let l=0;for(let j=0;j<n;j++)if(S.learned[lessonKey(s,j)])l++;return {s,n,l}});const tot=pr.reduce((a,b)=>a+b.n,0),lt=pr.reduce((a,b)=>a+b.l,0);
+ let h=`<h2>${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</h2>`;
+ if(st.pending&&!P.on&&S.today.keys.length)h+=`<div class="banner"><b>Rappel de ${st.pending}</b><div class="small">Écoutez la leçon du jour ${S.set.reps} fois, sans rien faire d’autre que répéter avec le récitateur.</div><button class="big" id="remgo" style="margin-top:10px">▶ Écouter maintenant (×${S.set.reps})</button></div>`;
+ h+=`<div class="card"><div class="row"><b>Rappels audio du jour</b><span class="sp"></span><span class="mute small">${st.next?'prochain : '+st.next:'terminés pour aujourd’hui'}</span></div><div class="slots">${st.t.map(x=>`<span class="slot ${S.today.slots[x]?'done':''}">${x}${S.today.slots[x]?' ✓':''}</span>`).join('')}</div></div>`;
+ if(!S.today.keys.length)h+=`<div class="card">Programme terminé — bravo ! Toutes les leçons sont apprises.</div>`;
+ for(const k of S.today.keys)h+=await lessonCard(k,true);
+ h+=`<div class="card"><div class="row"><b>Révisions des leçons</b><span class="sp"></span><span class="chip ${due.length?'g':'m'}">${due.length} à réviser</span></div><p class="small mute" style="margin:6px 0">Récitez de mémoire, puis notez-vous honnêtement : ce que vous oubliez revient plus vite.</p>${due.length?'<a class="btn pri" href="#review">Réviser maintenant</a>':''}</div>`;
+ h+=`<div class="card"><div class="row"><b>Vocabulaire coranique</b><span class="sp"></span><span class="chip ${dv.length?'g':'m'}">${dv.length} mots à revoir</span></div>${dv.length?'<a class="btn" href="#flash" style="margin-top:8px">Réviser les mots</a>':'<p class="small mute" style="margin:6px 0">Les mots de chaque leçon apprise arrivent ici automatiquement.</p>'}</div>`;
+ h+=`<h3>Programme prioritaire · ${lt}/${tot} leçons</h3>`+pr.map(p=>`<a href="#surah-${p.s}" style="color:inherit;text-decoration:none"><div class="row small" style="margin:8px 0 3px"><b>${esc(sInfo(p.s).name)}</b><span class="mute">${esc(sInfo(p.s).frn)}</span><span class="sp"></span>${p.l}/${p.n}</div><div class="bar"><i style="width:${p.n?100*p.l/p.n:0}%"></i></div></a>`).join('');
+ V.innerHTML=h;bindPlay();const rg=$('#remgo');if(rg)rg.onclick=()=>startReminder(st.pending)}
+
+function vSurahs(){const pri=IDX.priority,rest=IDX.order.filter(s=>!pri.includes(s));const row=s=>{const i=sInfo(s);let l=0;for(let j=0;j<i.lessons;j++)if(S.learned[lessonKey(s,j)])l++;return `<a href="#surah-${s}"><span class="st ${l===i.lessons?'ok':l?'td':''}">${l===i.lessons?'✓':s}</span><span class="sp"><b>${esc(i.name)}</b> <span class="mute small">${esc(i.frn)}</span><br><span class="small mute">${i.count} versets · ${i.place} · ${l}/${i.lessons} leçons</span></span><span class="arn">${esc(i.ar)}</span></a>`};
+ V.innerHTML=`<h2>Programme prioritaire</h2><div class="list">${pri.map(row).join('')}</div><h2>Ensuite</h2><p class="small mute">Al-Fâtiha et Yâ-Sîn, puis les sourates de la plus courte à la plus longue.</p><div class="list">${rest.map(row).join('')}</div>`}
+
+async function vSurah(s){const d=await getS(s),i=sInfo(s);let h=`<p><a href="#surahs">← Sourates</a></p><div class="row"><h2 class="sp">${esc(d.name)} <span class="mute small">${esc(d.frn)}</span></h2><span style="font-family:'Amiri Quran';font-size:30px;color:var(--gold)">${esc(d.ar)}</span></div><div class="mute small">Sourate ${s} · ${d.count} versets · ${d.place}</div>`;
+ if(d.intro)h+=`<div class="card">${esc(d.intro)}</div>`;
+ h+=`<div class="row"><button id="allplay">▶ Écouter toute la sourate</button></div>`;
+ if(d.sections){h+=`<h3>Plan de la sourate</h3>`+d.sections.map(x=>`<div class="card"><b>${x[0]}–${x[1]} · ${esc(x[2])}</b><div class="small" style="margin-top:4px">${esc(x[3])}</div></div>`).join('')}
+ h+=`<h3>Leçons</h3><div class="list">`+d.lessons.map((l,j)=>{const k=lessonKey(s,j);const ok=S.learned[k],td=S.today.keys.includes(k);return `<a href="#lesson-${s}-${j}"><span class="st ${ok?'ok':td?'td':''}">${ok?'✓':j+1}</span><span class="sp">Versets ${l[0]}${l[1]>l[0]?'–'+l[1]:''}${td?' <span class="chip g">aujourd’hui</span>':''}<br><span class="small mute" dir="rtl" style="font-family:'Amiri Quran';font-size:18px">${esc(d.ayahs[l[0]-1].t.split(' ').slice(0,5).join(' '))}…</span></span>${ok?'<span class="small mute">révision '+esc(ok.due.slice(5))+'</span>':''}</a>`}).join('')+'</div>';
+ V.innerHTML=h;$('#allplay').onclick=()=>{const q=[];if(s!==1&&s!==9)q.push({s:1,a:1,bas:true,rep:1,of:1});for(let a=1;a<=d.count;a++)q.push({s,a,rep:1,of:1});play(q,d.name+' — sourate complète')}}
+
+function ayahHTML(s,a,ay,mode,level){const toks=ay.t.split(' ');let wi=0;const words=toks.map(t=>{if(!isWord(t))return `<span>${esc(t)}</span>`;wi++;let cls='w';if(mode==='mask'){if(level===3||(level===1&&wi%2===0))cls+=' hid';}return `<span class="${cls}" data-w="${s}:${a}:${wi}">${esc(level===2&&mode==='mask'?firstLetters(t):t)}</span>`}).join(' ');
+ return `<div class="ayah" id="ay-${s}-${a}"><div class="artext">${words} <span class="num">﴿${AR_DIG(a)}﴾</span></div>${mode!=='mask'&&mode!=='recite'?`${S.set.showTr?`<div class="tr">${esc(ay.tr)}</div>`:''}${S.set.showFr?`<div class="fr">${esc(ay.fr)}</div>`:''}`:''}
+ <div class="row" style="margin-top:6px"><button class="small" data-pa="${s}:${a}">▶ ×3</button>${mode==='comprendre'?`<button class="small" data-wbw="${s}:${a}">Mot à mot</button>`:''}${mode==='recite'?`<button class="small" data-rev="${s}:${a}">Révéler</button>`:''}</div><div class="wbw" id="wbw-${s}-${a}"></div></div>`}
+function firstLetters(t){const m=t.match(/^[^ء-يٱ]*[ء-يٱ][ً-ْٰٕۡٔ]*/);return m?m[0]+'…':t}
+
+let curMask=0;
+async function vLesson(s,j,mode){const d=await getS(s),i=sInfo(s);if(!d.lessons[j]){location.hash='#surah-'+s;return}const [a1,a2]=d.lessons[j];const k=lessonKey(s,j);const sec=sectionFor(d,a1);const learned=S.learned[k];
+ let h=`<p><a href="#surah-${s}">← ${esc(d.name)}</a></p><div class="row"><h2 class="sp" style="margin:4px 0">${esc(d.name)} · ${a1}${a2>a1?'–'+a2:''}</h2><span class="chip">${j+1}/${d.lessons.length}</span></div>`;
+ if(j===0&&d.intro)h+=`<div class="card small">${esc(d.intro)}</div>`;
+ if(sec)h+=`<div class="keybox"><b>${esc(sec[2])}</b> <span class="small mute">(versets ${sec[0]}–${sec[1]})</span><div class="small" style="margin-top:4px">${esc(sec[3])}</div></div>`;
+ h+=`<div class="tabs"><button data-m="comprendre" class="${mode==='comprendre'?'on':''}">1 · Comprendre</button><button data-m="memoriser" class="${mode==='memoriser'?'on':''}">2 · Mémoriser</button><button data-m="reciter" class="${mode==='reciter'?'on':''}">3 · Réciter</button></div>`;
+ if(mode==='comprendre'){h+=`<p class="small mute">Touchez un mot pour voir son sens, sa racine et sa grammaire. « Mot à mot » affiche l’analyse complète du verset.</p>`;for(let a=a1;a<=a2;a++)h+=ayahHTML(s,a,d.ayahs[a-1],'comprendre');h+=await lessonVocabHTML(s,a1,a2);h+=`<a class="btn pri big" style="width:100%;margin-top:14px" href="#lesson-${s}-${j}-memoriser">Étape suivante : mémoriser →</a>`}
+ else if(mode==='memoriser'){h+=`<div class="card"><b>Méthode</b><ol class="small" style="margin:6px 0 0;padding-left:20px"><li>Écoutez la leçon ${S.set.reps} fois en suivant le texte des yeux et en répétant à voix basse.</li><li>Masquez le texte progressivement et récitez avec le récitateur.</li><li>Quand vous y arrivez sans texte, passez à « Réciter ».</li></ol></div><button class="pri big" data-play="${k}">▶ Écouter ×${S.set.reps}</button>
+ <div class="row" style="margin:12px 0"><span class="small"><b>Masquage :</b></span>${['Texte complet','Un mot sur deux','Premières lettres','Tout masquer'].map((t,x)=>`<button class="small ${curMask===x?'pri':''}" data-mask="${x}">${t}</button>`).join('')}</div>`;for(let a=a1;a<=a2;a++)h+=ayahHTML(s,a,d.ayahs[a-1],'mask',curMask);h+=`<a class="btn pri big" style="width:100%;margin-top:14px" href="#lesson-${s}-${j}-reciter">Étape suivante : réciter de mémoire →</a>`}
+ else{h+=`<p class="small">Récitez chaque verset <b>à voix haute, de mémoire</b>. Touchez « Révéler » pour vérifier, ou touchez un mot caché pour le voir.</p>`;for(let a=a1;a<=a2;a++)h+=ayahHTML(s,a,d.ayahs[a-1],'recite',3).replace(/class="w"/g,'class="w hid"');
+ h+=`<div class="card"><b>Comment s’est passée la récitation ?</b><div class="rate"><button class="r0" data-r="0">Oublié</button><button data-r="1">Hésitations</button><button class="r2" data-r="2">Parfait</button></div>${learned?`<p class="small mute" style="margin:8px 0 0">Prochaine révision prévue : ${esc(learned.due)}</p>`:''}</div>`}
+ const nj=j+1<d.lessons.length?`#lesson-${s}-${j+1}`:'';h+=`<div class="row" style="margin-top:14px">${j>0?`<a class="btn" href="#lesson-${s}-${j-1}">← Leçon précédente</a>`:''}<span class="sp"></span>${nj?`<a class="btn" href="${nj}">Leçon suivante →</a>`:''}</div>`;
+ V.innerHTML=h;bindPlay();bindAyahs();
+ V.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>location.hash=`#lesson-${s}-${j}-${b.dataset.m}`);
+ V.querySelectorAll('[data-mask]').forEach(b=>b.onclick=()=>{curMask=+b.dataset.mask;vLesson(s,j,'memoriser')});
+ V.querySelectorAll('[data-r]').forEach(b=>b.onclick=async()=>{const rv=+b.dataset.r;if(!S.learned[k]&&rv===0){V.querySelector('.rate').outerHTML='<p><b>Pas encore.</b> Revenez à l’étape « Mémoriser », réécoutez et masquez le texte progressivement, puis réessayez.</p><a class="btn pri" href="#lesson-'+s+'-'+j+'-memoriser">Retour à Mémoriser</a>';return}await rateLesson(k,rv);if(location.hash==='#review'){render()}else{V.querySelector('.rate').outerHTML=`<p><b>Enregistré.</b> Prochaine révision : ${esc(S.learned[k].due)}.</p><a class="btn pri" href="#today">Retour à aujourd’hui</a>`}})}
+async function rateLesson(k,r){const isNew=!S.learned[k];S.learned[k]=sched(S.learned[k]||{},r);if(isNew)S.learned[k].learnedAt=dkey();if(isNew||r===2)await addVocab(k);touchDay();save()}
+async function addVocab(k){const r=await lessonRange(k);for(let a=r.a1;a<=r.a2;a++){const ay=r.d.ayahs[a-1];ay.w.forEach((segs,wi)=>{const w=wordInfo(segs);if(!w.main||!GL[w.lemKey])return;const fl=w.main.flags;if(fl.includes('PRON')||fl.includes('DEM')||fl.includes('REL'))return;if(!S.vocab[w.lemKey])S.vocab[w.lemKey]={due:dkey(),int:0,ex:r.s+':'+a+':'+(wi+1),root:w.root,lem:w.lem}})}}
+async function lessonVocabHTML(s,a1,a2){const d=await getS(s);const seen={};const rows=[];for(let a=a1;a<=a2;a++)d.ayahs[a-1].w.forEach(segs=>{const w=wordInfo(segs);if(!w.main||seen[w.lemKey])return;const fl=w.main.flags;if(fl.includes('PRON')||fl.includes('DEM')||fl.includes('REL'))return;seen[w.lemKey]=1;rows.push(w)});
+ if(!rows.length)return '';return `<h3>Vocabulaire de la leçon</h3><table><tr><th class="a">Mot</th><th>Sens</th><th>Racine</th></tr>${rows.map(w=>`<tr><td class="a">${esc(w.lem)}</td><td>${esc(GL[w.lemKey]||'—')}</td><td class="a" style="font-size:18px">${esc(w.root.split('').join(' '))}</td></tr>`).join('')}</table>`}
+function bindAyahs(){V.querySelectorAll('[data-pa]').forEach(b=>b.onclick=()=>{const [s,a]=b.dataset.pa.split(':').map(Number);playAyah(s,a,3)});
+ V.querySelectorAll('.artext .w').forEach(w=>w.onclick=()=>{if(w.classList.contains('hid')){w.classList.remove('hid');return}openWord(w.dataset.w)});
+ V.querySelectorAll('[data-rev]').forEach(b=>b.onclick=()=>{const [s,a]=b.dataset.rev.split(':');document.querySelectorAll(`#ay-${s}-${a} .w.hid`).forEach(e=>e.classList.remove('hid'))});
+ V.querySelectorAll('[data-wbw]').forEach(b=>b.onclick=async()=>{const [s,a]=b.dataset.wbw.split(':').map(Number);const box=$('#wbw-'+s+'-'+a);if(box.innerHTML){box.innerHTML='';return}const d=await getS(s);const ay=d.ayahs[a-1];const toks=ay.t.split(' ').filter(isWord);
+  box.innerHTML=ay.w.length?`<table><tr><th class="a">Mot</th><th>Sens</th><th>Grammaire</th></tr>${ay.w.map((segs,i)=>{const w=wordInfo(segs);return `<tr><td class="a">${esc(toks[i]||'')}</td><td>${esc(w.gloss||'—')}</td><td class="small">${w.segs.filter(x=>!x.flags.includes('DET')).map(x=>esc(segDesc(x))).join(' + ')}${w.def?' · défini (ال)':''}${w.root?'<br><span class="mute">racine '+esc(w.root.split('').join(' '))+'</span>':''}</td></tr>`}).join('')}</table>`:'<p class="small mute">Analyse non disponible pour ce verset.</p>'})}
+async function openWord(ref){const [s,a,wi]=ref.split(':').map(Number);const d=await getS(s);const ay=d.ayahs[a-1];const toks=ay.t.split(' ').filter(isWord);const segs=ay.w[wi-1];
+ let h=`<div class="bigar">${esc(toks[wi-1]||'')}</div>`;if(segs){const w=wordInfo(segs);h+=`<p style="text-align:center;font-size:19px"><b>${esc(w.gloss||'—')}</b></p>`;if(w.root)h+=`<div class="keybox">Racine : <b style="font-family:'Amiri Quran';font-size:24px">${esc(w.root.split('').join(' '))}</b>${w.lem?' · mot de base : <span style="font-family:Amiri Quran;font-size:22px">'+esc(w.lem)+'</span>':''}</div>`;
+  h+=`<h3>Grammaire</h3>`+w.segs.map(x=>`<div class="seg"><b class="a">${esc(x.form)}</b> — ${esc(segDesc(x))}${x.f.LEM&&GL[x.f.LEM+'/'+x.pos]?'<br><span class="small mute">sens : '+esc(GL[x.f.LEM+'/'+x.pos])+'</span>':''}</div>`).join('')}
+ else h+=`<p class="mute">Analyse non disponible pour ce mot.</p>`;
+ h+=`<p class="small mute">Verset ${s}:${a} — ${esc(ay.fr)}</p><div class="row"><button data-x="1" class="pri">▶ Écouter le verset</button><button data-x="0">Fermer</button></div>`;
+ $('#sheetin').innerHTML=h;$('#sheet').classList.add('on');$('#sheetin [data-x="1"]').onclick=()=>playAyah(s,a,3);$('#sheetin [data-x="0"]').onclick=closeSheet}
+function closeSheet(){$('#sheet').classList.remove('on')}
+$('#sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet()};
+
+async function vReview(){ensureToday();const due=dueLessons();if(!due.length){V.innerHTML=`<h2>Révisions</h2><div class="card">Aucune révision en attente. Revenez demain, ou réécoutez la leçon du jour.</div><a class="btn pri" href="#today">Retour</a>`;return}
+ const [s,j]=due[0].split(':').map(Number);await vLesson(s,j,'reciter');V.insertAdjacentHTML('afterbegin',`<div class="chip g" style="margin-bottom:6px">Révision · ${due.length} restante${due.length>1?'s':''}</div>`)}
+
+function vVocab(){const items=Object.entries(S.vocab);const dv=dueVocab();
+ V.innerHTML=`<h2>Vocabulaire coranique</h2><div class="card"><div class="row"><b>${items.length} mots appris</b><span class="sp"></span><span class="chip ${dv.length?'g':'m'}">${dv.length} à revoir</span></div>${dv.length?'<a class="btn pri" href="#flash" style="margin-top:10px">Réviser les mots</a>':''}<p class="small mute" style="margin:8px 0 0">Chaque leçon apprise ajoute ses mots. Les mots oubliés reviennent dès le lendemain, jusqu’à ce qu’ils soient maîtrisés.</p></div>
+ <input id="q" placeholder="Chercher un mot (français ou arabe)…"><table id="vt"></table>`;
+ const nd=x=>x.replace(/[\u064B-\u0670\u06D6-\u06ED]/g,'');const draw=()=>{const q=$('#q').value.trim();const rows=items.filter(([k])=>!q||nd(k).includes(nd(q))||(GL[k]||'').toLowerCase().includes(q.toLowerCase()));$('#vt').innerHTML=`<tr><th class="a">Mot</th><th>Sens</th><th>Révision</th></tr>`+rows.map(([k,v])=>`<tr><td class="a">${esc(v.lem)}</td><td>${esc(GL[k]||'')}<br><span class="small mute">racine ${esc((v.root||'').split('').join(' '))}</span></td><td class="small">${esc(v.due.slice(5))}</td></tr>`).join('')};$('#q').oninput=draw;draw()}
+
+async function vFlash(){const dv=dueVocab();if(!dv.length){V.innerHTML=`<h2>Vocabulaire</h2><div class="card">Rien à revoir pour l’instant.</div><a class="btn pri" href="#vocab">Retour</a>`;return}
+ const k=dv[0],v=S.vocab[k];const [s,a,wi]=v.ex.split(':').map(Number);const d=await getS(s);const ay=d.ayahs[a-1];const toks=ay.t.split(' ');let n=0;const ctx=toks.map(t=>{if(!isWord(t))return esc(t);n++;return n===wi?`<b style="color:var(--gold)">${esc(t)}</b>`:esc(t)}).join(' ');
+ V.innerHTML=`<p><a href="#vocab">← Vocabulaire</a> <span class="chip g">${dv.length} restant${dv.length>1?'s':''}</span></p><div class="card flash"><div class="bigar">${esc(v.lem)}</div><div class="artext" style="font-size:22px;text-align:center">${ctx}</div><p class="mute small">${esc(sInfo(s).name)} ${s}:${a}</p><div id="ans" style="display:none"><p style="font-size:21px"><b>${esc(GL[k]||'')}</b></p><p class="small">Racine : <span style="font-family:'Amiri Quran';font-size:22px">${esc((v.root||'').split('').join(' '))}</span></p><p class="small mute">${esc(ay.fr)}</p></div>
+ <button class="pri big" id="show">Afficher le sens</button><div class="rate" id="rt" style="display:none"><button class="r0" data-r="0">Oublié</button><button data-r="1">Difficile</button><button class="r2" data-r="2">Facile</button></div><button id="pl" style="margin-top:10px">▶ Écouter le verset</button></div>`;
+ $('#show').onclick=()=>{$('#ans').style.display='';$('#rt').style.display='';$('#show').style.display='none'};$('#pl').onclick=()=>playAyah(s,a,1);
+ V.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{sched(S.vocab[k],+b.dataset.r);touchDay();save();vFlash()})}
+
+function vGrammar(){V.innerHTML=`<h2>Grammaire coranique</h2><p class="small mute">Leçons courtes avec des exemples tirés de vos sourates. Le point à retenir est souligné.</p><div class="list">${QGRAM.map((g,i)=>`<a href="#g-${g.id}"><span class="st ${S.gram[g.id]?'ok':''}">${S.gram[g.id]?'✓':i+1}</span><span class="sp"><b>${esc(g.title)}</b></span><span class="arn" style="font-size:19px">${esc(g.ar)}</span></a>`).join('')}</div>`}
+async function refText(r){const p=r.split(':').map(Number);const d=await getS(p[0]);const ay=d.ayahs[p[1]-1];if(p.length===2)return ay.t;return ay.t.split(' ').filter(isWord)[p[2]-1]||''}
+async function vGLesson(id){const g=QGRAM.find(x=>x.id===id);if(!g){location.hash='#grammar';return}let h=`<p><a href="#grammar">← Grammaire</a></p><h2>${esc(g.title)}</h2><div style="font-family:'Amiri Quran';font-size:26px;color:var(--gold);direction:rtl">${esc(g.ar)}</div>`;
+ for(const b of g.blocks){if(b.p)h+=`<p>${b.p}</p>`;if(b.key)h+=`<div class="keybox"><span class="key">${b.key}</span></div>`;if(b.table)h+=`<div style="overflow-x:auto"><table><tr>${b.table.head.map(x=>`<th>${esc(x)}</th>`).join('')}</tr>${b.table.rows.map(r=>`<tr>${r.map(c=>`<td${/[؀-ۿ]/.test(c)&&c.length<14?' class="a"':''}>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  if(b.ex){h+='<div class="card">';for(const [r,note] of b.ex){const t=await refText(r);const [s,a]=r.split(':');h+=`<div class="seg"><div class="artext" style="font-size:${r.split(':').length===2?24:30}px">${esc(t)}</div><div class="small">${esc(note)} <span class="mute">(${r})</span> <button class="small" data-pa="${s}:${a}" style="min-height:34px;padding:2px 10px">▶</button></div></div>`}h+='</div>'}}
+ h+=`<h3>Exercices</h3>`+g.q.map((q,i)=>`<div class="card" data-q="${i}"><b>${esc(q.q)}</b>${q.o.map((o,j)=>`<button class="opt" data-o="${j}"><span${/[؀-ۿ]/.test(o)?' style="font-family:Amiri Quran;font-size:22px"':''}>${esc(o)}</span></button>`).join('')}<div class="small exp" style="display:none;margin-top:6px"></div></div>`).join('');
+ h+=`<button class="pri big" id="gdone">J’ai compris cette leçon ✓</button>`;V.innerHTML=h;bindAyahs();
+ V.querySelectorAll('[data-q]').forEach(c=>{const q=g.q[+c.dataset.q];c.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const j=+b.dataset.o;c.querySelectorAll('.opt')[q.a].classList.add('r');if(j!==q.a)b.classList.add('x');const e=c.querySelector('.exp');e.style.display='';e.textContent=(j===q.a?'Exact. ':'Pas tout à fait. ')+q.ex})});
+ $('#gdone').onclick=()=>{S.gram[id]=dkey();touchDay();save();location.hash='#grammar'}}
+
+function vSettings(){const st=S.set;V.innerHTML=`<h2>Réglages</h2>
+ <div class="card"><b>Rappels audio</b><label class="f">Heures des rappels quotidiens</label><div class="row">${[0,1,2,3].map(i=>`<input type="time" data-t="${i}" value="${esc(st.times[i]||'')}" style="width:auto;flex:1">`).join('')}</div>
+ <label class="f">Nombre d’écoutes de la leçon à chaque rappel : <span id="rv">${st.reps}</span></label><input type="range" min="3" max="15" value="${st.reps}" id="reps">
+ <label class="f">Répéter chaque verset : <span id="av">${st.ayahRep}</span> fois de suite</label><input type="range" min="1" max="5" value="${st.ayahRep}" id="arep">
+ <label class="f"><input type="checkbox" id="auto" style="width:auto" ${st.autoplay?'checked':''}> Lancer l’audio automatiquement à l’ouverture quand un rappel est en attente</label>
+ <p class="small mute">Un site web ne peut pas démarrer le son tout seul quand il est fermé. Les alarmes du téléphone sonnent aux heures prévues : ouvrez l’application, la leçon démarre (ou touchez « Écouter maintenant »). L’audio continue écran éteint ; il s’arrête seul après la dernière répétition.</p></div>
+ <div class="card"><b>Récitateur</b><label class="f">Récitation</label><select id="rec"><option value="murattal" ${st.reciter==='murattal'?'selected':''}>Al-Husary — murattal (lent)</option><option value="muallim" ${st.reciter==='muallim'?'selected':''}>Al-Husary — mu’allim (enseignement, avec répétition)</option></select>
+ <label class="f">Pause entre deux versets : <span id="gv">${(st.gap/1000).toFixed(1)}</span> s</label><input type="range" min="0" max="5000" step="250" value="${st.gap}" id="gap"></div>
+ <div class="card"><b>Rythme et affichage</b><label class="f">Nouvelles leçons par jour</label><select id="pd">${[1,2,3].map(n=>`<option ${st.perDay===n?'selected':''}>${n}</option>`).join('')}</select>
+ <label class="f">Taille du texte arabe : <span id="sv">${st.size}</span> px</label><input type="range" min="22" max="44" value="${st.size}" id="sz">
+ <label class="f"><input type="checkbox" id="tr" style="width:auto" ${st.showTr?'checked':''}> Afficher la translittération</label><label class="f"><input type="checkbox" id="frx" style="width:auto" ${st.showFr?'checked':''}> Afficher la traduction française (Hamidullah)</label></div>
+ <div class="card"><b>Sauvegarde de la progression</b><p class="small mute">La progression est enregistrée sur ce téléphone. Copiez ce code pour la sauvegarder (dans une note, par exemple) ; collez-le ici pour la restaurer.</p><textarea id="bk" rows="3">${esc(JSON.stringify(S))}</textarea><div class="row" style="margin-top:8px"><button id="cp">Copier</button><button id="imp">Restaurer depuis le code collé</button></div><p id="bkmsg" class="small"></p></div>
+ <div class="card small"><b>Sources</b><br>Texte coranique : Tanzil (rasm uthmânî). Traduction : Muhammad Hamidullah. Analyse grammaticale : Quranic Arabic Corpus (Univ. de Leeds), version corrigée. Audio : Mahmoud Khalil Al-Husary (everyayah.com). Le sens des mots est un sens de base, à lire avec la traduction du verset.<br><br><a href="../">← Hanzi &amp; Harf</a></div>`;
+ const on=(id,ev,f)=>$(id).addEventListener(ev,f);
+ V.querySelectorAll('[data-t]').forEach(i=>i.onchange=()=>{st.times[+i.dataset.t]=i.value;save()});
+ on('#reps','input',e=>{st.reps=+e.target.value;$('#rv').textContent=st.reps;save()});on('#arep','input',e=>{st.ayahRep=+e.target.value;$('#av').textContent=st.ayahRep;save()});
+ on('#auto','change',e=>{st.autoplay=e.target.checked;save()});on('#rec','change',e=>{st.reciter=e.target.value;save()});on('#gap','input',e=>{st.gap=+e.target.value;$('#gv').textContent=(st.gap/1000).toFixed(1);save()});
+ on('#pd','change',e=>{st.perDay=+e.target.value;S.today=null;save()});on('#sz','input',e=>{st.size=+e.target.value;$('#sv').textContent=st.size;document.documentElement.style.setProperty('--ar',st.size+'px');save()});
+ on('#tr','change',e=>{st.showTr=e.target.checked;save()});on('#frx','change',e=>{st.showFr=e.target.checked;save()});
+ on('#cp','click',()=>{navigator.clipboard.writeText(JSON.stringify(S)).then(()=>$('#bkmsg').textContent='Copié.',()=>{$('#bk').select();$('#bkmsg').textContent='Sélectionné : copiez-le manuellement.'})});
+ on('#imp','click',()=>{try{const o=JSON.parse($('#bk').value);if(!o.set||!o.learned)throw 0;S=o;save();$('#bkmsg').textContent='Progression restaurée.';setTimeout(()=>location.reload(),600)}catch(e){$('#bkmsg').textContent='Code invalide.'}})}
+
+/* ---------- démarrage ---------- */
+window.addEventListener('hashchange',()=>{closeSheet();render()});
+(async()=>{try{[IDX,GL]=await Promise.all([fetch('data/index.json').then(r=>r.json()),fetch('data/gloss-fr.json').then(r=>r.json())]);ensureToday();streak();await render();checkReminder()}catch(e){V.innerHTML='<div class="card">Impossible de charger les données. Vérifiez la connexion puis rouvrez l’application.</div>'}})();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
