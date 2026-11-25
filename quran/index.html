@@ -40,6 +40,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri)}
 .ayah{padding:14px 2px;border-bottom:1px solid var(--line)}
 .ayah.cur{background:var(--gold2);border-radius:10px}
+.ayah.pa{padding:0;border:0}.artext.page{text-align:justify;text-align-last:right;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:8px}
 .artext{font-family:'Amiri Quran','Scheherazade New',serif;font-size:var(--ar);line-height:2.15;direction:rtl;text-align:right;word-spacing:4px}
 .artext .w{cursor:pointer;border-radius:6px;padding:0 1px}.artext .w:active,.artext .w.sel{background:var(--pri2)}
 .artext .w.hid{color:transparent;background:repeating-linear-gradient(90deg,var(--line) 0 100%);border-radius:6px}
@@ -145,6 +146,7 @@ function touchDay(){const d=dkey();S.days[d]=S.days[d]||{a:0};S.days[d].a++;save
 function streak(){let n=0;const d=new Date();if(!S.days[dkey(d)])d.setDate(d.getDate()-1);while(S.days[dkey(d)]){n++;d.setDate(d.getDate()-1)}$('#streak').textContent=n?n+' j de suite':''}
 async function lessonRange(k){const [s,j]=k.split(':').map(Number);const d=await getS(s);return {s,j,a1:d.lessons[j][0],a2:d.lessons[j][1],d}}
 function sectionFor(d,a){return (d.sections||[]).find(x=>a>=x[0]&&a<=x[1])}
+function sectionsIn(d,a1,a2){return (d.sections||[]).filter(x=>x[1]>=a1&&x[0]<=a2)}
 
 /* ---------- lecteur audio ---------- */
 const P={q:[],i:0,on:false,label:'',onEnd:null,el:new Audio(),pre:new Audio(),tried:false};
@@ -193,10 +195,11 @@ async function render(){const h=(location.hash||'#today').slice(1);window.scroll
  if(h==='settings'){setNav('settings');return vSettings()}
  location.hash='#today'}
 
-async function lessonCard(k,today){const r=await lessonRange(k);const info=sInfo(r.s);const sec=sectionFor(r.d,r.a1);const done=!!S.learned[k];
+async function lessonCard(k,today){const r=await lessonRange(k);const info=sInfo(r.s);const sec=sectionsIn(r.d,r.a1,r.a2).map(x=>x[2]).join(' · ');const done=!!S.learned[k];
  return `<div class="card ${today&&!done?'hi':''}"><div class="row"><span class="chip">${today?'Leçon du jour':'Leçon'}</span>${done?'<span class="chip g">apprise ✓</span>':''}<span class="sp"></span><span class="arn" style="font-family:'Amiri Quran';font-size:24px;color:var(--gold)">${esc(info.ar)}</span></div>
- <h3 style="margin:8px 0 2px">${esc(info.name)} · versets ${r.a1}${r.a2>r.a1?'–'+r.a2:''}</h3><div class="mute small">Leçon ${r.j+1}/${info.lessons}${sec?' · '+esc(sec[2]):''}</div>
- <div class="row" style="margin-top:10px"><a class="btn pri" href="#lesson-${r.s}-${r.j}">Ouvrir la leçon</a><button data-play="${k}">Écouter ×${S.set.reps}</button></div></div>`}
+ <h3 style="margin:8px 0 2px">${esc(info.name)} · versets ${r.a1}${r.a2>r.a1?'–'+r.a2:''}</h3><div class="mute small">Leçon ${r.j+1}/${info.lessons}${sec?' · '+esc(sec):''}</div>
+ <div class="row" style="margin-top:10px"><a class="btn pri" href="#lesson-${r.s}-${r.j}">Ouvrir la leçon</a><button data-play="${k}">Écouter ×${S.set.reps}</button></div>
+ ${today?`<div class="mute small" style="margin-top:12px">Demi-page du Mushaf · touchez un mot pour son sens</div>${(r.a1===1&&r.s!==1&&r.s!==9)?'<div class="artext" style="text-align:center">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>':''}<div class="artext page">${Array.from({length:r.a2-r.a1+1},(_,x)=>pageAyah(r.s,r.a1+x,r.d.ayahs[r.a1+x-1])).join(' ')}</div><details style="margin-top:10px"><summary><b>Traduction de la leçon</b></summary>${Array.from({length:r.a2-r.a1+1},(_,x)=>`<p class="small"><b>${r.a1+x}.</b> ${esc(r.d.ayahs[r.a1+x-1].fr)}</p>`).join('')}</details>`:''}</div>`}
 function bindPlay(){V.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>playLessons(b.dataset.play.split(','),S.set.reps,'Leçon du jour'))}
 
 async function vToday(){ensureToday();const st=slotsState();const due=dueLessons(),dv=dueVocab();
@@ -209,7 +212,7 @@ async function vToday(){ensureToday();const st=slotsState();const due=dueLessons
  h+=`<div class="card"><div class="row"><b>Révisions des leçons</b><span class="sp"></span><span class="chip ${due.length?'g':'m'}">${due.length} à réviser</span></div><p class="small mute" style="margin:6px 0">Récitez de mémoire, puis notez-vous honnêtement : ce que vous oubliez revient plus vite.</p>${due.length?'<a class="btn pri" href="#review">Réviser maintenant</a>':''}</div>`;
  h+=`<div class="card"><div class="row"><b>Vocabulaire coranique</b><span class="sp"></span><span class="chip ${dv.length?'g':'m'}">${dv.length} mots à revoir</span></div>${dv.length?'<a class="btn" href="#flash" style="margin-top:8px">Réviser les mots</a>':'<p class="small mute" style="margin:6px 0">Les mots de chaque leçon apprise arrivent ici automatiquement.</p>'}</div>`;
  h+=`<h3>Programme prioritaire · ${lt}/${tot} leçons</h3>`+pr.map(p=>`<a href="#surah-${p.s}" style="color:inherit;text-decoration:none"><div class="row small" style="margin:8px 0 3px"><b>${esc(sInfo(p.s).name)}</b><span class="mute">${esc(sInfo(p.s).frn)}</span><span class="sp"></span>${p.l}/${p.n}</div><div class="bar"><i style="width:${p.n?100*p.l/p.n:0}%"></i></div></a>`).join('');
- V.innerHTML=h;bindPlay();const rg=$('#remgo');if(rg)rg.onclick=()=>startReminder(st.pending)}
+ V.innerHTML=h;bindPlay();bindAyahs();const rg=$('#remgo');if(rg)rg.onclick=()=>startReminder(st.pending)}
 
 function vSurahs(){const pri=IDX.priority,rest=IDX.order.filter(s=>!pri.includes(s));const row=s=>{const i=sInfo(s);let l=0;for(let j=0;j<i.lessons;j++)if(S.learned[lessonKey(s,j)])l++;return `<a href="#surah-${s}"><span class="st ${l===i.lessons?'ok':l?'td':''}">${l===i.lessons?'✓':s}</span><span class="sp"><b>${esc(i.name)}</b> <span class="mute small">${esc(i.frn)}</span><br><span class="small mute">${i.count} versets · ${i.place} · ${l}/${i.lessons} leçons</span></span><span class="arn">${esc(i.ar)}</span></a>`};
  V.innerHTML=`<h2>Programme prioritaire</h2><div class="list">${pri.map(row).join('')}</div><h2>Ensuite</h2><p class="small mute">Al-Fâtiha et Yâ-Sîn, puis les sourates de la plus courte à la plus longue.</p><div class="list">${rest.map(row).join('')}</div>`}
@@ -222,15 +225,16 @@ async function vSurah(s){const d=await getS(s),i=sInfo(s);let h=`<p><a href="#su
  V.innerHTML=h;$('#allplay').onclick=()=>{const q=[];if(s!==1&&s!==9)q.push({s:1,a:1,bas:true,rep:1,of:1});for(let a=1;a<=d.count;a++)q.push({s,a,rep:1,of:1});play(q,d.name+' — sourate complète')}}
 
 function ayahHTML(s,a,ay,mode,level){const toks=ay.t.split(' ');let wi=0;const words=toks.map(t=>{if(!isWord(t))return `<span>${esc(t)}</span>`;wi++;let cls='w';if(mode==='mask'){if(level===3||(level===1&&wi%2===0))cls+=' hid';}return `<span class="${cls}" data-w="${s}:${a}:${wi}">${esc(level===2&&mode==='mask'?firstLetters(t):t)}</span>`}).join(' ');
- return `<div class="ayah" id="ay-${s}-${a}"><div class="artext">${words} <span class="num">﴿${AR_DIG(a)}﴾</span></div>${mode!=='mask'&&mode!=='recite'?`${S.set.showTr?`<div class="tr">${esc(ay.tr)}</div>`:''}${S.set.showFr?`<div class="fr">${esc(ay.fr)}</div>`:''}`:''}
+ return `<div class="ayah" id="ay-${s}-${a}"><div class="artext">${words} <span class="num">﴿${AR_DIG(a)}﴾</span></div>${mode==='comprendre'?`${S.set.showTr?`<div class="tr">${esc(ay.tr)}</div>`:''}${S.set.showFr?`<div class="fr">${esc(ay.fr)}</div>`:''}`:''}
  <div class="row" style="margin-top:6px"><button class="small" data-pa="${s}:${a}">▶ ×3</button>${mode==='comprendre'?`<button class="small" data-wbw="${s}:${a}">Mot à mot</button>`:''}${mode==='recite'?`<button class="small" data-rev="${s}:${a}">Révéler</button>`:''}</div><div class="wbw" id="wbw-${s}-${a}"></div></div>`}
+function pageAyah(s,a,ay){let wi=0;return `<span class="ayah pa" id="ay-${s}-${a}">${ay.t.split(' ').map(t=>isWord(t)?`<span class="w" data-w="${s}:${a}:${++wi}">${esc(t)}</span>`:`<span>${esc(t)}</span>`).join(' ')} <span class="num">﴿${AR_DIG(a)}﴾</span></span>`}
 function firstLetters(t){const m=t.match(/^[^ء-يٱ]*[ء-يٱ][ً-ْٰٕۡٔ]*/);return m?m[0]+'…':t}
 
 let curMask=0;
-async function vLesson(s,j,mode){const d=await getS(s),i=sInfo(s);if(!d.lessons[j]){location.hash='#surah-'+s;return}const [a1,a2]=d.lessons[j];const k=lessonKey(s,j);const sec=sectionFor(d,a1);const learned=S.learned[k];
+async function vLesson(s,j,mode){const d=await getS(s),i=sInfo(s);if(!d.lessons[j]){location.hash='#surah-'+s;return}const [a1,a2]=d.lessons[j];const k=lessonKey(s,j);const learned=S.learned[k];
  let h=`<p><a href="#surah-${s}">← ${esc(d.name)}</a></p><div class="row"><h2 class="sp" style="margin:4px 0">${esc(d.name)} · ${a1}${a2>a1?'–'+a2:''}</h2><span class="chip">${j+1}/${d.lessons.length}</span></div>`;
  if(j===0&&d.intro)h+=`<div class="card small">${esc(d.intro)}</div>`;
- if(sec)h+=`<div class="keybox"><b>${esc(sec[2])}</b> <span class="small mute">(versets ${sec[0]}–${sec[1]})</span><div class="small" style="margin-top:4px">${esc(sec[3])}</div></div>`;
+ for(const sc of sectionsIn(d,a1,a2))h+=`<div class="keybox"><b>${esc(sc[2])}</b> <span class="small mute">(versets ${sc[0]}–${sc[1]})</span><div class="small" style="margin-top:4px">${esc(sc[3])}</div></div>`;
  h+=`<div class="tabs"><button data-m="comprendre" class="${mode==='comprendre'?'on':''}">1 · Comprendre</button><button data-m="memoriser" class="${mode==='memoriser'?'on':''}">2 · Mémoriser</button><button data-m="reciter" class="${mode==='reciter'?'on':''}">3 · Réciter</button></div>`;
  if(mode==='comprendre'){h+=`<p class="small mute">Touchez un mot pour voir son sens, sa racine et sa grammaire. « Mot à mot » affiche l’analyse complète du verset.</p>`;for(let a=a1;a<=a2;a++)h+=ayahHTML(s,a,d.ayahs[a-1],'comprendre');h+=await lessonVocabHTML(s,a1,a2);h+=`<a class="btn pri big" style="width:100%;margin-top:14px" href="#lesson-${s}-${j}-memoriser">Étape suivante : mémoriser →</a>`}
  else if(mode==='memoriser'){h+=`<div class="card"><b>Méthode</b><ol class="small" style="margin:6px 0 0;padding-left:20px"><li>Écoutez la leçon ${S.set.reps} fois en suivant le texte des yeux et en répétant à voix basse.</li><li>Masquez le texte progressivement et récitez avec le récitateur.</li><li>Quand vous y arrivez sans texte, passez à « Réciter ».</li></ol></div><button class="pri big" data-play="${k}">▶ Écouter ×${S.set.reps}</button>
