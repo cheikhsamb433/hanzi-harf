@@ -1,6 +1,6 @@
 // Hifz — réseau d'abord pour l'app et les données (mises à jour), cache en secours (hors ligne).
 // Les fichiers audio (autres domaines) ne passent pas par ce service worker.
-const CACHE='hifz-v2';
+const CACHE='hifz-v3';
 const CORE=['./','index.html','grammar-fr.js','data/index.json','data/gloss-fr.json','manifest.webmanifest','icon-192.png','icon-512.png','fonts/amiri-quran.woff2',
  'data/s048.json','data/s032.json','data/s044.json','data/s055.json','data/s056.json','data/s067.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
